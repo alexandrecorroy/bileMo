@@ -168,9 +168,9 @@ class CustomerUser
     /**
      * @param mixed $customer
      */
-    public function setCustomer($customer): void
+    public function setCustomer(Customer $customer)
     {
         $this->customer = $customer;
     }
-    
+
 }

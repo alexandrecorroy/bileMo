@@ -1,201 +1,185 @@
 <?php
+declare(strict_types = 1);
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Interfaces\ProductDetailInterface;
+use App\Entity\Interfaces\ProductInterface;
+use Ramsey\Uuid\Uuid;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ProductDetailRepository")
- * @ORM\Table(name="bilemo_product_detail")
+ * final Class ProductDetail
  */
-class ProductDetail
+final class ProductDetail implements ProductDetailInterface
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer", name="id")
+     * @var \Ramsey\Uuid\UuidInterface
      */
     private $uid;
-
     /**
-     * @ORM\Column(type="string", length=56)
+     * @var string
      */
     private $brand;
-
     /**
-     * @ORM\Column(type="string", length=32)
+     * @var string
      */
     private $color;
-
     /**
-     * @ORM\Column(type="string", length=56)
+     * @var string
      */
     private $os;
-
     /**
-     * @ORM\Column(type="smallint")
+     * @var int
      */
     private $memory;
-
     /**
-     * @ORM\Column(type="decimal", precision=5, scale=2)
+     * @var float
      */
     private $weight;
-
     /**
-     * @ORM\Column(type="decimal", precision=2, scale=1)
+     * @var float
      */
     private $screenSize;
-
     /**
-     * @ORM\Column(type="decimal", precision=4, scale=1)
+     * @var float
      */
     private $height;
-
     /**
-     * @ORM\Column(type="decimal", precision=3, scale=1)
+     * @var float
      */
     private $width;
-
     /**
-     * @ORM\Column(type="decimal", precision=3, scale=1)
+     * @var float
      */
     private $thickness;
-
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Product")
-     * @ORM\JoinColumn(name="product", referencedColumnName="id", nullable=false)
+     * @var Product
      */
     private $product;
 
+    /**
+     * ProductDetail constructor.
+     * @param string $brand
+     * @param string $color
+     * @param string $os
+     * @param int $memory
+     * @param float $weight
+     * @param float $screenSize
+     * @param float $height
+     * @param float $width
+     * @param float $thickness
+     * @param ProductInterface $product
+     */
+    public function __construct(
+        string $brand,
+        string $color,
+        string $os,
+        int $memory,
+        float $weight,
+        float $screenSize,
+        float $height,
+        float $width,
+        float $thickness,
+        ProductInterface $product
+    ) {
+        $this->uid = Uuid::uuid4();
+        $this->brand = $brand;
+        $this->color = $color;
+        $this->os = $os;
+        $this->memory = $memory;
+        $this->weight = $weight;
+        $this->screenSize = $screenSize;
+        $this->height = $height;
+        $this->width = $width;
+        $this->thickness = $thickness;
+        $this->product = $product;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getUid()
     {
         return $this->uid;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getBrand(): ?string
     {
         return $this->brand;
     }
 
-    public function setBrand(string $brand): self
-    {
-        $this->brand = $brand;
-
-        return $this;
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function getColor(): ?string
     {
         return $this->color;
     }
 
-    public function setColor(string $color): self
-    {
-        $this->color = $color;
-
-        return $this;
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function getOs(): ?string
     {
         return $this->os;
     }
 
-    public function setOs(string $os): self
-    {
-        $this->os = $os;
-
-        return $this;
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function getMemory(): ?int
     {
         return $this->memory;
     }
 
-    public function setMemory(int $memory): self
-    {
-        $this->memory = $memory;
-
-        return $this;
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function getWeight()
     {
         return $this->weight;
     }
 
-    public function setWeight($weight): self
-    {
-        $this->weight = $weight;
-
-        return $this;
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function getScreenSize()
     {
         return $this->screenSize;
     }
 
-    public function setScreenSize($screenSize): self
-    {
-        $this->screenSize = $screenSize;
-
-        return $this;
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function getHeight()
     {
         return $this->height;
     }
 
-    public function setHeight($height): self
-    {
-        $this->height = $height;
-
-        return $this;
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function getWidth()
     {
         return $this->width;
     }
 
-    public function setWidth($width): self
-    {
-        $this->width = $width;
-
-        return $this;
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function getThickness()
     {
         return $this->thickness;
     }
 
-    public function setThickness($thickness): self
-    {
-        $this->thickness = $thickness;
-
-        return $this;
-    }
-
     /**
-     * @return mixed
+     * {@inheritdoc}
      */
     public function getProduct()
     {
         return $this->product;
     }
-
-    /**
-     * @param mixed $product
-     */
-    public function setProduct($product): void
-    {
-        $this->product = $product;
-    }
-
-
 }

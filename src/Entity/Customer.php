@@ -1,111 +1,109 @@
 <?php
+declare(strict_types = 1);
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Interfaces\CustomerInterface;
+use Ramsey\Uuid\Uuid;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\CustomerRepository")
- * @ORM\Table(name="bilemo_customer")
+ * final Class Customer
  */
-class Customer
+final class Customer implements CustomerInterface
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer", name="id")
+     * @var \Ramsey\Uuid\UuidInterface
      */
     private $uid;
-
     /**
-     * @ORM\Column(type="string", length=56)
+     * @var string
      */
     private $society;
-
     /**
-     * @ORM\Column(type="string", length=255)
+     * @var string
      */
     private $email;
-
     /**
-     * @ORM\Column(type="string", length=56)
+     * @var string
      */
     private $username;
-
     /**
-     * @ORM\Column(type="string", length=128)
+     * @var string
      */
     private $password;
-
     /**
-     * @ORM\Column(type="string", length=12, nullable=true)
+     * @var null|string
      */
     private $phone;
 
+    /**
+     * Customer constructor.
+     * @param string $society
+     * @param string $email
+     * @param string $username
+     * @param string $password
+     * @param string|null $phone
+     */
+    public function __construct(
+        string $society,
+        string $email,
+        string $username,
+        string $password,
+        string $phone = null
+    ) {
+        $this->uid = Uuid::uuid4();
+        $this->society = $society;
+        $this->email = $email;
+        $this->username = $username;
+        $this->password = $password;
+        $this->phone = $phone;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getUid()
     {
         return $this->uid;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getSociety(): ?string
     {
         return $this->society;
     }
 
-    public function setSociety(string $society): self
-    {
-        $this->society = $society;
-
-        return $this;
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
-    public function setEmail(string $email): self
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function getUsername(): ?string
     {
         return $this->username;
     }
 
-    public function setUsername(string $username): self
-    {
-        $this->username = $username;
-
-        return $this;
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function getPassword(): ?string
     {
         return $this->password;
     }
 
-    public function setPassword(string $password): self
-    {
-        $this->password = $password;
-
-        return $this;
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function getPhone(): ?string
     {
         return $this->phone;
     }
-
-    public function setPhone(?string $phone): self
-    {
-        $this->phone = $phone;
-
-        return $this;
-    }
-
-
 }

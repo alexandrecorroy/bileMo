@@ -1,60 +1,64 @@
 <?php
+declare(strict_types = 1);
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Interfaces\ProductInterface;
+use Ramsey\Uuid\Uuid;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
- * @ORM\Table(name="bilemo_product")
+ * final Class Product
  */
-class Product
+final class Product implements ProductInterface
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer", name="id")
+     * @var \Ramsey\Uuid\UuidInterface
      */
     private $uid;
-
     /**
-     * @ORM\Column(type="string", length=56)
+     * @var string
      */
     private $name;
-
     /**
-     * @ORM\Column(type="decimal", precision=6, scale=2)
+     * @var float
      */
     private $price;
 
+    /**
+     * Product constructor.
+     * @param string $name
+     * @param float $price
+     */
+    public function __construct(
+        string $name,
+        float $price
+    ) {
+        $this->uid = Uuid::uuid4();
+        $this->name = $name;
+        $this->price = $price;
+    }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getUid()
     {
         return $this->uid;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function getPrice()
     {
         return $this->price;
     }
-
-    public function setPrice($price): self
-    {
-        $this->price = $price;
-
-        return $this;
-    }
-
 }

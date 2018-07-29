@@ -1,11 +1,21 @@
 <?php
+
 declare(strict_types = 1);
+
+/**
+ * BileMo Project
+ *
+ * (c) CORROY Alexandre <alexandre.corroy@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace App\Entity;
 
 use App\Entity\Interfaces\CustomerInterface;
 use App\Entity\Interfaces\CustomerUserInterface;
-use Doctrine\Common\Collections\ArrayCollection;
+use App\Entity\Interfaces\ProductInterface;
 use Ramsey\Uuid\Uuid;
 
 /**
@@ -17,49 +27,58 @@ final class CustomerUser implements CustomerUserInterface
      * @var \Ramsey\Uuid\UuidInterface
      */
     private $uid;
+
     /**
      * @var string
      */
     private $name;
+
     /**
      * @var string
      */
     private $firstName;
+
     /**
      * @var string
      */
     private $email;
+
     /**
      * @var string
      */
     private $address;
+
     /**
      * @var string
      */
     private $zip;
+
     /**
      * @var null|string
      */
     private $phone;
+
     /**
-     * @var ArrayCollection
+     * @var ProductInterface[]
      */
-    private $products;
+    private $products = [];
+
     /**
-     * @var Customer
+     * @var CustomerInterface
      */
     private $customer;
 
 
     /**
      * CustomerUser constructor.
-     * @param string $name
-     * @param string $firstName
-     * @param string $email
-     * @param string $address
-     * @param string $zip
-     * @param CustomerInterface $customer
-     * @param string|null $phone
+     *
+     * @param string            $name name of customer
+     * @param string            $firstName firstname of customer
+     * @param string            $email customer's email
+     * @param string            $address customer's address
+     * @param string            $zip zip code
+     * @param CustomerInterface $customer society which has sold the phone
+     * @param string|null       $phone customer's phone
      */
     public function __construct(
         string $name,
@@ -79,7 +98,7 @@ final class CustomerUser implements CustomerUserInterface
         $this->phone = $phone;
         $this->customer = $customer;
 
-        $this->products = new ArrayCollection();
+        $this->products = [];
     }
 
     /**

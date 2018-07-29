@@ -1,5 +1,15 @@
 <?php
+
 declare(strict_types = 1);
+
+/**
+ * BileMo Project
+ *
+ * (c) CORROY Alexandre <alexandre.corroy@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace App\Entity;
 
@@ -16,58 +26,69 @@ final class ProductDetail implements ProductDetailInterface
      * @var \Ramsey\Uuid\UuidInterface
      */
     private $uid;
+
     /**
      * @var string
      */
     private $brand;
+
     /**
      * @var string
      */
     private $color;
+
     /**
      * @var string
      */
     private $os;
+
     /**
      * @var int
      */
     private $memory;
+
     /**
      * @var float
      */
     private $weight;
+
     /**
      * @var float
      */
     private $screenSize;
+
     /**
      * @var float
      */
     private $height;
+
     /**
      * @var float
      */
     private $width;
+
     /**
      * @var float
      */
     private $thickness;
+
     /**
-     * @var Product
+     * @var ProductInterface
      */
     private $product;
 
     /**
      * ProductDetail constructor.
-     * @param string $brand
-     * @param string $color
-     * @param string $os
-     * @param int $memory
-     * @param float $weight
-     * @param float $screenSize
-     * @param float $height
-     * @param float $width
-     * @param float $thickness
+     *
+     * @param string           $brand society who make phone
+     * @param string           $color color of phone
+     * @param string           $os operating system of phone
+     * @param int              $memory available memory without os
+     * @param float            $weight in gram
+     * @param float            $screenSize in inch
+     * @param float            $height in millimeter
+     * @param float            $width in millimeter
+     * @param float            $thickness in millimeter
      * @param ProductInterface $product
      */
     public function __construct(
@@ -178,7 +199,7 @@ final class ProductDetail implements ProductDetailInterface
     /**
      * {@inheritdoc}
      */
-    public function getProduct()
+    public function getProduct(): ProductInterface
     {
         return $this->product;
     }

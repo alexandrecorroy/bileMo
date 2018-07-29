@@ -1,11 +1,15 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: alex
- * Date: 12/07/2018
- * Time: 17:23
- */
+
 declare(strict_types = 1);
+
+/**
+ * BileMo Project
+ *
+ * (c) CORROY Alexandre <alexandre.corroy@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace App\Tests\Entity;
 
@@ -34,6 +38,9 @@ final class ProductDetailUnitTest extends TestCase
         $this->product = $this->createMock(ProductInterface::class);
     }
 
+    /**
+     * Unit test add product detail
+     */
     public function testAddProductDetail()
     {
         $productDetail = new ProductDetail(

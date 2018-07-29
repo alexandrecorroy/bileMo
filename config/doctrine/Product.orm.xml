@@ -3,10 +3,7 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                    https://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
     <entity name="App\Entity\Product" table="bilemo_product" repository-class="App\Repository\ProductRepository">
-        <id name="uid" column="id" type="uuid">
-            <generator strategy="CUSTOM"/>
-            <custom-id-generator class="Ramsey\Uuid\Doctrine\UuidGenerator"/>
-        </id>
+        <id name="uid" column="id" type="uuid"/>
         <field name="name" length="56"/>
         <field name="price" type="decimal" precision="6" scale="2" />
     </entity>

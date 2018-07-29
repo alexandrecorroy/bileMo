@@ -1,11 +1,15 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: alex
- * Date: 12/07/2018
- * Time: 17:22
- */
+
 declare(strict_types = 1);
+
+/**
+ * BileMo Project
+ *
+ * (c) CORROY Alexandre <alexandre.corroy@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace App\Tests\Entity;
 
@@ -19,6 +23,9 @@ use Ramsey\Uuid\UuidInterface;
  */
 final class ProductUnitTest extends TestCase
 {
+    /**
+     * unit test add a product
+     */
     public function testAddProduct()
     {
         $product = new Product(

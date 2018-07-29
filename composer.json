@@ -1,4 +1,6 @@
 {
+    "name": "bilemo",
+    "description": "API project",
     "type": "project",
     "license": "proprietary",
     "require": {
@@ -27,12 +29,15 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "src/"
+            "App\\": "src/",
+            "App\\Entity": "src/entity",
+            "App\\Entity\\Interfaces": "src/entity/interfaces"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "App\\Tests\\": "tests/"
+            "App\\Tests\\": "tests/",
+            "App\\Tests\\Entity": "tests/entity"
         }
     },
     "replace": {

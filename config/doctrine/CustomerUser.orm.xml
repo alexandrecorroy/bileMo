@@ -3,10 +3,7 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                    https://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
     <entity name="App\Entity\CustomerUser" table="bilemo_customer_user" repository-class="App\Repository\CustomerUserRepository">
-        <id name="uid" column="id" type="uuid">
-            <generator strategy="CUSTOM"/>
-            <custom-id-generator class="Ramsey\Uuid\Doctrine\UuidGenerator"/>
-        </id>
+        <id name="uid" column="id" type="uuid"/>
         <field name="name" length="56"/>
         <field name="firstName" length="56" />
         <field name="email" length="255" unique="true" />

@@ -1,5 +1,15 @@
 <?php
+
 declare(strict_types = 1);
+
+/**
+ * BileMo Project
+ *
+ * (c) CORROY Alexandre <alexandre.corroy@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace App\Entity;
 
@@ -15,34 +25,40 @@ final class Customer implements CustomerInterface
      * @var \Ramsey\Uuid\UuidInterface
      */
     private $uid;
+
     /**
      * @var string
      */
     private $society;
+
     /**
      * @var string
      */
     private $email;
+
     /**
      * @var string
      */
     private $username;
+
     /**
      * @var string
      */
     private $password;
+
     /**
      * @var null|string
      */
-    private $phone;
+    private $phone = null;
 
     /**
      * Customer constructor.
-     * @param string $society
-     * @param string $email
-     * @param string $username
-     * @param string $password
-     * @param string|null $phone
+     *
+     * @param string      $society society's name
+     * @param string      $email email's society
+     * @param string      $username login to connect to api
+     * @param string      $password password
+     * @param string|null $phone phone of society
      */
     public function __construct(
         string $society,

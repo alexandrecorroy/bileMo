@@ -1,5 +1,15 @@
 <?php
+
 declare(strict_types = 1);
+
+/**
+ * BileMo Project
+ *
+ * (c) CORROY Alexandre <alexandre.corroy@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace App\Entity;
 
@@ -15,10 +25,12 @@ final class Product implements ProductInterface
      * @var \Ramsey\Uuid\UuidInterface
      */
     private $uid;
+
     /**
      * @var string
      */
     private $name;
+
     /**
      * @var float
      */
@@ -26,8 +38,9 @@ final class Product implements ProductInterface
 
     /**
      * Product constructor.
-     * @param string $name
-     * @param float $price
+     *
+     * @param string $name name of phone
+     * @param float  $price price of phone
      */
     public function __construct(
         string $name,

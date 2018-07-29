@@ -1,0 +1,13 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                   https://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
+    <entity name="App\Entity\Customer" table="bilemo_customer" repository-class="App\Repository\CustomerRepository">
+        <id name="uid" column="id" type="uuid"/>
+        <field name="society" length="56" unique="true"/>
+        <field name="email" length="255" />
+        <field name="username" length="56" />
+        <field name="password" length="128" />
+        <field name="phone" length="12" nullable="true" />
+    </entity>
+</doctrine-mapping>

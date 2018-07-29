@@ -1,18 +1,24 @@
 {
+    "name": "bilemo",
+    "description": "API project",
     "type": "project",
     "license": "proprietary",
     "require": {
         "php": "^7.1.3",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "ramsey/uuid-doctrine": "^1.4",
         "symfony/console": "^4.1",
         "symfony/flex": "^1.0",
         "symfony/framework-bundle": "^4.1",
         "symfony/lts": "^4@dev",
+        "symfony/orm-pack": "^1.0",
         "symfony/yaml": "^4.1"
     },
     "require-dev": {
         "symfony/dotenv": "^4.1",
+        "symfony/maker-bundle": "^1.5",
+        "symfony/phpunit-bridge": "^4.1",
         "symfony/web-server-bundle": "^4.1"
     },
     "config": {
@@ -23,12 +29,15 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "src/"
+            "App\\": "src/",
+            "App\\Entity": "src/entity",
+            "App\\Entity\\Interfaces": "src/entity/interfaces"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "App\\Tests\\": "tests/"
+            "App\\Tests\\": "tests/",
+            "App\\Tests\\Entity": "tests/entity"
         }
     },
     "replace": {

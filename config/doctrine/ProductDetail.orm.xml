@@ -13,8 +13,5 @@
         <field name="height" type="decimal" precision="4" scale="1"/>
         <field name="width" type="decimal" precision="3" scale="1"/>
         <field name="thickness" type="decimal" precision="3" scale="1"/>
-        <one-to-one field="product" target-entity="App\Entity\Product">
-            <join-column name="product_id" referenced-column-name="id" />
-        </one-to-one>
     </entity>
 </doctrine-mapping>

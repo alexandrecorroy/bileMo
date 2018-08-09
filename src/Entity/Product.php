@@ -13,13 +13,14 @@ declare(strict_types = 1);
 
 namespace App\Entity;
 
+use App\Entity\Interfaces\ProductDetailInterface;
 use App\Entity\Interfaces\ProductInterface;
 use Ramsey\Uuid\Uuid;
 
 /**
- * final Class Product
+ * final Class Product.
  */
-final class Product implements ProductInterface
+final class Product implements ProductInterface, \JsonSerializable
 {
     /**
      * @var \Ramsey\Uuid\UuidInterface
@@ -37,18 +38,27 @@ final class Product implements ProductInterface
     private $price;
 
     /**
+     * @var ProductDetailInterface
+     */
+    private $productDetail;
+
+    /**
      * Product constructor.
      *
-     * @param string $name name of phone
-     * @param float  $price price of phone
+     * @param string $name
+     * @param float $price
+     * @param ProductDetailInterface $productDetail
+     * @throws \Exception
      */
     public function __construct(
         string $name,
-        float $price
+        float $price,
+        ProductDetailInterface $productDetail
     ) {
         $this->uid = Uuid::uuid4();
         $this->name = $name;
         $this->price = $price;
+        $this->productDetail = $productDetail;
     }
 
     /**
@@ -73,5 +83,25 @@ final class Product implements ProductInterface
     public function getPrice()
     {
         return $this->price;
+    }
+
+    /**
+     * @return array|mixed
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'uid'   => $this->getUid(),
+            'name'  => $this->getName(),
+            'price' => $this->getPrice()
+        ];
+    }
+
+    /**
+     * @return ProductDetailInterface
+     */
+    public function getProductDetail(): ProductDetailInterface
+    {
+        return $this->productDetail;
     }
 }

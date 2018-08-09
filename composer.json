@@ -8,14 +8,18 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ramsey/uuid-doctrine": "^1.4",
+        "sensio/framework-extra-bundle": "^5.2",
         "symfony/console": "^4.1",
         "symfony/flex": "^1.0",
         "symfony/framework-bundle": "^4.1",
         "symfony/lts": "^4@dev",
         "symfony/orm-pack": "^1.0",
+        "symfony/serializer": "^4.1",
+        "symfony/validator": "^4.1",
         "symfony/yaml": "^4.1"
     },
     "require-dev": {
+        "symfony/browser-kit": "^4.1",
         "symfony/dotenv": "^4.1",
         "symfony/maker-bundle": "^1.5",
         "symfony/phpunit-bridge": "^4.1",
@@ -30,14 +34,16 @@
     "autoload": {
         "psr-4": {
             "App\\": "src/",
-            "App\\Entity": "src/entity",
-            "App\\Entity\\Interfaces": "src/entity/interfaces"
+            "App\\Entity\\": "src/Entity/",
+            "App\\Entity\\Interfaces\\": "src/Entity/Interfaces/",
+            "App\\Controller\\Interfaces\\": "src/Controller/Interfaces/",
+            "App\\Contrller\\": "src/Controller/"
         }
     },
     "autoload-dev": {
         "psr-4": {
             "App\\Tests\\": "tests/",
-            "App\\Tests\\Entity": "tests/entity"
+            "App\\Tests\\Entity\\": "tests/entity/"
         }
     },
     "replace": {

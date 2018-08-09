@@ -74,9 +74,4 @@ interface ProductDetailInterface
      * @return float
      */
     public function getThickness();
-
-    /**
-     * @return Product
-     */
-    public function getProduct();
 }

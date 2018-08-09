@@ -6,5 +6,11 @@
         <id name="uid" column="id" type="uuid"/>
         <field name="name" length="56"/>
         <field name="price" type="decimal" precision="6" scale="2" />
+        <one-to-one field="productDetail" target-entity="App\Entity\ProductDetail">
+            <join-column name="product_id" referenced-column-name="id" />
+            <cascade>
+                <cascade-all/>
+            </cascade>
+        </one-to-one>
     </entity>
 </doctrine-mapping>

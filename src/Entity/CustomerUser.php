@@ -19,7 +19,7 @@ use App\Entity\Interfaces\ProductInterface;
 use Ramsey\Uuid\Uuid;
 
 /**
- * final Class CustomerUser
+ * final Class CustomerUser.
  */
 final class CustomerUser implements CustomerUserInterface
 {

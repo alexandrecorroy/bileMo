@@ -14,13 +14,12 @@ declare(strict_types = 1);
 namespace App\Entity;
 
 use App\Entity\Interfaces\ProductDetailInterface;
-use App\Entity\Interfaces\ProductInterface;
 use Ramsey\Uuid\Uuid;
 
 /**
- * final Class ProductDetail
+ * Class ProductDetail.
  */
-final class ProductDetail implements ProductDetailInterface
+class ProductDetail implements ProductDetailInterface
 {
     /**
      * @var \Ramsey\Uuid\UuidInterface
@@ -73,23 +72,18 @@ final class ProductDetail implements ProductDetailInterface
     private $thickness;
 
     /**
-     * @var ProductInterface
-     */
-    private $product;
-
-    /**
      * ProductDetail constructor.
      *
-     * @param string           $brand society who make phone
-     * @param string           $color color of phone
-     * @param string           $os operating system of phone
-     * @param int              $memory available memory without os
-     * @param float            $weight in gram
-     * @param float            $screenSize in inch
-     * @param float            $height in millimeter
-     * @param float            $width in millimeter
-     * @param float            $thickness in millimeter
-     * @param ProductInterface $product
+     * @param string $brand
+     * @param string $color
+     * @param string $os
+     * @param int $memory
+     * @param float $weight
+     * @param float $screenSize
+     * @param float $height
+     * @param float $width
+     * @param float $thickness
+     * @throws \Exception
      */
     public function __construct(
         string $brand,
@@ -100,8 +94,7 @@ final class ProductDetail implements ProductDetailInterface
         float $screenSize,
         float $height,
         float $width,
-        float $thickness,
-        ProductInterface $product
+        float $thickness
     ) {
         $this->uid = Uuid::uuid4();
         $this->brand = $brand;
@@ -113,7 +106,6 @@ final class ProductDetail implements ProductDetailInterface
         $this->height = $height;
         $this->width = $width;
         $this->thickness = $thickness;
-        $this->product = $product;
     }
 
     /**
@@ -194,13 +186,5 @@ final class ProductDetail implements ProductDetailInterface
     public function getThickness()
     {
         return $this->thickness;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getProduct(): ProductInterface
-    {
-        return $this->product;
     }
 }

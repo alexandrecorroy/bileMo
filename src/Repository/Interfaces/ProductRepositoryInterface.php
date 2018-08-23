@@ -15,9 +15,27 @@ namespace App\Repository\Interfaces;
 
 use App\Entity\Interfaces\ProductInterface;
 
+/**
+ * Interface ProductRepositoryInterface.
+ */
 interface ProductRepositoryInterface
 {
+    /**
+     * @param $value
+     *
+     * @return ProductInterface|null
+     */
     public function findOneByUuidField($value): ?ProductInterface;
 
-    public function findAllProducts();
+    /**
+     * @return array
+     */
+    public function findAllProducts(): array ;
+
+    /**
+     * @param ProductInterface $product
+     *
+     * @return ProductInterface|null
+     */
+    public function findOtherProduct(ProductInterface $product): ?ProductInterface ;
 }

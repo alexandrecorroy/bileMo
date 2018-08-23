@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace App\UI\Action\Product\Interfaces;
 
+use App\Repository\Interfaces\ProductRepositoryInterface;
 use App\UI\Responder\Product\Interfaces\UpdateProductResponderInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Interface UpdateProductActionInterface.
@@ -28,8 +30,13 @@ interface UpdateProductActionInterface
      * UpdateProductActionInterface constructor.
      *
      * @param EntityManagerInterface $entityManager
+     * @param ProductRepositoryInterface $productRepository
+     * @param ValidatorInterface $validator
      */
-    public function __construct(EntityManagerInterface $entityManager);
+    public function __construct(EntityManagerInterface $entityManager,
+                                ProductRepositoryInterface $productRepository,
+                                ValidatorInterface $validator
+    );
 
     /**
      * @param Request $request
@@ -37,5 +44,7 @@ interface UpdateProductActionInterface
      *
      * @return Response
      */
-    public function __invoke(Request $request, UpdateProductResponderInterface $updateProductResponder): Response;
+    public function __invoke(Request $request,
+                             UpdateProductResponderInterface $updateProductResponder
+    ): Response;
 }

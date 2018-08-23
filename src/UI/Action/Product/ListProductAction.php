@@ -44,8 +44,9 @@ final class ListProductAction implements ListProductActionInterface
     /**
      * {@inheritdoc}
      */
-    public function __invoke(Request $request, ListProductResponderInterface $listProductResponder): Response
-    {
+    public function __invoke(Request $request,
+                             ListProductResponderInterface $listProductResponder
+    ): Response {
         $product = $this->productRepository->findAllProducts();
 
         return $listProductResponder($request, $product);

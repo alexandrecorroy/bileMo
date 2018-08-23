@@ -14,12 +14,17 @@ declare(strict_types=1);
 namespace App\Tests\UI\Action\Product;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\BrowserKit\Client;
+use Symfony\Component\HttpFoundation\Response;
 
-class GetProductActionFunctionalTest extends WebTestCase
+/**
+ * Class GetProductActionFunctionalTest.
+ */
+final class GetProductActionFunctionalTest extends WebTestCase
 {
 
     /**
-     * @var null
+     * @var Client|null
      */
     private $client = null;
 
@@ -36,8 +41,9 @@ class GetProductActionFunctionalTest extends WebTestCase
      */
     public function testResponse()
     {
-        $client = $this->client->request('GET', '/product/list');
+        $this->client->request('GET', '/product/list');
 
-        $this->assertEquals(201, $client->getResponse()->getStatusCode());
+        static::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        static::assertSame("application/json", $this->client->getResponse()->headers->get('Content-Type'));
     }
 }

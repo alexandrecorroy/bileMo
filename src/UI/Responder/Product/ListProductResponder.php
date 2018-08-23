@@ -17,12 +17,21 @@ use App\UI\Responder\Product\Interfaces\ListProductResponderInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * final Class ListProductResponder.
  */
 final class ListProductResponder implements ListProductResponderInterface
 {
+
+    private $urlGenerator;
+
+    public function __construct(UrlGeneratorInterface $urlGenerator)
+    {
+        $this->urlGenerator = $urlGenerator;
+    }
+
     /**
      * {@inheritdoc}
      */

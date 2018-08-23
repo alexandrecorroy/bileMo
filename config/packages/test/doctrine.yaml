@@ -1,0 +1,8 @@
+doctrine:
+  dbal:
+    # configure these for your database server
+    driver: 'pdo_sqlite'
+    server_version: '5.7'
+    charset: utf8mb4
+    memory: true
+    url: '%env(resolve:DATABASE_URL_TEST)%'

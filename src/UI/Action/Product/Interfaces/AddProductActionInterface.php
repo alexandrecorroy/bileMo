@@ -13,10 +13,13 @@ declare(strict_types=1);
 
 namespace App\UI\Action\Product\Interfaces;
 
+use App\Repository\Interfaces\ProductRepositoryInterface;
 use App\UI\Responder\Product\Interfaces\AddProductResponderInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Interface AddProductActionInterface.
@@ -28,8 +31,16 @@ interface AddProductActionInterface
      * AddProductActionInterface constructor.
      *
      * @param EntityManagerInterface $entityManager
+     * @param ProductRepositoryInterface $productRepository
+     * @param SerializerInterface $serializer
+     * @param ValidatorInterface $validator
      */
-    public function __construct(EntityManagerInterface $entityManager);
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        ProductRepositoryInterface $productRepository,
+        SerializerInterface $serializer,
+        ValidatorInterface $validator
+    );
 
     /**
      * @param Request $request
@@ -37,5 +48,7 @@ interface AddProductActionInterface
      *
      * @return Response
      */
-    public function __invoke(Request $request, AddProductResponderInterface $addProductResponder): Response;
+    public function __invoke(Request $request,
+                             AddProductResponderInterface $addProductResponder
+    ): Response;
 }

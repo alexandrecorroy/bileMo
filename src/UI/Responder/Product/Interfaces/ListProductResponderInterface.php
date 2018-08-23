@@ -15,6 +15,7 @@ namespace App\UI\Responder\Product\Interfaces;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 interface ListProductResponderInterface
 {
@@ -22,6 +23,7 @@ interface ListProductResponderInterface
     /**
      * @param Request $request
      * @param array $products
+     * @param UrlGeneratorInterface $urlGenerator
      *
      * @return Response
      */

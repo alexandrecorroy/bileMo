@@ -14,18 +14,20 @@ declare(strict_types=1);
 namespace App\UI\Action\Product;
 
 use App\Entity\Product;
-use App\Entity\ProductDetail;
+use App\Repository\Interfaces\ProductRepositoryInterface;
 use App\UI\Action\Product\Interfaces\AddProductActionInterface;
 use App\UI\Responder\Product\Interfaces\AddProductResponderInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * final Class AddProductAction.
  *
- * @Route("/product/add", name="product_add", methods={"POST"})
+ * @Route("/product", name="product_add", methods={"POST"})
  */
 final class AddProductAction implements AddProductActionInterface
 {
@@ -35,41 +37,59 @@ final class AddProductAction implements AddProductActionInterface
     private $entityManager;
 
     /**
+     * @var ProductRepositoryInterface
+     */
+    private $productRepository;
+
+    /**
+     * @var SerializerInterface
+     */
+    private $serializer;
+
+    /**
+     * @var ValidatorInterface
+     */
+    private $validator;
+
+    /**
      * {@inheritdoc}
      */
-    public function __construct(EntityManagerInterface $entityManager)
-    {
-        $this->entityManager = $entityManager;
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        ProductRepositoryInterface $productRepository,
+        SerializerInterface $serializer,
+        ValidatorInterface $validator
+    ) {
+        $this->entityManager     = $entityManager;
+        $this->productRepository = $productRepository;
+        $this->serializer        = $serializer;
+        $this->validator         = $validator;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function __invoke(Request $request, AddProductResponderInterface $addProductResponder): Response
-    {
-        $array = json_decode($request->getContent(), true);
+    public function __invoke(Request $request,
+                             AddProductResponderInterface $addProductResponder
+    ): Response {
+        $data = $request->getContent();
 
-        $productDetail = new ProductDetail(
-            $array['brand'],
-            $array['color'],
-            $array['os'],
-            intval($array['memory']),
-            floatval($array['weight']),
-            floatval($array['screenSize']),
-            floatval($array['height']),
-            floatval($array['width']),
-            floatval($array['thickness'])
-        );
+        $product = $this->serializer->deserialize($data, Product::class, 'json');
 
-        $product = new Product(
-            $array['name'],
-            floatval($array['price']),
-            $productDetail
-        );
+
+        $errors = $this->validator->validate($product);
+
+        if(\count($errors) > 0)
+        {
+            return $addProductResponder($request, $errors);
+        }
+
+        if($this->productRepository->findOtherProduct($product))
+            return $addProductResponder($request, 303);
 
         $this->entityManager->persist($product);
         $this->entityManager->flush();
 
-        return $addProductResponder($request);
+        return $addProductResponder($request, null);
     }
 }

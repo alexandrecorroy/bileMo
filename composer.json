@@ -23,6 +23,7 @@
         "symfony/dotenv": "^4.1",
         "symfony/maker-bundle": "^1.5",
         "symfony/phpunit-bridge": "^4.1",
+        "symfony/var-dumper": "^4.1",
         "symfony/web-server-bundle": "^4.1"
     },
     "config": {
@@ -34,10 +35,14 @@
     "autoload": {
         "psr-4": {
             "App\\": "src/",
+            "App\\Repository\\": "src/Repository/",
+            "App\\Repository\\Interfaces\\": "src/Repository/Interfaces/",
             "App\\Entity\\": "src/Entity/",
             "App\\Entity\\Interfaces\\": "src/Entity/Interfaces/",
-            "App\\Controller\\Interfaces\\": "src/Controller/Interfaces/",
-            "App\\Contrller\\": "src/Controller/"
+            "App\\UI\\Action\\Product\\": "src/UI/Action/Product/",
+            "App\\UI\\Action\\Product\\Interfaces\\": "src/UI/Action/Product/Interfaces/",
+            "App\\UI\\Responder\\Product\\": "src/UI/Responder/Product/",
+            "App\\UI\\Responder\\Product\\Interfaces\\": "src/UI/Responder/Product/Interfaces/"
         }
     },
     "autoload-dev": {

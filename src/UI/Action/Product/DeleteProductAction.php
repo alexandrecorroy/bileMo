@@ -24,7 +24,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * final Class DeleteProductAction.
  *
- * @Route("/product/delete/{id}", name="product_delete", methods={"GET"})
+ * @Route("/product/{id}", name="product_delete", methods={"DELETE"})
  */
 final class DeleteProductAction implements DeleteProductActionInterface
 {
@@ -45,8 +45,9 @@ final class DeleteProductAction implements DeleteProductActionInterface
     /**
      * {@inheritdoc}
      */
-    public function __invoke(Request $request, DeleteProductResponderInterface $deleteProductResponder): Response
-    {
+    public function __invoke(Request $request,
+                             DeleteProductResponderInterface $deleteProductResponder
+    ): Response {
         $em = $this->entityManager;
 
         $product = $em->getRepository(Product::class)->findOneByUuidField($request->get("id"));

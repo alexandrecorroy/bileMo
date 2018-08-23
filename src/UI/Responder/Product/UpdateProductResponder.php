@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace App\UI\Responder\Product;
 
 use App\UI\Responder\Product\Interfaces\UpdateProductResponderInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -26,8 +27,28 @@ final class UpdateProductResponder implements UpdateProductResponderInterface
     /**
      * {@inheritdoc}
      */
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request, $errors): Response
     {
-        // TODO: Implement __invoke() method.
+        if(!is_null($errors))
+        {
+            if($errors === 404)
+            {
+                return new JsonResponse('NOT FOUND', Response::HTTP_NOT_FOUND);
+            }
+            else
+            {
+                $errorList = [];
+                foreach ($errors as $error)
+                {
+                    array_push($errorList, $error->getMessage());
+                }
+
+                return new JsonResponse($errorList, Response::HTTP_BAD_REQUEST);
+            }
+
+        }
+        else
+            return new JsonResponse('', Response::HTTP_NO_CONTENT);
+
     }
 }

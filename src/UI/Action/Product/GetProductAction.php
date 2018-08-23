@@ -23,7 +23,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * final Class GetProductAction.
  *
- * @Route("/product/show/{id}", name="product_show", methods={"GET"})
+ * @Route("/product/{id}", name="product_show", methods={"GET"})
  */
 final class GetProductAction implements GetProductActionInterface
 {
@@ -44,8 +44,9 @@ final class GetProductAction implements GetProductActionInterface
     /**
      * {@inheritdoc}
      */
-    public function __invoke(Request $request, GetProductResponderInterface $getProductResponder): Response
-    {
+    public function __invoke(Request $request,
+                             GetProductResponderInterface $getProductResponder
+    ): Response {
         $product = $this->productRepository->findOneByUuidField($request->attributes->get('id'));
 
         return $getProductResponder($request, $product);

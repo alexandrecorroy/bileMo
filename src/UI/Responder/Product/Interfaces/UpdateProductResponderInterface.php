@@ -23,8 +23,9 @@ interface UpdateProductResponderInterface
 {
     /**
      * @param Request $request
+     * @param $errors
      *
      * @return Response
      */
-    public function __invoke(Request $request): Response;
+    public function __invoke(Request $request, $errors): Response;
 }

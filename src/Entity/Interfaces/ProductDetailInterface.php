@@ -16,13 +16,6 @@ namespace App\Entity\Interfaces;
 /**
  * Interface ProductDetailInterface
  */
-
-use App\Entity\Product;
-
-/**
- * Interface ProductDetailInterface
- * @package App\Entity\Interfaces
- */
 interface ProductDetailInterface
 {
     /**

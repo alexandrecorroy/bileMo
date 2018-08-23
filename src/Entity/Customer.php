@@ -17,9 +17,9 @@ use App\Entity\Interfaces\CustomerInterface;
 use Ramsey\Uuid\Uuid;
 
 /**
- * final Class Customer.
+ * Class Customer.
  */
-final class Customer implements CustomerInterface
+class Customer implements CustomerInterface
 {
     /**
      * @var \Ramsey\Uuid\UuidInterface

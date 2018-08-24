@@ -34,7 +34,6 @@ final class ProductSubscriber implements EventSubscriberInterface
         return array(
             KernelEvents::EXCEPTION => 'MissingConstructorException'
         );
-
     }
 
     /**
@@ -44,8 +43,7 @@ final class ProductSubscriber implements EventSubscriberInterface
      */
     public function MissingConstructorException(GetResponseForExceptionEvent $event): ?Response
     {
-        if($event->getException() instanceof MissingConstructorArgumentsException)
-        {
+        if ($event->getException() instanceof MissingConstructorArgumentsException) {
             $response = new JsonResponse('Partial Content', Response::HTTP_PARTIAL_CONTENT);
             $event->allowCustomResponseCode();
 
@@ -53,5 +51,4 @@ final class ProductSubscriber implements EventSubscriberInterface
         }
         return null;
     }
-
 }

@@ -14,12 +14,20 @@ declare(strict_types=1);
 namespace App\Repository\Interfaces;
 
 use App\Entity\Interfaces\ProductInterface;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * Interface ProductRepositoryInterface.
  */
 interface ProductRepositoryInterface
 {
+    /**
+     * ProductRepositoryInterface constructor.
+     *
+     * @param RegistryInterface $registry
+     */
+    public function __construct(RegistryInterface $registry);
+
     /**
      * @param $value
      *

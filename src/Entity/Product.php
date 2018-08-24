@@ -141,10 +141,10 @@ class Product implements ProductInterface, \JsonSerializable
      */
     public function updateProduct(array $product)
     {
-        foreach ($product as $key => $value)
-        {
-            if(property_exists(self::class, $key) && $key!='productDetail')
-            $this->$key = $value;
+        foreach ($product as $key => $value) {
+            if (property_exists(self::class, $key) && $key!='productDetail') {
+                $this->$key = $value;
+            }
         }
     }
 }

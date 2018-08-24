@@ -14,6 +14,9 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 final class ProductRepository extends ServiceEntityRepository implements ProductRepositoryInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Product::class);
@@ -34,7 +37,7 @@ final class ProductRepository extends ServiceEntityRepository implements Product
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
     public function findAllProducts(): array
     {

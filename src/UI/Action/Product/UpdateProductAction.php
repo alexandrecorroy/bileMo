@@ -48,7 +48,8 @@ final class UpdateProductAction implements UpdateProductActionInterface
     /**
      *{@inheritdoc}
      */
-    public function __construct(EntityManagerInterface $entityManager,
+    public function __construct(
+        EntityManagerInterface $entityManager,
                                 ProductRepositoryInterface $productRepository,
                                 ValidatorInterface $validator
     ) {
@@ -60,15 +61,15 @@ final class UpdateProductAction implements UpdateProductActionInterface
     /**
      *{@inheritdoc}
      */
-    public function __invoke(Request $request,
+    public function __invoke(
+        Request $request,
                              UpdateProductResponderInterface $updateProductResponder
     ): Response {
         $array = json_decode($request->getContent(), true);
 
         $product = $this->productRepository->findOneByUuidField($request->attributes->get('id'));
-        if(!$product)
-        {
-            return $updateProductResponder($request, 404);
+        if (!$product) {
+            return $updateProductResponder($request, Response::HTTP_NOT_FOUND);
         }
 
 
@@ -80,8 +81,7 @@ final class UpdateProductAction implements UpdateProductActionInterface
 
         $errors = $this->validator->validate($product);
 
-        if(count($errors)> 0)
-        {
+        if (count($errors)> 0) {
             return $updateProductResponder($request, $errors);
         }
 

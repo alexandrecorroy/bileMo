@@ -245,10 +245,10 @@ class ProductDetail implements ProductDetailInterface, \JsonSerializable
      */
     public function updateProductDetail(array $productDetail)
     {
-        foreach ($productDetail as $key => $value)
-        {
-            if(property_exists(self::class, $key))
+        foreach ($productDetail as $key => $value) {
+            if (property_exists(self::class, $key)) {
                 $this->$key = $value;
+            }
         }
     }
 
@@ -266,5 +266,4 @@ class ProductDetail implements ProductDetailInterface, \JsonSerializable
             'thickness' => $this->getThickness()
         ];
     }
-
 }

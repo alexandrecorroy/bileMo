@@ -37,7 +37,8 @@ interface GetProductActionInterface
      *
      * @return Response
      */
-    public function __invoke(Request $request,
+    public function __invoke(
+        Request $request,
                              GetProductResponderInterface $getProductResponder
     ): Response;
 }

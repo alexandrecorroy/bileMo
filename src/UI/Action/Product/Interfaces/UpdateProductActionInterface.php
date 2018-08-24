@@ -33,7 +33,8 @@ interface UpdateProductActionInterface
      * @param ProductRepositoryInterface $productRepository
      * @param ValidatorInterface $validator
      */
-    public function __construct(EntityManagerInterface $entityManager,
+    public function __construct(
+        EntityManagerInterface $entityManager,
                                 ProductRepositoryInterface $productRepository,
                                 ValidatorInterface $validator
     );
@@ -44,7 +45,8 @@ interface UpdateProductActionInterface
      *
      * @return Response
      */
-    public function __invoke(Request $request,
+    public function __invoke(
+        Request $request,
                              UpdateProductResponderInterface $updateProductResponder
     ): Response;
 }

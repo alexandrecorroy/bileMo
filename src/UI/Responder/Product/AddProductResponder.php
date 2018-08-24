@@ -28,23 +28,19 @@ final class AddProductResponder implements AddProductResponderInterface
      */
     public function __invoke(Request $request, $errors): Response
     {
-        if(!is_null($errors))
-        {
-            if($errors === 303)
+        if (!is_null($errors)) {
+            if ($errors === Response::HTTP_SEE_OTHER) {
                 return new JsonResponse('Product already added!', Response::HTTP_SEE_OTHER);
-            else
-            {
+            } else {
                 $errorList = [];
-                foreach ($errors as $error)
-                {
+                foreach ($errors as $error) {
                     array_push($errorList, $error->getMessage());
                 }
 
                 return new JsonResponse($errorList, Response::HTTP_REQUESTED_RANGE_NOT_SATISFIABLE);
             }
-
-        }
-        else
+        } else {
             return new JsonResponse('Product Added !', Response::HTTP_CREATED);
+        }
     }
 }

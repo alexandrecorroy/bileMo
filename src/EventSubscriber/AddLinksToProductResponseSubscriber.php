@@ -25,9 +25,9 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
- * Class AddLinksToResponseSubscriber.
+ * final Class AddLinksToResponseSubscriber.
  */
-class AddLinksToProductResponseSubscriber implements EventSubscriberInterface
+final class AddLinksToProductResponseSubscriber implements EventSubscriberInterface
 {
 
     /**
@@ -46,7 +46,8 @@ class AddLinksToProductResponseSubscriber implements EventSubscriberInterface
      * @param SerializerInterface $serializer
      * @param UrlGeneratorInterface $urlGenerator
      */
-    public function __construct(SerializerInterface $serializer,
+    public function __construct(
+        SerializerInterface $serializer,
                                 UrlGeneratorInterface $urlGenerator
     ) {
         $this->serializer = $serializer;
@@ -62,7 +63,6 @@ class AddLinksToProductResponseSubscriber implements EventSubscriberInterface
         return array(
             KernelEvents::RESPONSE => 'addLinksOnGetMethods'
         );
-
     }
 
     /**
@@ -71,19 +71,15 @@ class AddLinksToProductResponseSubscriber implements EventSubscriberInterface
      */
     public function addLinksOnGetMethods(FilterResponseEvent $event): ?Response
     {
-        if($event->getRequest()->getMethod() === 'GET')
-        {
-            if($event->getRequest()->get('_controller') === GetProductAction::class || ListProductAction::class)
-            {
+        if ($event->getRequest()->getMethod() === 'GET') {
+            if ($event->getRequest()->get('_controller') === GetProductAction::class || ListProductAction::class) {
                 $json = $event->getResponse()->getContent();
 
                 $array = json_decode($json);
 
-                if(count($array) > 1)
-                {
+                if (count($array) > 1) {
                     $products = [];
-                    foreach ($array as $product)
-                    {
+                    foreach ($array as $product) {
                         $json = json_encode($product);
                         $product = $this->serializer->deserialize($json, Product::class, 'json');
 
@@ -96,9 +92,7 @@ class AddLinksToProductResponseSubscriber implements EventSubscriberInterface
 
                     $response = new JsonResponse($products);
                     $event->setResponse($response);
-                }
-                else
-                {
+                } else {
                     $product = $this->serializer->deserialize($json, Product::class, 'json');
 
                     $product->addLinks(['get' => ['href' => $this->urlGenerator->generate('product_show', array('id' => $product->getUid()))]]);
@@ -108,12 +102,8 @@ class AddLinksToProductResponseSubscriber implements EventSubscriberInterface
                     $response = new JsonResponse($product);
                     $event->setResponse($response);
                 }
-
             }
-
         }
         return null;
     }
-
-
 }

@@ -45,7 +45,8 @@ final class DeleteProductAction implements DeleteProductActionInterface
     /**
      * {@inheritdoc}
      */
-    public function __invoke(Request $request,
+    public function __invoke(
+        Request $request,
                              DeleteProductResponderInterface $deleteProductResponder
     ): Response {
         $em = $this->entityManager;

@@ -69,7 +69,8 @@ final class AddProductAction implements AddProductActionInterface
     /**
      * {@inheritdoc}
      */
-    public function __invoke(Request $request,
+    public function __invoke(
+        Request $request,
                              AddProductResponderInterface $addProductResponder
     ): Response {
         $data = $request->getContent();
@@ -79,13 +80,13 @@ final class AddProductAction implements AddProductActionInterface
 
         $errors = $this->validator->validate($product);
 
-        if(\count($errors) > 0)
-        {
+        if (\count($errors) > 0) {
             return $addProductResponder($request, $errors);
         }
 
-        if($this->productRepository->findOtherProduct($product))
-            return $addProductResponder($request, 303);
+        if ($this->productRepository->findOtherProduct($product)) {
+            return $addProductResponder($request, Response::HTTP_SEE_OTHER);
+        }
 
         $this->entityManager->persist($product);
         $this->entityManager->flush();

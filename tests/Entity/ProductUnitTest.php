@@ -13,9 +13,9 @@ declare(strict_types = 1);
 
 namespace App\Tests\Entity;
 
-use App\Entity\Interfaces\ProductDetailInterface;
 use App\Entity\Interfaces\ProductInterface;
 use App\Entity\Product;
+use App\Entity\ProductDetail;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\UuidInterface;
 
@@ -26,7 +26,7 @@ final class ProductUnitTest extends TestCase
 {
 
     /**
-     * @var ProductDetailInterface|null
+     * @var ProductDetail|null
      */
     private $productDetail = null;
 
@@ -35,8 +35,7 @@ final class ProductUnitTest extends TestCase
      */
     protected function setUp()
     {
-        $this->productDetail = $this->createMock(ProductDetailInterface::class);
-
+        $this->productDetail = $this->createMock(ProductDetail::class);
     }
     /**
      * unit test add a product

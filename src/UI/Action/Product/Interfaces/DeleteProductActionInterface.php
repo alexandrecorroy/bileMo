@@ -37,7 +37,8 @@ interface DeleteProductActionInterface
      *
      * @return Response
      */
-    public function __invoke(Request $request,
+    public function __invoke(
+        Request $request,
                              DeleteProductResponderInterface $deleteProductResponder
     ): Response;
 }

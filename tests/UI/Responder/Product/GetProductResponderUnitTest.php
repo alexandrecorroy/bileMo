@@ -13,15 +13,30 @@ declare(strict_types=1);
 
 namespace App\Tests\UI\Responder\Product;
 
+use App\Entity\Interfaces\ProductInterface;
 use App\UI\Responder\Product\GetProductResponder;
 use App\UI\Responder\Product\Interfaces\GetProductResponderInterface;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * final Class GetProductResponderUnitTest.
  */
 final class GetProductResponderUnitTest extends TestCase
 {
+    /**
+     * @var Request|null
+     */
+    private $request = null;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setUp()
+    {
+        $this->request = $this->createMock(Request::class);
+    }
 
     /**
      * test GetProductResponder
@@ -31,5 +46,17 @@ final class GetProductResponderUnitTest extends TestCase
         $getProductResponder = new GetProductResponder();
 
         static::assertInstanceOf(GetProductResponderInterface::class, $getProductResponder);
+    }
+
+    /**
+     * test response
+     */
+    public function testResponseIsReturned()
+    {
+        $responder = new GetProductResponder();
+
+        $productMock = $this->createMock(ProductInterface::class);
+
+        static::assertInstanceOf(Response::class, $responder($this->request, $productMock));
     }
 }

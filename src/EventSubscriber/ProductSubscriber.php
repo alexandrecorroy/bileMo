@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace App\EventSubscriber;
 
+use App\EventSubscriber\Interfaces\ProductSubscriberInterface;
+use App\Service\Interfaces\ReturnBlankParameterNameInterface;
+use App\Service\ReturnBlankParameterName;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,8 +26,21 @@ use Symfony\Component\Serializer\Exception\MissingConstructorArgumentsException;
 /**
  * final Class ProductSubscriber.
  */
-final class ProductSubscriber implements EventSubscriberInterface
+final class ProductSubscriber implements EventSubscriberInterface, ProductSubscriberInterface
 {
+    /**
+     * @var ReturnBlankParameterName
+     */
+    private $returnBlankParameterName;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct(ReturnBlankParameterNameInterface $returnBlankParameterName)
+    {
+        $this->returnBlankParameterName = $returnBlankParameterName;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -32,23 +48,30 @@ final class ProductSubscriber implements EventSubscriberInterface
     {
         // return the subscribed events, their methods and priorities
         return array(
-            KernelEvents::EXCEPTION => 'MissingConstructorException'
+            KernelEvents::EXCEPTION => 'missingConstructorException'
         );
     }
 
     /**
-     * @param GetResponseForExceptionEvent $event
-     *
-     * @return null|Response
+     * {@inheritdoc}
      */
-    public function MissingConstructorException(GetResponseForExceptionEvent $event): ?Response
+    public function missingConstructorException(GetResponseForExceptionEvent $event): void
     {
-        if ($event->getException() instanceof MissingConstructorArgumentsException) {
-            $response = new JsonResponse('Partial Content', Response::HTTP_PARTIAL_CONTENT);
-            $event->allowCustomResponseCode();
-
-            return $event->setResponse($response);
+        if (!$event->getException() instanceof MissingConstructorArgumentsException) {
+            return;
         }
-        return null;
+
+        $param = $this->returnBlankParameterName->returnParameter($event->getException()->getMessage());
+
+        $errorMessage = [
+            'Message:' => 'Partial Content',
+            'Detail' => $param.' parameter is required'
+        ];
+
+        $response = new JsonResponse($errorMessage, Response::HTTP_PARTIAL_CONTENT);
+        $event->allowCustomResponseCode();
+
+        $event->setResponse($response);
+
     }
 }

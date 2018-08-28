@@ -241,15 +241,19 @@ class ProductDetail implements ProductDetailInterface, \JsonSerializable
     }
 
     /**
-     * @param array $productDetail
+     * {@inheritdoc}
      */
-    public function updateProductDetail(array $productDetail)
+    public function updateProductDetail(array $productDetail = null)
     {
-        foreach ($productDetail as $key => $value) {
-            if (property_exists(self::class, $key)) {
-                $this->$key = $value;
+        if($productDetail)
+        {
+            foreach ($productDetail as $key => $value) {
+                if (property_exists(self::class, $key)) {
+                    $this->$key = $value;
+                }
             }
         }
+
     }
 
     public function jsonSerialize()

@@ -71,7 +71,7 @@ final class AddProductAction implements AddProductActionInterface
      */
     public function __invoke(
         Request $request,
-                             AddProductResponderInterface $addProductResponder
+        AddProductResponderInterface $addProductResponder
     ): Response {
         $data = $request->getContent();
 
@@ -91,6 +91,6 @@ final class AddProductAction implements AddProductActionInterface
         $this->entityManager->persist($product);
         $this->entityManager->flush();
 
-        return $addProductResponder($request, null);
+        return $addProductResponder($request);
     }
 }

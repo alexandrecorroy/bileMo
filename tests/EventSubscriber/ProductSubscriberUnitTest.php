@@ -14,24 +14,34 @@ declare(strict_types=1);
 namespace App\Tests\EventSubscriber;
 
 
+use App\EventSubscriber\Interfaces\ProductSubscriberInterface;
 use App\EventSubscriber\ProductSubscriber;
+use App\Service\Interfaces\ReturnBlankParameterNameInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Class ProductSubscriberUnitTest.
  */
-class ProductSubscriberUnitTest extends TestCase
+final class ProductSubscriberUnitTest extends TestCase
 {
+
+    private $returnBlankParameterName;
+
+    public function setUp()
+    {
+        $this->returnBlankParameterName = $this->createMock(ReturnBlankParameterNameInterface::class);
+    }
 
     /**
      * test ProductSubscriber
      */
     public function testProductSubscriber()
     {
-        $productSubscriber = new ProductSubscriber();
+        $productSubscriber = new ProductSubscriber($this->returnBlankParameterName);
 
         static::assertInstanceOf(EventSubscriberInterface::class, $productSubscriber);
+        static::assertInstanceOf(ProductSubscriberInterface::class, $productSubscriber);
     }
 
 }

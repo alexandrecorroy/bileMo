@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\UI\Action\Product\Interfaces;
 
+use App\Repository\Interfaces\ProductRepositoryInterface;
 use App\UI\Responder\Product\Interfaces\DeleteProductResponderInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,8 +29,9 @@ interface DeleteProductActionInterface
      * DeleteProductActionInterface constructor.
      *
      * @param EntityManagerInterface $entityManager
+     * @param ProductRepositoryInterface $productRepository
      */
-    public function __construct(EntityManagerInterface $entityManager);
+    public function __construct(EntityManagerInterface $entityManager, ProductRepositoryInterface $productRepository);
 
     /**
      * @param Request $request
@@ -39,6 +41,6 @@ interface DeleteProductActionInterface
      */
     public function __invoke(
         Request $request,
-                             DeleteProductResponderInterface $deleteProductResponder
+        DeleteProductResponderInterface $deleteProductResponder
     ): Response;
 }

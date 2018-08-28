@@ -16,12 +16,23 @@ namespace App\Tests\UI\Responder\Product;
 use App\UI\Responder\Product\DeleteProductResponder;
 use App\UI\Responder\Product\Interfaces\DeleteProductResponderInterface;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * final Class DeleteProductResponderUnitTest.
  */
 final class DeleteProductResponderUnitTest extends TestCase
 {
+    /**
+     * @var Request|null
+     */
+    private $request = null;
+
+    public function setUp()
+    {
+        $this->request = $this->createMock(Request::class);
+    }
 
     /**
      * test DeleteProductResponder
@@ -31,5 +42,17 @@ final class DeleteProductResponderUnitTest extends TestCase
         $deleteProductResponder = new DeleteProductResponder();
 
         static::assertInstanceOf(DeleteProductResponderInterface::class, $deleteProductResponder);
+    }
+
+    /**
+     * test response
+     */
+    public function testResponseIsReturned()
+    {
+
+        $responder = new DeleteProductResponder();
+
+        static::assertInstanceOf(Response::class, $responder($this->request));
+
     }
 }

@@ -50,8 +50,8 @@ final class UpdateProductAction implements UpdateProductActionInterface
      */
     public function __construct(
         EntityManagerInterface $entityManager,
-                                ProductRepositoryInterface $productRepository,
-                                ValidatorInterface $validator
+        ProductRepositoryInterface $productRepository,
+        ValidatorInterface $validator
     ) {
         $this->entityManager     = $entityManager;
         $this->productRepository = $productRepository;
@@ -63,7 +63,7 @@ final class UpdateProductAction implements UpdateProductActionInterface
      */
     public function __invoke(
         Request $request,
-                             UpdateProductResponderInterface $updateProductResponder
+        UpdateProductResponderInterface $updateProductResponder
     ): Response {
         $array = json_decode($request->getContent(), true);
 
@@ -71,7 +71,6 @@ final class UpdateProductAction implements UpdateProductActionInterface
         if (!$product) {
             return $updateProductResponder($request, Response::HTTP_NOT_FOUND);
         }
-
 
         $productDetail = $product->getProductDetail();
         $productDetail->updateProductDetail($array["productDetail"]);
@@ -88,6 +87,6 @@ final class UpdateProductAction implements UpdateProductActionInterface
         $this->entityManager->persist($product);
         $this->entityManager->flush();
 
-        return $updateProductResponder($request, null);
+        return $updateProductResponder($request);
     }
 }

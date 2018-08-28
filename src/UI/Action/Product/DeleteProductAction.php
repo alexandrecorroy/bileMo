@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace App\UI\Action\Product;
 
-use App\Entity\Product;
+use App\Repository\Interfaces\ProductRepositoryInterface;
 use App\UI\Action\Product\Interfaces\DeleteProductActionInterface;
 use App\UI\Responder\Product\Interfaces\DeleteProductResponderInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -32,14 +32,20 @@ final class DeleteProductAction implements DeleteProductActionInterface
     /**
      * @var EntityManagerInterface
      */
+    private $productRepository;
+
+    /**
+     * @var EntityManagerInterface
+     */
     private $entityManager;
 
     /**
      * {@inheritdoc}
      */
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, ProductRepositoryInterface $productRepository)
     {
         $this->entityManager = $entityManager;
+        $this->productRepository = $productRepository;
     }
 
     /**
@@ -47,14 +53,16 @@ final class DeleteProductAction implements DeleteProductActionInterface
      */
     public function __invoke(
         Request $request,
-                             DeleteProductResponderInterface $deleteProductResponder
+        DeleteProductResponderInterface $deleteProductResponder
     ): Response {
-        $em = $this->entityManager;
 
-        $product = $em->getRepository(Product::class)->findOneByUuidField($request->get("id"));
+        $product = $this->productRepository->findOneByUuidField($request->get("id"));
 
-        $em->remove($product);
-        $em->flush();
+        if($product)
+        {
+            $this->entityManager->remove($product);
+            $this->entityManager->flush();
+        }
 
         return $deleteProductResponder($request);
     }

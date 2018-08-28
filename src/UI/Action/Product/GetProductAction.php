@@ -46,7 +46,7 @@ final class GetProductAction implements GetProductActionInterface
      */
     public function __invoke(
         Request $request,
-                             GetProductResponderInterface $getProductResponder
+        GetProductResponderInterface $getProductResponder
     ): Response {
         $product = $this->productRepository->findOneByUuidField($request->attributes->get('id'));
 

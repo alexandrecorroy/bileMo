@@ -39,4 +39,11 @@ interface ProductInterface
      * @return ProductDetail
      */
     public function getProductDetail();
+
+    /**
+     * @param array $product
+     *
+     * @return mixed
+     */
+    public function updateProduct(array $product);
 }

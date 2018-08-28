@@ -39,6 +39,6 @@ interface ListProductActionInterface
      */
     public function __invoke(
         Request $request,
-                             ListProductResponderInterface $listProductResponder
+        ListProductResponderInterface $listProductResponder
     ): Response;
 }

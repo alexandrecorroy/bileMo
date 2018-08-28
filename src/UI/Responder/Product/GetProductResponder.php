@@ -27,8 +27,10 @@ final class GetProductResponder implements GetProductResponderInterface
     /**
      * {@inheritdoc}
      */
-    public function __invoke(Request $request, ProductInterface $product): Response
-    {
+    public function __invoke(
+        Request $request,
+        ProductInterface $product
+    ): Response {
         return new JsonResponse($product);
     }
 }

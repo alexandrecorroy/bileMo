@@ -50,6 +50,6 @@ interface AddProductActionInterface
      */
     public function __invoke(
         Request $request,
-                             AddProductResponderInterface $addProductResponder
+        AddProductResponderInterface $addProductResponder
     ): Response;
 }

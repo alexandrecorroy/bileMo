@@ -67,4 +67,11 @@ interface ProductDetailInterface
      * @return float
      */
     public function getThickness();
+
+    /**
+     * @param array|null $productDetail
+     *
+     * @return mixed
+     */
+    public function updateProductDetail(array $productDetail = null);
 }

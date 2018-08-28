@@ -16,12 +16,26 @@ namespace App\Tests\UI\Responder\Product;
 use App\UI\Responder\Product\Interfaces\UpdateProductResponderInterface;
 use App\UI\Responder\Product\UpdateProductResponder;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * final Class UpdateProductResponderUnitTest.
  */
 final class UpdateProductResponderUnitTest extends TestCase
 {
+    /**
+     * @var Request|null
+     */
+    private $request = null;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setUp()
+    {
+        $this->request = $this->createMock(Request::class);
+    }
 
     /**
      * test UpdateProductResponder
@@ -32,4 +46,16 @@ final class UpdateProductResponderUnitTest extends TestCase
 
         static::assertInstanceOf(UpdateProductResponderInterface::class, $updateProductResponder);
     }
+
+    /**
+     * test response
+     */
+    public function testResponseIsReturned()
+    {
+        $responder = new UpdateProductResponder();
+
+        static::assertInstanceOf(Response::class, $responder($this->request));
+    }
+
+
 }

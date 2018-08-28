@@ -27,7 +27,7 @@ final class UpdateProductResponder implements UpdateProductResponderInterface
     /**
      * {@inheritdoc}
      */
-    public function __invoke(Request $request, $errors): Response
+    public function __invoke(Request $request, $errors = null): Response
     {
         if (!is_null($errors)) {
             if ($errors === Response::HTTP_NOT_FOUND) {

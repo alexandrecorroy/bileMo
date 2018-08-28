@@ -47,6 +47,6 @@ interface UpdateProductActionInterface
      */
     public function __invoke(
         Request $request,
-                             UpdateProductResponderInterface $updateProductResponder
+        UpdateProductResponderInterface $updateProductResponder
     ): Response;
 }

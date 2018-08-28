@@ -23,7 +23,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * final Class ListProductAction.
  *
- * @Route("/product/list", name="product_list", methods={"GET"})
+ * @Route("/products", name="product_list", methods={"GET"})
  */
 final class ListProductAction implements ListProductActionInterface
 {
@@ -46,10 +46,10 @@ final class ListProductAction implements ListProductActionInterface
      */
     public function __invoke(
         Request $request,
-                             ListProductResponderInterface $listProductResponder
+        ListProductResponderInterface $listProductResponder
     ): Response {
-        $product = $this->productRepository->findAllProducts();
+        $products = $this->productRepository->findAllProducts();
 
-        return $listProductResponder($request, $product);
+        return $listProductResponder($request, $products);
     }
 }

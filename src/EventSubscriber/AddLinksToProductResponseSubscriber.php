@@ -14,11 +14,12 @@ declare(strict_types=1);
 namespace App\EventSubscriber;
 
 use App\Entity\Product;
+use App\EventSubscriber\Interfaces\AddLinksToProductResponseSubscriberInterface;
+use App\Service\Interfaces\ReturnBlankParameterNameInterface;
 use App\UI\Action\Product\GetProductAction;
 use App\UI\Action\Product\ListProductAction;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -27,7 +28,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 /**
  * final Class AddLinksToResponseSubscriber.
  */
-final class AddLinksToProductResponseSubscriber implements EventSubscriberInterface
+final class AddLinksToProductResponseSubscriber implements EventSubscriberInterface, AddLinksToProductResponseSubscriberInterface
 {
 
     /**
@@ -41,14 +42,11 @@ final class AddLinksToProductResponseSubscriber implements EventSubscriberInterf
     private $urlGenerator;
 
     /**
-     * AddLinksToProductResponseSubscriber constructor.
-     *
-     * @param SerializerInterface $serializer
-     * @param UrlGeneratorInterface $urlGenerator
+     * {@inheritdoc}
      */
     public function __construct(
         SerializerInterface $serializer,
-                                UrlGeneratorInterface $urlGenerator
+        UrlGeneratorInterface $urlGenerator
     ) {
         $this->serializer = $serializer;
         $this->urlGenerator = $urlGenerator;
@@ -66,44 +64,44 @@ final class AddLinksToProductResponseSubscriber implements EventSubscriberInterf
     }
 
     /**
-     * @param FilterResponseEvent $event
-     * @return null|Response
+     * {@inheritdoc}
      */
-    public function addLinksOnGetMethods(FilterResponseEvent $event): ?Response
+    public function addLinksOnGetMethods(FilterResponseEvent $event): void
     {
-        if ($event->getRequest()->getMethod() === 'GET') {
-            if ($event->getRequest()->get('_controller') === GetProductAction::class || ListProductAction::class) {
-                $json = $event->getResponse()->getContent();
+        if ($event->getRequest()->getMethod() !== 'GET') {
+            return;
+        }
 
-                $array = json_decode($json);
+        if ($event->getRequest()->get('_controller') === GetProductAction::class || ListProductAction::class) {
+            $json = $event->getResponse()->getContent();
 
-                if (count($array) > 1) {
-                    $products = [];
-                    foreach ($array as $product) {
-                        $json = json_encode($product);
-                        $product = $this->serializer->deserialize($json, Product::class, 'json');
+            $array = \json_decode($json);
 
-                        $product->addLinks(['get' => ['href' => $this->urlGenerator->generate('product_show', array('id' => $product->getUid()))]]);
-                        $product->addLinks(['patch' => ['href' => $this->urlGenerator->generate('product_update', array('id' => $product->getUid()))]]);
-                        $product->addLinks(['delete' => ['href' => $this->urlGenerator->generate('product_delete', array('id' => $product->getUid()))]]);
-
-                        $products = array_push($products, $product);
-                    }
-
-                    $response = new JsonResponse($products);
-                    $event->setResponse($response);
-                } else {
+            if (\count($array) > 1) {
+                $products = [];
+                foreach ($array as $product) {
+                    $json = \json_encode($product);
                     $product = $this->serializer->deserialize($json, Product::class, 'json');
 
                     $product->addLinks(['get' => ['href' => $this->urlGenerator->generate('product_show', array('id' => $product->getUid()))]]);
                     $product->addLinks(['patch' => ['href' => $this->urlGenerator->generate('product_update', array('id' => $product->getUid()))]]);
                     $product->addLinks(['delete' => ['href' => $this->urlGenerator->generate('product_delete', array('id' => $product->getUid()))]]);
 
-                    $response = new JsonResponse($product);
-                    $event->setResponse($response);
+                    $products[] = $product;
                 }
+
+                $response = new JsonResponse($products);
+                $event->setResponse($response);
+            } else {
+                $product = $this->serializer->deserialize($json, Product::class, 'json');
+
+                $product->addLinks(['get' => ['href' => $this->urlGenerator->generate('product_show', array('id' => $product->getUid()))]]);
+                $product->addLinks(['patch' => ['href' => $this->urlGenerator->generate('product_update', array('id' => $product->getUid()))]]);
+                $product->addLinks(['delete' => ['href' => $this->urlGenerator->generate('product_delete', array('id' => $product->getUid()))]]);
+
+                $response = new JsonResponse($product);
+                $event->setResponse($response);
             }
         }
-        return null;
     }
 }

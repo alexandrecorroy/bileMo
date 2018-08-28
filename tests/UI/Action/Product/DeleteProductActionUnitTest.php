@@ -13,10 +13,15 @@ declare(strict_types=1);
 
 namespace App\Tests\UI\Action\Product;
 
+use App\Entity\Interfaces\ProductInterface;
+use App\Repository\Interfaces\ProductRepositoryInterface;
 use App\UI\Action\Product\DeleteProductAction;
 use App\UI\Action\Product\Interfaces\DeleteProductActionInterface;
+use App\UI\Responder\Product\Interfaces\DeleteProductResponderInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * final Class DeleteProductActionUnitTest.
@@ -24,25 +29,57 @@ use PHPUnit\Framework\TestCase;
 final class DeleteProductActionUnitTest extends TestCase
 {
     /**
-     * @var EntityManagerInterface
+     * @var EntityManagerInterface|null
      */
-    private $entityManager;
+    private $entityManager = null;
+
+    /**
+     * @var ProductRepositoryInterface|null
+     */
+    private $productRepository = null;
+
+    /**
+     * @var Request|null
+     */
+    private $request = null;
+
+    /**
+     * @var DeleteProductResponderInterface|null
+     */
+    private $responder = null;
 
     /**
      * {@inheritdoc}
      */
     protected function setUp()
     {
-        $this->entityManager = static::createMock(EntityManagerInterface::class);
+        $this->productRepository = $this->createMock(ProductRepositoryInterface::class);
+        $this->entityManager = $this->createMock(EntityManagerInterface::class);
+        $request = Request::create('/', 'DELETE');
+        $this->request = $request->duplicate(null, null, ['id' => 1]);
+        $this->responder = $this->createMock(DeleteProductResponderInterface::class);
     }
 
     /**
-     * Test DeleteProductAction
+     * test DeleteProductAction
      */
     public function testDeleteProductAction()
     {
-        $deleteProductAction = new DeleteProductAction($this->entityManager);
+        $deleteProductAction = new DeleteProductAction($this->entityManager, $this->productRepository);
 
         static::assertInstanceOf(DeleteProductActionInterface::class, $deleteProductAction);
+    }
+
+    /**
+     * test response
+     */
+    public function testResponseIsReturned()
+    {
+        $productMock = $this->createMock(ProductInterface::class);
+        $this->productRepository->method('findOneByUuidField')->willReturn($productMock);
+
+        $action = new DeleteProductAction($this->entityManager, $this->productRepository);
+
+        static::assertInstanceOf(Response::class, $action($this->request, $this->responder));
     }
 }

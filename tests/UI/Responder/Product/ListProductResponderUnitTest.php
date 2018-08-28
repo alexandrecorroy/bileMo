@@ -13,15 +13,30 @@ declare(strict_types=1);
 
 namespace App\Tests\UI\Responder\Product;
 
+use App\Entity\Interfaces\ProductInterface;
 use App\UI\Responder\Product\Interfaces\ListProductResponderInterface;
 use App\UI\Responder\Product\ListProductResponder;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * final Class ListProductResponderUnitTest.
  */
 final class ListProductResponderUnitTest extends TestCase
 {
+    /**
+     * @var Request|null
+     */
+    private $request = null;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setUp()
+    {
+        $this->request = $this->createMock(Request::class);
+    }
 
     /**
      * test ListProductResponder
@@ -31,5 +46,17 @@ final class ListProductResponderUnitTest extends TestCase
         $listProductResponder = new ListProductResponder();
 
         static::assertInstanceOf(ListProductResponderInterface::class, $listProductResponder);
+    }
+
+    /**
+     * test response
+     */
+    public function testResponseIsReturned()
+    {
+        $responder = new ListProductResponder();
+
+        $productsMock[] = $this->createMock(ProductInterface::class);
+
+        static::assertInstanceOf(Response::class, $responder($this->request, $productsMock));
     }
 }

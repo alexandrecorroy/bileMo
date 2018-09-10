@@ -18,6 +18,7 @@ use App\Service\Interfaces\ReturnBlankParameterNameInterface;
 use App\Service\ReturnBlankParameterName;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -60,18 +61,18 @@ final class ProductSubscriber implements EventSubscriberInterface, ProductSubscr
         if (!$event->getException() instanceof MissingConstructorArgumentsException) {
             return;
         }
+        else {
+            $param = $this->returnBlankParameterName->returnParameter($event->getException()->getMessage());
 
-        $param = $this->returnBlankParameterName->returnParameter($event->getException()->getMessage());
+            $errorMessage = [
+                'Message:' => 'Partial Content',
+                'Detail' => $param.' parameter is required'
+            ];
 
-        $errorMessage = [
-            'Message:' => 'Partial Content',
-            'Detail' => $param.' parameter is required'
-        ];
+            $response = new JsonResponse($errorMessage, Response::HTTP_PARTIAL_CONTENT);
+            $event->allowCustomResponseCode();
 
-        $response = new JsonResponse($errorMessage, Response::HTTP_PARTIAL_CONTENT);
-        $event->allowCustomResponseCode();
-
-        $event->setResponse($response);
-
+            $event->setResponse($response);
+        }
     }
 }

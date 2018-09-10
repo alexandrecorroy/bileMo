@@ -64,7 +64,7 @@ class CustomerUser implements CustomerUserInterface
     private $products = [];
 
     /**
-     * @var CustomerInterface
+     * @var Customer
      */
     private $customer;
 
@@ -79,8 +79,6 @@ class CustomerUser implements CustomerUserInterface
      * @param string $zip
      * @param CustomerInterface $customer
      * @param string|null $phone
-     *
-     * @throws \Exception
      */
     public function __construct(
         string $name,
@@ -108,7 +106,7 @@ class CustomerUser implements CustomerUserInterface
      */
     public function addProduct(Product $product)
     {
-        $this->products->add($product);
+        $this->products[] = $product;
     }
 
     /**
@@ -116,7 +114,13 @@ class CustomerUser implements CustomerUserInterface
      */
     public function removeProduct(Product $product)
     {
-        $this->products->removeElement($product);
+        $productUid = $product->getUid();
+        foreach ($this->products as $product)
+        {
+            if($product->getUid() === $productUid)
+                unset($product);
+                break;
+        }
     }
 
     /**

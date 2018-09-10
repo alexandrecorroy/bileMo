@@ -27,13 +27,14 @@ final class ProductRepository extends ServiceEntityRepository implements Product
      */
     public function findOneByUuidField($value): ?ProductInterface
     {
-        return $this->createQueryBuilder('p')
+        $query = $this->createQueryBuilder('p')
             ->innerJoin(ProductDetail::class, 'pd')
             ->andWhere('p.uid = :val')
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult()
         ;
+        return $query;
     }
 
     /**
@@ -41,11 +42,11 @@ final class ProductRepository extends ServiceEntityRepository implements Product
      */
     public function findAllProducts(): array
     {
-        return $this->createQueryBuilder('p')
+        $query = $this->createQueryBuilder('p')
             ->setMaxResults(10)
             ->getQuery()
-            ->getResult()
         ;
+        return $query->getResult();
     }
 
     /**

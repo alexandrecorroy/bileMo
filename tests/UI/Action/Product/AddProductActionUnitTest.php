@@ -91,8 +91,8 @@ final class AddProductActionUnitTest extends TestCase
     public function testResponseIsReturned()
     {
         $productMock = $this->createMock(ProductInterface::class);
-        $this->serializer->method('deserialize')->willReturn($productMock);
 
+        $this->serializer->method('deserialize')->willReturn($productMock);
         $this->validator->method('validate')->willReturn([]);
 
         $action = new AddProductAction($this->entityManager, $this->productRepository, $this->serializer, $this->validator);

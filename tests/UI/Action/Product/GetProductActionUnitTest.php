@@ -19,6 +19,7 @@ use App\UI\Action\Product\GetProductAction;
 use App\UI\Action\Product\Interfaces\GetProductActionInterface;
 use App\UI\Responder\Product\GetProductResponder;
 use App\UI\Responder\Product\Interfaces\GetProductResponderInterface;
+use App\UI\Responder\Product\Interfaces\NotFoundProductResponderInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -44,6 +45,11 @@ final class GetProductActionUnitTest extends TestCase
     private $request = null;
 
     /**
+     * @var NotFoundProductResponderInterface|null
+     */
+    private $notFoundProductResponder = null;
+
+    /**
      * {@inheritdoc}
      */
     protected function setUp()
@@ -52,6 +58,8 @@ final class GetProductActionUnitTest extends TestCase
         $request = Request::create('/', 'GET');
         $this->request = $request->duplicate(null, null, ['id' => 1]);
         $this->responder = $this->createMock(GetProductResponderInterface::class);
+        $this->notFoundProductResponder = $this->createMock(NotFoundProductResponderInterface::class);
+
     }
 
     /**
@@ -70,13 +78,13 @@ final class GetProductActionUnitTest extends TestCase
     public function testResponseIsReturned()
     {
         $productMock = $this->createMock(ProductInterface::class);
-        $this->productRepository->method('findOneByUuidField')->willReturn($productMock);
-
         $response = $this->createMock(Response::class);
+
+        $this->productRepository->method('findOneByUuidField')->willReturn($productMock);
         $this->responder->method('__invoke')->willReturn($response);
 
         $action = new GetProductAction($this->productRepository);
 
-        static::assertInstanceOf(Response::class, $action($this->request, $this->responder));
+        static::assertInstanceOf(Response::class, $action($this->request, $this->responder, $this->notFoundProductResponder));
     }
 }

@@ -15,12 +15,14 @@ namespace App\EventSubscriber;
 
 use App\Entity\Product;
 use App\EventSubscriber\Interfaces\AddLinksToProductResponseSubscriberInterface;
-use App\Service\Interfaces\ReturnBlankParameterNameInterface;
 use App\UI\Action\Product\GetProductAction;
 use App\UI\Action\Product\ListProductAction;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\EventListener\AbstractSessionListener;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -68,17 +70,18 @@ final class AddLinksToProductResponseSubscriber implements EventSubscriberInterf
      */
     public function addLinksOnGetMethods(FilterResponseEvent $event): void
     {
-        if ($event->getRequest()->getMethod() !== 'GET') {
+        if ($event->getRequest()->getMethod() !== Request::METHOD_GET || $event->getResponse()->getStatusCode() === Response::HTTP_NOT_FOUND) {
             return;
         }
 
         if ($event->getRequest()->get('_controller') === GetProductAction::class || ListProductAction::class) {
-            $json = $event->getResponse()->getContent();
 
-            $array = \json_decode($json);
+            $array = json_decode($event->getResponse()->getContent());
 
-            if (\count($array) > 1) {
+            if (\is_array($array) && \count($array) > 1) {
+
                 $products = [];
+
                 foreach ($array as $product) {
                     $json = \json_encode($product);
                     $product = $this->serializer->deserialize($json, Product::class, 'json');
@@ -91,14 +94,16 @@ final class AddLinksToProductResponseSubscriber implements EventSubscriberInterf
                 }
 
                 $response = new JsonResponse($products);
+                $response->headers->set(AbstractSessionListener::NO_AUTO_CACHE_CONTROL_HEADER, 'true');
+                $response->setSharedMaxAge(3600);
                 $event->setResponse($response);
             } else {
-                $product = $this->serializer->deserialize($json, Product::class, 'json');
+
+                $product = $this->serializer->deserialize($event->getResponse()->getContent(), Product::class, 'json');
 
                 $product->addLinks(['get' => ['href' => $this->urlGenerator->generate('product_show', array('id' => $product->getUid()))]]);
                 $product->addLinks(['patch' => ['href' => $this->urlGenerator->generate('product_update', array('id' => $product->getUid()))]]);
                 $product->addLinks(['delete' => ['href' => $this->urlGenerator->generate('product_delete', array('id' => $product->getUid()))]]);
-
                 $response = new JsonResponse($product);
                 $event->setResponse($response);
             }

@@ -18,6 +18,8 @@ use App\Repository\Interfaces\ProductRepositoryInterface;
 use App\UI\Action\Product\Interfaces\ListProductActionInterface;
 use App\UI\Action\Product\ListProductAction;
 use App\UI\Responder\Product\Interfaces\ListProductResponderInterface;
+use App\UI\Responder\Product\Interfaces\NotFoundProductResponderInterface;
+use App\UI\Responder\Product\NotFoundProductResponder;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,6 +45,11 @@ final class ListProductActionUnitTest extends TestCase
     private $responder = null;
 
     /**
+     * @var NotFoundProductResponder|null
+     */
+    private $notFoundProductResponderInterface = null;
+
+    /**
      * {@inheritdoc}
      */
     protected function setUp()
@@ -51,6 +58,7 @@ final class ListProductActionUnitTest extends TestCase
         $request = Request::create('/', 'GET');
         $this->request = $request->duplicate(null, null, ['id' => 1]);
         $this->responder = $this->createMock(ListProductResponderInterface::class);
+        $this->notFoundProductResponderInterface = $this->createMock(NotFoundProductResponderInterface::class);
     }
 
     /**
@@ -69,13 +77,13 @@ final class ListProductActionUnitTest extends TestCase
     public function testResponseIsReturned()
     {
         $productsMock[] = $this->createMock(ProductInterface::class);
-        $this->productRepository->method('findAllProducts')->willReturn($productsMock);
-
         $response = $this->createMock(Response::class);
+
+        $this->productRepository->method('findAllProducts')->willReturn($productsMock);
         $this->responder->method('__invoke')->willReturn($response);
 
         $action = new ListProductAction($this->productRepository);
 
-        static::assertInstanceOf(Response::class, $action($this->request, $this->responder));
+        static::assertInstanceOf(Response::class, $action($this->request, $this->responder, $this->notFoundProductResponderInterface));
     }
 }

@@ -15,6 +15,7 @@ namespace App\UI\Action\Product;
 
 use App\Repository\Interfaces\ProductRepositoryInterface;
 use App\UI\Action\Product\Interfaces\UpdateProductActionInterface;
+use App\UI\Responder\Product\Interfaces\NotFoundProductResponderInterface;
 use App\UI\Responder\Product\Interfaces\UpdateProductResponderInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -63,13 +64,15 @@ final class UpdateProductAction implements UpdateProductActionInterface
      */
     public function __invoke(
         Request $request,
-        UpdateProductResponderInterface $updateProductResponder
+        UpdateProductResponderInterface $updateProductResponder,
+        NotFoundProductResponderInterface $notFoundProductResponder
     ): Response {
         $array = json_decode($request->getContent(), true);
 
         $product = $this->productRepository->findOneByUuidField($request->attributes->get('id'));
+
         if (!$product) {
-            return $updateProductResponder($request, Response::HTTP_NOT_FOUND);
+            return $notFoundProductResponder();
         }
 
         $productDetail = $product->getProductDetail();

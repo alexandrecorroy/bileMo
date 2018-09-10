@@ -16,6 +16,8 @@ namespace App\UI\Action\Product;
 use App\Repository\Interfaces\ProductRepositoryInterface;
 use App\UI\Action\Product\Interfaces\DeleteProductActionInterface;
 use App\UI\Responder\Product\Interfaces\DeleteProductResponderInterface;
+use App\UI\Responder\Product\Interfaces\NotFoundProductResponderInterface;
+use App\UI\Responder\Product\NotFoundProductResponder;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -53,16 +55,19 @@ final class DeleteProductAction implements DeleteProductActionInterface
      */
     public function __invoke(
         Request $request,
-        DeleteProductResponderInterface $deleteProductResponder
+        DeleteProductResponderInterface $deleteProductResponder,
+        NotFoundProductResponderInterface $notFoundProductResponder
     ): Response {
 
         $product = $this->productRepository->findOneByUuidField($request->get("id"));
 
-        if($product)
+        if(!$product)
         {
-            $this->entityManager->remove($product);
-            $this->entityManager->flush();
+            return $notFoundProductResponder();
         }
+
+        $this->entityManager->remove($product);
+        $this->entityManager->flush();
 
         return $deleteProductResponder($request);
     }

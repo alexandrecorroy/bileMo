@@ -18,6 +18,7 @@ use App\Entity\Interfaces\ProductInterface;
 use App\Repository\Interfaces\ProductRepositoryInterface;
 use App\UI\Action\Product\Interfaces\UpdateProductActionInterface;
 use App\UI\Action\Product\UpdateProductAction;
+use App\UI\Responder\Product\Interfaces\NotFoundProductResponderInterface;
 use App\UI\Responder\Product\Interfaces\UpdateProductResponderInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
@@ -56,6 +57,11 @@ final class UpdateProductActionUnitTest extends TestCase
     private $responder = null;
 
     /**
+     * @var NotFoundProductResponderInterface|null
+     */
+    private  $notFoundProductResponderIntergace = null;
+
+    /**
      * {@inheritdoc}
      */
     protected function setUp()
@@ -63,10 +69,11 @@ final class UpdateProductActionUnitTest extends TestCase
         $this->entityManager = $this->createMock(EntityManagerInterface::class);
         $this->productRepository = $this->createMock(ProductRepositoryInterface::class);
         $this->validator = $this->createMock(ValidatorInterface::class);
+        $this->responder = $this->createMock(UpdateProductResponderInterface::class);
+        $this->notFoundProductResponderIntergace = $this->createMock(NotFoundProductResponderInterface::class);
 
         $request = Request::create('/', 'PATCH');
         $this->request = $request->duplicate(null, null, ['id' => 1]);
-        $this->responder = $this->createMock(UpdateProductResponderInterface::class);
     }
 
     /**
@@ -85,15 +92,14 @@ final class UpdateProductActionUnitTest extends TestCase
     public function testResponse()
     {
         $productMock = $this->createMock(ProductInterface::class);
-        $this->productRepository->method('findOneByUuidField')->willReturn($productMock);
-
         $productDetailMock = $this->createMock(ProductDetailInterface::class);
-        $productMock->method('getProductDetail')->willReturn($productDetailMock);
 
+        $productMock->method('getProductDetail')->willReturn($productDetailMock);
+        $this->productRepository->method('findOneByUuidField')->willReturn($productMock);
         $this->validator->method('validate')->willReturn([]);
 
         $action = new UpdateProductAction($this->entityManager, $this->productRepository, $this->validator);
 
-        static::assertInstanceOf(Response::class, $action($this->request, $this->responder));
+        static::assertInstanceOf(Response::class, $action($this->request, $this->responder, $this->notFoundProductResponderIntergace));
     }
 }

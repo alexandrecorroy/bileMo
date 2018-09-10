@@ -13,26 +13,20 @@ declare(strict_types=1);
 
 namespace App\UI\Responder\Product;
 
-use App\UI\Responder\Product\Interfaces\ListProductResponderInterface;
+
+use App\UI\Responder\Product\Interfaces\NotFoundProductResponderInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * final Class ListProductResponder.
- */
-final class ListProductResponder implements ListProductResponderInterface
+final class NotFoundProductResponder implements NotFoundProductResponderInterface
 {
+
     /**
      * {@inheritdoc}
      */
-    public function __invoke(
-        Request $request,
-        array $products
-    ): Response {
-
-        $response = new JsonResponse($products);
-        return $response;
-
+    public function __invoke(): Response
+    {
+        return new JsonResponse('Product(s) not found', Response::HTTP_NOT_FOUND);
     }
+
 }

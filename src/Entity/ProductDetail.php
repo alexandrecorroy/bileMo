@@ -126,15 +126,16 @@ class ProductDetail implements ProductDetailInterface, \JsonSerializable
     /**
      * ProductDetail constructor.
      *
-     * @param string $brand
-     * @param string $color
-     * @param string $os
-     * @param int $memory
-     * @param float $weight
-     * @param float $screenSize
-     * @param float $height
-     * @param float $width
-     * @param float $thickness
+     * @param $brand
+     * @param $color
+     * @param $os
+     * @param $memory
+     * @param $weight
+     * @param $screenSize
+     * @param $height
+     * @param $width
+     * @param $thickness
+     * @param null $uid
      * @throws \Exception
      */
     public function __construct(
@@ -146,9 +147,14 @@ class ProductDetail implements ProductDetailInterface, \JsonSerializable
         $screenSize,
         $height,
         $width,
-        $thickness
+        $thickness,
+        $uid = null
     ) {
-        $this->uid = Uuid::uuid4();
+        if($uid)
+            $this->uid = $uid;
+        else
+            $this->uid = Uuid::uuid4();
+
         $this->brand = $brand;
         $this->color = $color;
         $this->os = $os;

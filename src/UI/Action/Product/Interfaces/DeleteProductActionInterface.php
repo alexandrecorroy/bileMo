@@ -15,6 +15,8 @@ namespace App\UI\Action\Product\Interfaces;
 
 use App\Repository\Interfaces\ProductRepositoryInterface;
 use App\UI\Responder\Product\Interfaces\DeleteProductResponderInterface;
+use App\UI\Responder\Product\Interfaces\NotFoundProductResponderInterface;
+use App\UI\Responder\Product\NotFoundProductResponder;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,11 +38,13 @@ interface DeleteProductActionInterface
     /**
      * @param Request $request
      * @param DeleteProductResponderInterface $deleteProductResponder
+     * @param NotFoundProductResponderInterface $notFoundProductResponder
      *
      * @return Response
      */
     public function __invoke(
         Request $request,
-        DeleteProductResponderInterface $deleteProductResponder
+        DeleteProductResponderInterface $deleteProductResponder,
+        NotFoundProductResponderInterface $notFoundProductResponder
     ): Response;
 }

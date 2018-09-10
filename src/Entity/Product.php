@@ -15,6 +15,7 @@ namespace App\Entity;
 
 use App\Entity\Interfaces\ProductDetailInterface;
 use App\Entity\Interfaces\ProductInterface;
+use phpDocumentor\Reflection\DocBlock\Tags\Throws;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -62,17 +63,22 @@ class Product implements ProductInterface, \JsonSerializable
     /**
      * Product constructor.
      *
-     * @param string $name
-     * @param float $price
+     * @param $name
+     * @param $price
      * @param ProductDetail $productDetail
-     * @throws \Exception
+     * @param null $uid
      */
     public function __construct(
         $name,
         $price,
-        ProductDetail $productDetail
+        ProductDetail $productDetail,
+        $uid = null
     ) {
-        $this->uid = Uuid::uuid4();
+        if($uid)
+            $this->uid = $uid;
+        else
+            $this->uid = Uuid::uuid4();
+
         $this->name = $name;
         $this->price = $price;
         $this->productDetail = $productDetail;

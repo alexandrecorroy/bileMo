@@ -18,6 +18,7 @@ use App\Repository\Interfaces\ProductRepositoryInterface;
 use App\UI\Action\Product\DeleteProductAction;
 use App\UI\Action\Product\Interfaces\DeleteProductActionInterface;
 use App\UI\Responder\Product\Interfaces\DeleteProductResponderInterface;
+use App\UI\Responder\Product\Interfaces\NotFoundProductResponderInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -49,15 +50,23 @@ final class DeleteProductActionUnitTest extends TestCase
     private $responder = null;
 
     /**
+     * @var NotFoundProductResponderInterface|null
+     */
+    private $notFoundProductResponder = null;
+
+    /**
      * {@inheritdoc}
      */
     protected function setUp()
     {
         $this->productRepository = $this->createMock(ProductRepositoryInterface::class);
         $this->entityManager = $this->createMock(EntityManagerInterface::class);
+        $this->responder = $this->createMock(DeleteProductResponderInterface::class);
+        $this->notFoundProductResponder = $this->createMock(NotFoundProductResponderInterface::class);
+
         $request = Request::create('/', 'DELETE');
         $this->request = $request->duplicate(null, null, ['id' => 1]);
-        $this->responder = $this->createMock(DeleteProductResponderInterface::class);
+
     }
 
     /**
@@ -76,10 +85,11 @@ final class DeleteProductActionUnitTest extends TestCase
     public function testResponseIsReturned()
     {
         $productMock = $this->createMock(ProductInterface::class);
+
         $this->productRepository->method('findOneByUuidField')->willReturn($productMock);
 
         $action = new DeleteProductAction($this->entityManager, $this->productRepository);
 
-        static::assertInstanceOf(Response::class, $action($this->request, $this->responder));
+        static::assertInstanceOf(Response::class, $action($this->request, $this->responder, $this->notFoundProductResponder));
     }
 }

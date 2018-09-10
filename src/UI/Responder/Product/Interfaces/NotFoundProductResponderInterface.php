@@ -13,18 +13,18 @@ declare(strict_types=1);
 
 namespace App\UI\Responder\Product\Interfaces;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-interface ListProductResponderInterface
+use Symfony\Component\HttpFoundation\Response;
+
+/**
+ * Interface NotFoundProductResponderInterface.
+ */
+interface NotFoundProductResponderInterface
 {
 
     /**
-     * @param Request $request
-     * @param array $products
-     *
      * @return Response
      */
-    public function __invoke(Request $request, array $products): Response;
+    public function __invoke(): Response;
+
 }

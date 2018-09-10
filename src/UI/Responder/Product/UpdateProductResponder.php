@@ -29,19 +29,18 @@ final class UpdateProductResponder implements UpdateProductResponderInterface
      */
     public function __invoke(Request $request, $errors = null): Response
     {
-        if (!is_null($errors)) {
-            if ($errors === Response::HTTP_NOT_FOUND) {
-                return new JsonResponse('NOT FOUND', Response::HTTP_NOT_FOUND);
-            } else {
-                $errorList = [];
-                foreach ($errors as $error) {
-                    array_push($errorList, $error->getMessage());
-                }
+        if (!is_null($errors) && is_array($errors)) {
 
-                return new JsonResponse($errorList, Response::HTTP_BAD_REQUEST);
+            $errorList = [];
+            foreach ($errors as $error) {
+                array_push($errorList, $error->getMessage());
             }
+
+            return new JsonResponse($errorList, Response::HTTP_BAD_REQUEST);
+
         } else {
-            return new JsonResponse('', Response::HTTP_NO_CONTENT);
+
+            return new JsonResponse('Product Updated !', Response::HTTP_NO_CONTENT);
         }
     }
 }

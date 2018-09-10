@@ -16,6 +16,7 @@ namespace App\UI\Action\Product;
 use App\Repository\Interfaces\ProductRepositoryInterface;
 use App\UI\Action\Product\Interfaces\ListProductActionInterface;
 use App\UI\Responder\Product\Interfaces\ListProductResponderInterface;
+use App\UI\Responder\Product\Interfaces\NotFoundProductResponderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -46,9 +47,14 @@ final class ListProductAction implements ListProductActionInterface
      */
     public function __invoke(
         Request $request,
-        ListProductResponderInterface $listProductResponder
+        ListProductResponderInterface $listProductResponder,
+        NotFoundProductResponderInterface $notFoundProductResponder
     ): Response {
         $products = $this->productRepository->findAllProducts();
+
+        if(!$products) {
+            return $notFoundProductResponder();
+        }
 
         return $listProductResponder($request, $products);
     }

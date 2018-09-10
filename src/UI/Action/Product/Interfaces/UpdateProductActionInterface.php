@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace App\UI\Action\Product\Interfaces;
 
 use App\Repository\Interfaces\ProductRepositoryInterface;
+use App\UI\Responder\Product\Interfaces\NotFoundProductResponderInterface;
 use App\UI\Responder\Product\Interfaces\UpdateProductResponderInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,11 +43,13 @@ interface UpdateProductActionInterface
     /**
      * @param Request $request
      * @param UpdateProductResponderInterface $updateProductResponder
+     * @param NotFoundProductResponderInterface $notFoundProductResponder
      *
      * @return Response
      */
     public function __invoke(
         Request $request,
-        UpdateProductResponderInterface $updateProductResponder
+        UpdateProductResponderInterface $updateProductResponder,
+        NotFoundProductResponderInterface $notFoundProductResponder
     ): Response;
 }

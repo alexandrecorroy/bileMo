@@ -15,6 +15,7 @@ namespace App\UI\Action\Product\Interfaces;
 
 use App\Repository\Interfaces\ProductRepositoryInterface;
 use App\UI\Responder\Product\Interfaces\ListProductResponderInterface;
+use App\UI\Responder\Product\Interfaces\NotFoundProductResponderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -34,11 +35,13 @@ interface ListProductActionInterface
     /**
      * @param Request $request
      * @param ListProductResponderInterface $listProductResponder
+     * @param NotFoundProductResponderInterface $notFoundProductResponder
      *
      * @return Response
      */
     public function __invoke(
         Request $request,
-        ListProductResponderInterface $listProductResponder
+        ListProductResponderInterface $listProductResponder,
+        NotFoundProductResponderInterface $notFoundProductResponder
     ): Response;
 }

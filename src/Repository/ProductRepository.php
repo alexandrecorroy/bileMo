@@ -7,6 +7,7 @@ use App\Entity\Product;
 use App\Entity\ProductDetail;
 use App\Repository\Interfaces\ProductRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Cache\ApcuCache;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -14,12 +15,14 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 final class ProductRepository extends ServiceEntityRepository implements ProductRepositoryInterface
 {
+    private $cache;
     /**
      * {@inheritdoc}
      */
-    public function __construct(RegistryInterface $registry)
+    public function __construct(RegistryInterface $registry, ApcuCache $cache)
     {
         parent::__construct($registry, Product::class);
+        $this->cache = $cache;
     }
 
     /**
@@ -27,13 +30,18 @@ final class ProductRepository extends ServiceEntityRepository implements Product
      */
     public function findOneByUuidField($value): ?ProductInterface
     {
-        $query = $this->createQueryBuilder('p')
-            ->innerJoin(ProductDetail::class, 'pd')
-            ->andWhere('p.uid = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        if($this->cache->contains('find'.$value)) {
+            $query = $this->cache->fetch('find'.$value);
+        }
+        else {
+            $query = $this->createQueryBuilder('p')
+                ->innerJoin(ProductDetail::class, 'pd')
+                ->andWhere('p.uid = :val')
+                ->setParameter('val', $value)
+                ->getQuery()
+                ->getOneOrNullResult();
+            $this->cache->save('find'.$value, $query);
+        }
         return $query;
     }
 
@@ -42,11 +50,20 @@ final class ProductRepository extends ServiceEntityRepository implements Product
      */
     public function findAllProducts(): array
     {
-        $query = $this->createQueryBuilder('p')
-            ->setMaxResults(10)
-            ->getQuery()
-        ;
-        return $query->getResult();
+        if($this->cache->contains('find_all_products')) {
+            $query = $this->cache->fetch('find_all_products');
+        }
+        else {
+            $query = $this->createQueryBuilder('p')
+                ->setMaxResults(10)
+                ->getQuery()
+                ->getResult()
+            ;
+            $this->cache->save('find_all_products', $query);
+        }
+
+        return $query;
+
     }
 
     /**

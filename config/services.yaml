@@ -33,3 +33,7 @@ services:
         class: Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer
         public: false
         tags: [serializer.normalizer]
+
+    App\Repository\:
+        resource: '../src/Repository'
+        arguments: ['', '@doctrine.result_cache_provider']

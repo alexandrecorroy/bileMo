@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace App\Repository\Interfaces;
 
 use App\Entity\Interfaces\ProductInterface;
+use Doctrine\Common\Cache\ApcuCache;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -25,8 +26,9 @@ interface ProductRepositoryInterface
      * ProductRepositoryInterface constructor.
      *
      * @param RegistryInterface $registry
+     * @param ApcuCache $cache
      */
-    public function __construct(RegistryInterface $registry);
+    public function __construct(RegistryInterface $registry, ApcuCache $cache);
 
     /**
      * @param $value

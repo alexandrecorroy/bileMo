@@ -150,7 +150,7 @@ class ProductDetail implements ProductDetailInterface, \JsonSerializable
         $thickness,
         $uid = null
     ) {
-        if($uid)
+        if(!is_null($uid))
             $this->uid = $uid;
         else
             $this->uid = Uuid::uuid4();

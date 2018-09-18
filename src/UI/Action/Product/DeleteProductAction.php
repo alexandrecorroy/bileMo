@@ -18,6 +18,7 @@ use App\UI\Action\Product\Interfaces\DeleteProductActionInterface;
 use App\UI\Responder\Product\Interfaces\DeleteProductResponderInterface;
 use App\UI\Responder\Product\Interfaces\NotFoundProductResponderInterface;
 use App\UI\Responder\Product\NotFoundProductResponder;
+use Doctrine\Common\Cache\ApcuCache;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -59,13 +60,15 @@ final class DeleteProductAction implements DeleteProductActionInterface
         NotFoundProductResponderInterface $notFoundProductResponder
     ): Response {
 
+        $cache = new ApcuCache();
         $product = $this->productRepository->findOneByUuidField($request->get("id"));
 
-        if(!$product)
+        if(\is_null($product))
         {
             return $notFoundProductResponder();
         }
 
+        $cache->delete('find'.$product->getUid());
         $this->entityManager->remove($product);
         $this->entityManager->flush();
 

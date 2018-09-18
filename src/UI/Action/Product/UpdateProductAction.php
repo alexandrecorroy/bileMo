@@ -17,6 +17,7 @@ use App\Repository\Interfaces\ProductRepositoryInterface;
 use App\UI\Action\Product\Interfaces\UpdateProductActionInterface;
 use App\UI\Responder\Product\Interfaces\NotFoundProductResponderInterface;
 use App\UI\Responder\Product\Interfaces\UpdateProductResponderInterface;
+use Doctrine\Common\Cache\ApcuCache;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -67,11 +68,13 @@ final class UpdateProductAction implements UpdateProductActionInterface
         UpdateProductResponderInterface $updateProductResponder,
         NotFoundProductResponderInterface $notFoundProductResponder
     ): Response {
-        $array = json_decode($request->getContent(), true);
+        $cache = new ApcuCache();
+
+        $array = \json_decode($request->getContent(), true);
 
         $product = $this->productRepository->findOneByUuidField($request->attributes->get('id'));
 
-        if (!$product) {
+        if (\is_null($product)) {
             return $notFoundProductResponder();
         }
 
@@ -83,11 +86,11 @@ final class UpdateProductAction implements UpdateProductActionInterface
 
         $errors = $this->validator->validate($product);
 
-        if (count($errors)> 0) {
+        if (\count($errors) > 0) {
             return $updateProductResponder($request, $errors);
         }
 
-        $this->entityManager->persist($product);
+        $cache->delete('find'.$product->getUid());
         $this->entityManager->flush();
 
         return $updateProductResponder($request);

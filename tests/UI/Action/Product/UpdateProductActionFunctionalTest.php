@@ -58,7 +58,7 @@ final class UpdateProductActionFunctionalTest extends DataFixtureTestCase
         foreach ($this->products as $product) {
             $uri = $this->router->generate('product_update', ['id' => $product->getUid()->__toString()]);
 
-            $this->client->request('PATCH', $uri, array(), array(), array(), json_encode($productUpdated));
+            $this->client->request('PATCH', $uri, array(), array(), array(), \json_encode($productUpdated));
 
             $product->updateProduct($productUpdated);
             $productDetail = $product->getProductDetail();

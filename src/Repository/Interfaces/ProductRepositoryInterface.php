@@ -38,7 +38,7 @@ interface ProductRepositoryInterface
     public function findOneByUuidField($value): ?ProductInterface;
 
     /**
-     * @return array
+     * @return array|null
      */
     public function findAllProducts(): array ;
 

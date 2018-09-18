@@ -74,7 +74,7 @@ class Product implements ProductInterface, \JsonSerializable
         ProductDetail $productDetail,
         $uid = null
     ) {
-        if($uid)
+        if(!is_null($uid))
             $this->uid = $uid;
         else
             $this->uid = Uuid::uuid4();

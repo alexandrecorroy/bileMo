@@ -3,11 +3,11 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                    https://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
     <entity name="App\Entity\Product" table="bilemo_product" repository-class="App\Repository\ProductRepository">
-        <id name="uid" column="id" type="uuid"/>
+        <id name="uid" column="uid" type="uuid"/>
         <field name="name" length="56"/>
         <field name="price" type="float" precision="6" scale="2" />
         <one-to-one field="productDetail" target-entity="App\Entity\ProductDetail" fetch="EAGER">
-            <join-column name="product_id" referenced-column-name="id" />
+            <join-column name="product_id" referenced-column-name="uid" />
             <cascade>
                 <cascade-all/>
             </cascade>

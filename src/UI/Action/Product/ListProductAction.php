@@ -52,7 +52,7 @@ final class ListProductAction implements ListProductActionInterface
     ): Response {
         $products = $this->productRepository->findAllProducts();
 
-        if(!$products) {
+        if(\is_null($products)) {
             return $notFoundProductResponder();
         }
 

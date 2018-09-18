@@ -19,9 +19,9 @@ use App\Service\ReturnBlankParameterName;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class ReturnBlankParameterNameTest.
+ * final Class ReturnBlankParameterNameUnitTest.
  */
-final class ReturnBlankParameterNameTest extends TestCase
+final class ReturnBlankParameterNameUnitTest extends TestCase
 {
     /**
      * test return parameter

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Tests\DataFixtures;
 
+use Doctrine\Common\Cache\ApcuCache;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Bundle\FrameworkBundle\Client;
@@ -51,6 +52,8 @@ class DataFixtureTestCase extends WebTestCase
         $this->entityManager = self::$container->get('doctrine.orm.entity_manager');
 
         parent::setUp();
+        $cache = new ApcuCache();
+        $cache->deleteAll();
     }
 
     protected static function runCommand($command)

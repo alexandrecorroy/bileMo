@@ -52,7 +52,7 @@ final class GetProductAction implements GetProductActionInterface
     ): Response {
         $product = $this->productRepository->findOneByUuidField($request->attributes->get('id'));
 
-        if (!$product) {
+        if(\is_null($product)) {
             return $notFoundProductResponder();
         }
 

@@ -38,10 +38,15 @@
     "autoload": {
         "psr-4": {
             "App\\": "src/",
+            "App\\DataFixtures\\": "src/DataFixtures/",
             "App\\Repository\\": "src/Repository/",
             "App\\Repository\\Interfaces\\": "src/Repository/Interfaces/",
             "App\\Entity\\": "src/Entity/",
             "App\\Entity\\Interfaces\\": "src/Entity/Interfaces/",
+            "App\\EventSubscriber\\": "src/EventSubscriber/",
+            "App\\EventSubscriber\\Interfaces\\": "src/EventSubscriber/Interfaces/",
+            "App\\Service\\": "src/Service/",
+            "App\\Service\\Interfaces\\": "src/Service/Interfaces/",
             "App\\UI\\Action\\Product\\": "src/UI/Action/Product/",
             "App\\UI\\Action\\Product\\Interfaces\\": "src/UI/Action/Product/Interfaces/",
             "App\\UI\\Responder\\Product\\": "src/UI/Responder/Product/",
@@ -51,7 +56,13 @@
     "autoload-dev": {
         "psr-4": {
             "App\\Tests\\": "tests/",
-            "App\\Tests\\Entity\\": "tests/entity/"
+            "App\\Tests\\Entity\\": "tests/entity/",
+            "App\\Tests\\DataFixtures\\": "tests/DataFixtures/",
+            "App\\Tests\\EventSubscriber\\": "tests/EventSubscriber/",
+            "App\\Tests\\Repository\\": "tests/Repository/",
+            "App\\Tests\\Service\\": "tests/Service/",
+            "App\\Tests\\UI\\Action\\Product\\": "tests/UI/Action/Product",
+            "App\\Tests\\UI\\Responder\\Product\\": "tests/UI/Responder/Product"
         }
     },
     "replace": {

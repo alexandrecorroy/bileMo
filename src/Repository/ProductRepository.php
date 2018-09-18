@@ -15,7 +15,11 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 final class ProductRepository extends ServiceEntityRepository implements ProductRepositoryInterface
 {
+    /**
+     * @var ApcuCache
+     */
     private $cache;
+
     /**
      * {@inheritdoc}
      */

@@ -27,13 +27,15 @@ final class UpdateProductResponder implements UpdateProductResponderInterface
     /**
      * {@inheritdoc}
      */
-    public function __invoke(Request $request, $errors = null): Response
-    {
+    public function __invoke(
+        Request $request,
+        $errors = null
+    ): Response {
         if (!\is_null($errors) && \is_array($errors)) {
 
             $errorList = [];
             foreach ($errors as $error) {
-                \array_push($errorList, $error->getMessage());
+                array_push($errorList, $error->getMessage());
             }
 
             return new JsonResponse($errorList, Response::HTTP_BAD_REQUEST);

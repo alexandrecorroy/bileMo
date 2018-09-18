@@ -34,7 +34,7 @@ final class AddProductResponder implements AddProductResponderInterface
             } else {
                 $errorList = [];
                 foreach ($errors as $error) {
-                    \array_push($errorList, $error->getMessage());
+                    array_push($errorList, $error->getMessage());
                 }
 
                 return new JsonResponse($errorList, Response::HTTP_REQUESTED_RANGE_NOT_SATISFIABLE);

@@ -83,7 +83,7 @@ final class AddLinksToProductResponseSubscriber implements EventSubscriberInterf
                 $products = [];
 
                 foreach ($array as $product) {
-                    $json = \json_encode($product);
+                    $json = json_encode($product);
                     $product = $this->serializer->deserialize($json, Product::class, 'json');
 
                     $product->addLinks(['get' => ['href' => $this->urlGenerator->generate('product_show', array('id' => $product->getUid()))]]);

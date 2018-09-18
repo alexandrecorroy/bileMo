@@ -25,7 +25,7 @@ final class ReturnBlankParameterName implements ReturnBlankParameterNameInterfac
      */
     public function returnParameter($string)
     {
-        $param = \substr($string, \strpos($string, ' "')+2, (\strpos($string, '" '))-(\strlen($string)));
+        $param = substr($string, strpos($string, ' "')+2, (strpos($string, '" '))-(\strlen($string)));
         return ucfirst($param);
     }
 

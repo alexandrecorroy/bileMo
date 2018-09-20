@@ -50,7 +50,11 @@
             "App\\UI\\Action\\Product\\": "src/UI/Action/Product/",
             "App\\UI\\Action\\Product\\Interfaces\\": "src/UI/Action/Product/Interfaces/",
             "App\\UI\\Responder\\Product\\": "src/UI/Responder/Product/",
-            "App\\UI\\Responder\\Product\\Interfaces\\": "src/UI/Responder/Product/Interfaces/"
+            "App\\UI\\Responder\\Product\\Interfaces\\": "src/UI/Responder/Product/Interfaces/",
+            "App\\UI\\Action\\CustomerUser\\": "src/UI/Action/CustomerUser/",
+            "App\\UI\\Action\\CustomerUser\\Interfaces\\": "src/UI/Action/CustomerUser/Interfaces/",
+            "App\\UI\\Responder\\CustomerUser\\": "src/UI/Responder/CustomerUser/",
+            "App\\UI\\Responder\\CustomerUser\\Interfaces\\": "src/UI/Responder/CustomerUser/Interfaces/"
         }
     },
     "autoload-dev": {

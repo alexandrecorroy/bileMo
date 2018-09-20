@@ -19,7 +19,7 @@ use Ramsey\Uuid\Uuid;
 /**
  * Class Customer.
  */
-class Customer implements CustomerInterface
+class Customer implements CustomerInterface, \JsonSerializable
 {
     /**
      * @var \Ramsey\Uuid\UuidInterface
@@ -54,11 +54,11 @@ class Customer implements CustomerInterface
     /**
      * Customer constructor.
      *
-     * @param string      $society society's name
-     * @param string      $email email's society
-     * @param string      $username login to connect to api
-     * @param string      $password password
-     * @param string|null $phone phone of society
+     * @param string $society
+     * @param string $email
+     * @param string $username
+     * @param string $password
+     * @param string|null $phone
      */
     public function __construct(
         string $society,
@@ -122,4 +122,17 @@ class Customer implements CustomerInterface
     {
         return $this->phone;
     }
+
+    public function jsonSerialize()
+    {
+        return [
+            'uid' => $this->uid,
+            'society' => $this->society,
+            'email' => $this->email,
+            'username' => $this->username,
+            'phone' => $this->phone
+        ];
+    }
+
+
 }

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\EventSubscriber;
 
+use App\Entity\Product;
 use App\EventSubscriber\Interfaces\ProductSubscriberInterface;
 use App\Service\Interfaces\ReturnBlankParameterNameInterface;
 use App\Service\ReturnBlankParameterName;
@@ -58,7 +59,7 @@ final class ProductSubscriber implements EventSubscriberInterface, ProductSubscr
      */
     public function missingConstructorException(GetResponseForExceptionEvent $event): void
     {
-        if (!$event->getException() instanceof MissingConstructorArgumentsException) {
+        if (!$event->getException() instanceof MissingConstructorArgumentsException || !$event->getRequest() instanceof Product) {
             return;
         }
         else {

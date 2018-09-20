@@ -2,49 +2,69 @@
 
 namespace App\Repository;
 
+use App\Entity\Customer;
 use App\Entity\CustomerUser;
+use App\Entity\Interfaces\CustomerUserInterface;
+use App\Entity\Product;
+use App\Repository\Interfaces\CustomerUserRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Cache\ApcuCache;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
- * @method CustomerUser|null find($id, $lockMode = null, $lockVersion = null)
- * @method CustomerUser|null findOneBy(array $criteria, array $orderBy = null)
- * @method CustomerUser[]    findAll()
- * @method CustomerUser[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * final Class CustomerUserRepository.
  */
-class CustomerUserRepository extends ServiceEntityRepository
+final class CustomerUserRepository extends ServiceEntityRepository implements CustomerUserRepositoryInterface
 {
-    public function __construct(RegistryInterface $registry)
+    /**
+     * @var ApcuCache
+     */
+    private $cache;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct(RegistryInterface $registry, ApcuCache $cache)
     {
         parent::__construct($registry, CustomerUser::class);
+        $this->cache = $cache;
+        $cache->deleteAll();
     }
 
-//    /**
-//     * @return CustomerUser[] Returns an array of CustomerUser objects
-//     */
-    /*
-    public function findByExampleField($value)
+    /**
+     * {@inheritdoc}
+     */
+    public function findOneByUuidField($value): ?CustomerUserInterface
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        if($this->cache->contains('find'.$value)) {
+            $query = $this->cache->fetch('find'.$value);
+        }
+        else {
+            $query = $this->createQueryBuilder('cu')
+                ->andWhere('cu.uid = :val')
+                ->setParameter('val', $value)
+                ->getQuery()
+                ->getOneOrNullResult();
+            $this->cache->save('find'.$value, $query);
+        }
+        return $query;
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?CustomerUser
+    /**
+     * {@inheritdoc}
+     */
+    public function findAllCustomerUser(): array
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        // TODO: Implement findAllCustomerUser() method.
     }
-    */
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findOtherCustomerUser(CustomerUserInterface $customerUser): ?CustomerUserInterface
+    {
+        // TODO: Implement findOtherCustomerUser() method.
+    }
+
+
 }

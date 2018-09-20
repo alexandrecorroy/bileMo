@@ -135,8 +135,6 @@ class ProductDetail implements ProductDetailInterface, \JsonSerializable
      * @param $height
      * @param $width
      * @param $thickness
-     * @param null $uid
-     * @throws \Exception
      */
     public function __construct(
         $brand,
@@ -147,14 +145,9 @@ class ProductDetail implements ProductDetailInterface, \JsonSerializable
         $screenSize,
         $height,
         $width,
-        $thickness,
-        $uid = null
+        $thickness
     ) {
-        if(!is_null($uid))
-            $this->uid = $uid;
-        else
-            $this->uid = Uuid::uuid4();
-
+        $this->uid = Uuid::uuid4();
         $this->brand = $brand;
         $this->color = $color;
         $this->os = $os;

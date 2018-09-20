@@ -66,19 +66,13 @@ class Product implements ProductInterface, \JsonSerializable
      * @param $name
      * @param $price
      * @param ProductDetail $productDetail
-     * @param null $uid
      */
     public function __construct(
         $name,
         $price,
-        ProductDetail $productDetail,
-        $uid = null
+        ProductDetail $productDetail
     ) {
-        if(!is_null($uid))
-            $this->uid = $uid;
-        else
-            $this->uid = Uuid::uuid4();
-
+        $this->uid = Uuid::uuid4();
         $this->name = $name;
         $this->price = $price;
         $this->productDetail = $productDetail;
@@ -129,7 +123,7 @@ class Product implements ProductInterface, \JsonSerializable
             'name'  => $this->name,
             'price' => $this->price,
             'productDetail' => $this->productDetail,
-            '_links' => $this->links
+            '_links' => $this->getLinks()
 
         ];
     }

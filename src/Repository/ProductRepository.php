@@ -27,6 +27,7 @@ final class ProductRepository extends ServiceEntityRepository implements Product
     {
         parent::__construct($registry, Product::class);
         $this->cache = $cache;
+        $cache->deleteAll();
     }
 
     /**
@@ -39,7 +40,6 @@ final class ProductRepository extends ServiceEntityRepository implements Product
         }
         else {
             $query = $this->createQueryBuilder('p')
-                ->innerJoin(ProductDetail::class, 'pd')
                 ->andWhere('p.uid = :val')
                 ->setParameter('val', $value)
                 ->getQuery()

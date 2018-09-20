@@ -16,12 +16,13 @@ namespace App\Entity;
 use App\Entity\Interfaces\CustomerInterface;
 use App\Entity\Interfaces\CustomerUserInterface;
 use App\Entity\Interfaces\ProductInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Ramsey\Uuid\Uuid;
 
 /**
  * Class CustomerUser.
  */
-class CustomerUser implements CustomerUserInterface
+class CustomerUser implements CustomerUserInterface, \JsonSerializable
 {
     /**
      * @var \Ramsey\Uuid\UuidInterface
@@ -67,6 +68,11 @@ class CustomerUser implements CustomerUserInterface
      * @var Customer
      */
     private $customer;
+
+    /**
+     * @var array
+     */
+    private $links = [];
 
 
     /**
@@ -128,7 +134,12 @@ class CustomerUser implements CustomerUserInterface
      */
     public function getProducts()
     {
-        return $this->products;
+        $list = [];
+        foreach ($this->products as $product)
+        {
+            $list[] = $product;
+        }
+        return $list;
     }
 
     /**
@@ -194,4 +205,42 @@ class CustomerUser implements CustomerUserInterface
     {
         return $this->customer;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLinks(): array
+    {
+        return $this->links;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addLinks(array $links)
+    {
+        $this->links[] = $links;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'uid' => $this->uid,
+            'name' => $this->name,
+            'firstName' => $this->firstName,
+            'email' => $this->email,
+            'address' => $this->address,
+            'zip' => $this->zip,
+            'phone' => $this->phone,
+            'products' => $this->getProducts(),
+            '_links' => $this->getLinks(),
+            '_embedded' => [
+                'customer' => $this->customer
+            ]
+        ];
+    }
+
 }

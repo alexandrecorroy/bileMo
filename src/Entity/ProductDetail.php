@@ -14,13 +14,13 @@ declare(strict_types = 1);
 namespace App\Entity;
 
 use App\Entity\Interfaces\ProductDetailInterface;
-use App\Entity\Interfaces\ProductInterface;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * final Class ProductDetail
+ * Class ProductDetail.
  */
-final class ProductDetail implements ProductDetailInterface
+class ProductDetail implements ProductDetailInterface, \JsonSerializable
 {
     /**
      * @var \Ramsey\Uuid\UuidInterface
@@ -29,81 +29,132 @@ final class ProductDetail implements ProductDetailInterface
 
     /**
      * @var string
+     *
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 56,
+     *      minMessage = "Brand must be at least {{ limit }} characters long",
+     *      maxMessage = "Brand cannot be longer than {{ limit }} characters"
+     * )
      */
     private $brand;
 
     /**
      * @var string
+     *
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 32,
+     *      minMessage = "Color must be at least {{ limit }} characters long",
+     *      maxMessage = "Color cannot be longer than {{ limit }} characters"
+     * )
      */
     private $color;
 
     /**
      * @var string
+     *
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 56,
+     *      minMessage = "Os must be at least {{ limit }} characters long",
+     *      maxMessage = "Os cannot be longer than {{ limit }} characters"
+     * )
      */
     private $os;
 
     /**
      * @var int
+     *
+     * @Assert\Type(
+     *     type="integer",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
      */
     private $memory;
 
     /**
      * @var float
+     *
+     * @Assert\Type(
+     *     type="float",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
      */
     private $weight;
 
     /**
      * @var float
+     *
+     * @Assert\Type(
+     *     type="float",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
      */
     private $screenSize;
 
     /**
      * @var float
+     *
+     * @Assert\Type(
+     *     type="float",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
      */
     private $height;
 
     /**
      * @var float
+     *
+     * @Assert\Type(
+     *     type="float",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
      */
     private $width;
 
     /**
      * @var float
+     *
+     * @Assert\Type(
+     *     type="float",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
      */
     private $thickness;
 
     /**
-     * @var ProductInterface
-     */
-    private $product;
-
-    /**
      * ProductDetail constructor.
      *
-     * @param string           $brand society who make phone
-     * @param string           $color color of phone
-     * @param string           $os operating system of phone
-     * @param int              $memory available memory without os
-     * @param float            $weight in gram
-     * @param float            $screenSize in inch
-     * @param float            $height in millimeter
-     * @param float            $width in millimeter
-     * @param float            $thickness in millimeter
-     * @param ProductInterface $product
+     * @param $brand
+     * @param $color
+     * @param $os
+     * @param $memory
+     * @param $weight
+     * @param $screenSize
+     * @param $height
+     * @param $width
+     * @param $thickness
+     * @param null $uid
+     * @throws \Exception
      */
     public function __construct(
-        string $brand,
-        string $color,
-        string $os,
-        int $memory,
-        float $weight,
-        float $screenSize,
-        float $height,
-        float $width,
-        float $thickness,
-        ProductInterface $product
+        $brand,
+        $color,
+        $os,
+        $memory,
+        $weight,
+        $screenSize,
+        $height,
+        $width,
+        $thickness,
+        $uid = null
     ) {
-        $this->uid = Uuid::uuid4();
+        if(!is_null($uid))
+            $this->uid = $uid;
+        else
+            $this->uid = Uuid::uuid4();
+
         $this->brand = $brand;
         $this->color = $color;
         $this->os = $os;
@@ -113,7 +164,6 @@ final class ProductDetail implements ProductDetailInterface
         $this->height = $height;
         $this->width = $width;
         $this->thickness = $thickness;
-        $this->product = $product;
     }
 
     /**
@@ -199,8 +249,31 @@ final class ProductDetail implements ProductDetailInterface
     /**
      * {@inheritdoc}
      */
-    public function getProduct(): ProductInterface
+    public function updateProductDetail(array $productDetail = null)
     {
-        return $this->product;
+        if($productDetail)
+        {
+            foreach ($productDetail as $key => $value) {
+                if (property_exists(self::class, $key)) {
+                    $this->$key = $value;
+                }
+            }
+        }
+
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'brand'   => $this->getBrand(),
+            'color'  => $this->getColor(),
+            'os' => $this->getOs(),
+            'memory' => $this->getMemory(),
+            'weight' => $this->getWeight(),
+            'screenSize' => $this->getScreenSize(),
+            'height' => $this->getHeight(),
+            'width' => $this->getWidth(),
+            'thickness' => $this->getThickness()
+        ];
     }
 }

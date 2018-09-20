@@ -14,7 +14,6 @@ declare(strict_types = 1);
 namespace App\Tests\Entity;
 
 use App\Entity\Interfaces\ProductDetailInterface;
-use App\Entity\Interfaces\ProductInterface;
 use App\Entity\ProductDetail;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\UuidInterface;
@@ -24,19 +23,6 @@ use Ramsey\Uuid\UuidInterface;
  */
 final class ProductDetailUnitTest extends TestCase
 {
-
-    /**
-     * @var ProductInterface|null
-     */
-    private $product = null;
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp()
-    {
-        $this->product = $this->createMock(ProductInterface::class);
-    }
 
     /**
      * Unit test add product detail
@@ -52,8 +38,7 @@ final class ProductDetailUnitTest extends TestCase
             5.5,
             148.9,
             76.1,
-            9.8,
-            $this->product
+            9.8
         );
 
         static::assertInstanceOf(ProductDetailInterface::class, $productDetail);

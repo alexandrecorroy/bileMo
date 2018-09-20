@@ -19,9 +19,9 @@ use App\Entity\Interfaces\ProductInterface;
 use Ramsey\Uuid\Uuid;
 
 /**
- * final Class CustomerUser
+ * Class CustomerUser.
  */
-final class CustomerUser implements CustomerUserInterface
+class CustomerUser implements CustomerUserInterface
 {
     /**
      * @var \Ramsey\Uuid\UuidInterface
@@ -64,7 +64,7 @@ final class CustomerUser implements CustomerUserInterface
     private $products = [];
 
     /**
-     * @var CustomerInterface
+     * @var Customer
      */
     private $customer;
 
@@ -72,13 +72,13 @@ final class CustomerUser implements CustomerUserInterface
     /**
      * CustomerUser constructor.
      *
-     * @param string            $name name of customer
-     * @param string            $firstName firstname of customer
-     * @param string            $email customer's email
-     * @param string            $address customer's address
-     * @param string            $zip zip code
-     * @param CustomerInterface $customer society which has sold the phone
-     * @param string|null       $phone customer's phone
+     * @param string $name
+     * @param string $firstName
+     * @param string $email
+     * @param string $address
+     * @param string $zip
+     * @param CustomerInterface $customer
+     * @param string|null $phone
      */
     public function __construct(
         string $name,
@@ -106,7 +106,7 @@ final class CustomerUser implements CustomerUserInterface
      */
     public function addProduct(Product $product)
     {
-        $this->products->add($product);
+        $this->products[] = $product;
     }
 
     /**
@@ -114,7 +114,13 @@ final class CustomerUser implements CustomerUserInterface
      */
     public function removeProduct(Product $product)
     {
-        $this->products->removeElement($product);
+        $productUid = $product->getUid();
+        foreach ($this->products as $product)
+        {
+            if($product->getUid() === $productUid)
+                unset($product);
+                break;
+        }
     }
 
     /**

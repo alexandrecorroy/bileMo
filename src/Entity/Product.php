@@ -13,13 +13,16 @@ declare(strict_types = 1);
 
 namespace App\Entity;
 
+use App\Entity\Interfaces\ProductDetailInterface;
 use App\Entity\Interfaces\ProductInterface;
+use phpDocumentor\Reflection\DocBlock\Tags\Throws;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * final Class Product
+ * Class Product.
  */
-final class Product implements ProductInterface
+class Product implements ProductInterface, \JsonSerializable
 {
     /**
      * @var \Ramsey\Uuid\UuidInterface
@@ -28,27 +31,67 @@ final class Product implements ProductInterface
 
     /**
      * @var string
+     *
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 56,
+     *      minMessage = "Product name must be at least {{ limit }} characters long",
+     *      maxMessage = "Product name cannot be longer than {{ limit }} characters"
+     * )
      */
     private $name;
 
     /**
      * @var float
+     *
+     * @Assert\Type(
+     *     type="float",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
      */
     private $price;
 
     /**
+     * @var ProductDetailInterface
+     *
+     * @Assert\Valid()
+     */
+    private $productDetail;
+
+    private $links = [];
+
+    /**
      * Product constructor.
      *
-     * @param string $name name of phone
-     * @param float  $price price of phone
+     * @param $name
+     * @param $price
+     * @param ProductDetail $productDetail
+     * @param null $uid
      */
     public function __construct(
-        string $name,
-        float $price
+        $name,
+        $price,
+        ProductDetail $productDetail,
+        $uid = null
     ) {
-        $this->uid = Uuid::uuid4();
+        if(!is_null($uid))
+            $this->uid = $uid;
+        else
+            $this->uid = Uuid::uuid4();
+
         $this->name = $name;
         $this->price = $price;
+        $this->productDetail = $productDetail;
+    }
+
+    public function addLinks(array $links)
+    {
+        $this->links[] = $links;
+    }
+
+    public function getLinks(): array
+    {
+        return $this->links;
     }
 
     /**
@@ -73,5 +116,41 @@ final class Product implements ProductInterface
     public function getPrice()
     {
         return $this->price;
+    }
+
+    /**
+     * @return array|mixed
+     */
+    public function jsonSerialize()
+    {
+        return [
+
+            'uid'   => $this->uid,
+            'name'  => $this->name,
+            'price' => $this->price,
+            'productDetail' => $this->productDetail,
+            '_links' => $this->links
+
+        ];
+    }
+
+    /**
+     * @return ProductDetailInterface
+     */
+    public function getProductDetail(): ProductDetailInterface
+    {
+        return $this->productDetail;
+    }
+
+    /**
+     * @param array $product
+     */
+    public function updateProduct(array $product)
+    {
+        foreach ($product as $key => $value) {
+            if (property_exists(self::class, $key) && $key!='productDetail') {
+                $this->$key = $value;
+            }
+        }
     }
 }

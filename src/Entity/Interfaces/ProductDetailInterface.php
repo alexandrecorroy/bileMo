@@ -16,13 +16,6 @@ namespace App\Entity\Interfaces;
 /**
  * Interface ProductDetailInterface
  */
-
-use App\Entity\Product;
-
-/**
- * Interface ProductDetailInterface
- * @package App\Entity\Interfaces
- */
 interface ProductDetailInterface
 {
     /**
@@ -76,7 +69,9 @@ interface ProductDetailInterface
     public function getThickness();
 
     /**
-     * @return Product
+     * @param array|null $productDetail
+     *
+     * @return mixed
      */
-    public function getProduct();
+    public function updateProductDetail(array $productDetail = null);
 }

@@ -13,6 +13,8 @@ declare(strict_types = 1);
 
 namespace App\Entity\Interfaces;
 
+use App\Entity\ProductDetail;
+
 /**
  * Interface ProductInterface
  */
@@ -32,4 +34,16 @@ interface ProductInterface
      * @return float
      */
     public function getPrice();
+
+    /**
+     * @return ProductDetail
+     */
+    public function getProductDetail();
+
+    /**
+     * @param array $product
+     *
+     * @return mixed
+     */
+    public function updateProduct(array $product);
 }

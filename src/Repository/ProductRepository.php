@@ -2,49 +2,109 @@
 
 namespace App\Repository;
 
+use App\Entity\Interfaces\ProductInterface;
 use App\Entity\Product;
+use App\Entity\ProductDetail;
+use App\Repository\Interfaces\ProductRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Cache\ApcuCache;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
- * @method Product|null find($id, $lockMode = null, $lockVersion = null)
- * @method Product|null findOneBy(array $criteria, array $orderBy = null)
- * @method Product[]    findAll()
- * @method Product[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * final Class ProductRepository.
  */
-class ProductRepository extends ServiceEntityRepository
+final class ProductRepository extends ServiceEntityRepository implements ProductRepositoryInterface
 {
-    public function __construct(RegistryInterface $registry)
+    /**
+     * @var ApcuCache
+     */
+    private $cache;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct(RegistryInterface $registry, ApcuCache $cache)
     {
         parent::__construct($registry, Product::class);
+        $this->cache = $cache;
     }
 
-//    /**
-//     * @return Product[] Returns an array of Product objects
-//     */
-    /*
-    public function findByExampleField($value)
+    /**
+     * {@inheritdoc}
+     */
+    public function findOneByUuidField($value): ?ProductInterface
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        if($this->cache->contains('find'.$value)) {
+            $query = $this->cache->fetch('find'.$value);
+        }
+        else {
+            $query = $this->createQueryBuilder('p')
+                ->innerJoin(ProductDetail::class, 'pd')
+                ->andWhere('p.uid = :val')
+                ->setParameter('val', $value)
+                ->getQuery()
+                ->getOneOrNullResult();
+            $this->cache->save('find'.$value, $query);
+        }
+        return $query;
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Product
+    /**
+     * {@inheritdoc}
+     */
+    public function findAllProducts(): array
     {
+        if($this->cache->contains('find_all_products')) {
+            $query = $this->cache->fetch('find_all_products');
+        }
+        else {
+            $query = $this->createQueryBuilder('p')
+                ->setMaxResults(10)
+                ->getQuery()
+                ->getResult()
+            ;
+            $this->cache->save('find_all_products', $query);
+        }
+
+        return $query;
+
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findOtherProduct(ProductInterface $product): ?ProductInterface
+    {
+        $productDetail = $product->getProductDetail();
         return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
+            ->innerJoin('p.productDetail', 'pd')
+            ->where('p.name = :name')
+            ->andWhere('p.price = :price')
+            ->andWhere('pd.brand = :brand')
+            ->andWhere('pd.color = :color')
+            ->andWhere('pd.height = :height')
+            ->andWhere('pd.memory = :memory')
+            ->andWhere('pd.os = :os')
+            ->andWhere('pd.screenSize = :screenSize')
+            ->andWhere('pd.thickness = :thickness')
+            ->andWhere('pd.weight = :weight')
+            ->andWhere('pd.width = :width')
+            ->setParameters(array(
+                'name'       => $product->getName(),
+                'price'      => $product->getPrice(),
+                'brand'      => $productDetail->getBrand(),
+                'color'      => $productDetail->getColor(),
+                'height'     => $productDetail->getHeight(),
+                'memory'     => $productDetail->getMemory(),
+                'os'         => $productDetail->getOs(),
+                'screenSize' => $productDetail->getScreenSize(),
+                'thickness'  => $productDetail->getThickness(),
+                'weight'     => $productDetail->getWeight(),
+                'width'      => $productDetail->getWidth()
+            ))
+            ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult()
         ;
     }
-    */
 }

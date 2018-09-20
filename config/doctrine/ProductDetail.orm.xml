@@ -3,18 +3,15 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                    https://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
     <entity name="App\Entity\ProductDetail" table="bilemo_product_detail" repository-class="App\Repository\ProductDetailRepository">
-        <id name="uid" column="id" type="uuid"/>
+        <id name="uid" column="uid" type="uuid"/>
         <field name="brand" length="56"/>
         <field name="color" length="32" />
         <field name="os" length="56" />
         <field name="memory" type="smallint" />
-        <field name="weight" type="decimal" precision="5" scale="2"/>
-        <field name="screenSize" type="decimal" precision="2" scale="1"/>
-        <field name="height" type="decimal" precision="4" scale="1"/>
-        <field name="width" type="decimal" precision="3" scale="1"/>
-        <field name="thickness" type="decimal" precision="3" scale="1"/>
-        <one-to-one field="product" target-entity="App\Entity\Product">
-            <join-column name="product_id" referenced-column-name="id" />
-        </one-to-one>
+        <field name="weight" type="float" precision="5" scale="2"/>
+        <field name="screenSize" type="float" precision="2" scale="1"/>
+        <field name="height" type="float" precision="4" scale="1"/>
+        <field name="width" type="float" precision="3" scale="1"/>
+        <field name="thickness" type="float" precision="3" scale="1"/>
     </entity>
 </doctrine-mapping>

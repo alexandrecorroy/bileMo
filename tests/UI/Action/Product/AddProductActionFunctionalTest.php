@@ -18,9 +18,15 @@ use App\Entity\ProductDetail;
 use App\Tests\DataFixtures\DataFixtureTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class AddProductActionFunctionalTest extends DataFixtureTestCase
+/**
+ * final Class AddProductActionFunctionalTest.
+ */
+final class AddProductActionFunctionalTest extends DataFixtureTestCase
 {
 
+    /**
+     * test add new product
+     */
     public function testAddProduct()
     {
         $array = [
@@ -47,6 +53,9 @@ class AddProductActionFunctionalTest extends DataFixtureTestCase
         static::assertTrue($this->client->getResponse()->headers->contains('content-type', 'application/json'));;
     }
 
+    /**
+     * test add product without one parameter
+     */
     public function testAddProductWithoutOneParameter()
     {
         $array = [
@@ -72,6 +81,9 @@ class AddProductActionFunctionalTest extends DataFixtureTestCase
         static::assertTrue($this->client->getResponse()->headers->contains('content-type', 'application/json'));;
     }
 
+    /**
+     * test add product with parameter bad type
+     */
     public function testAddProductWithBadType()
     {
         $array = [
@@ -98,6 +110,9 @@ class AddProductActionFunctionalTest extends DataFixtureTestCase
         static::assertTrue($this->client->getResponse()->headers->contains('content-type', 'application/json'));;
     }
 
+    /**
+     * test add product null
+     */
     public function testAddProductNull()
     {
         $array = [];
@@ -110,6 +125,9 @@ class AddProductActionFunctionalTest extends DataFixtureTestCase
         static::assertTrue($this->client->getResponse()->headers->contains('content-type', 'application/json'));;
     }
 
+    /**
+     * test product already exist
+     */
     public function testAddProductAlreadyExist()
     {
         $products = $this->entityManager->getRepository(Product::class)->findAllProducts();

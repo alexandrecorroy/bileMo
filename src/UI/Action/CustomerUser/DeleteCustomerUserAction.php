@@ -26,7 +26,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class DeleteCustomerUserAction.
  *
- * @Route("/customer_user/{id}", name="customer_user_delete", methods={"DELETE"})
+ * @Route("/customerUser/{id}", name="customer_user_delete", methods={"DELETE"})
  */
 final class DeleteCustomerUserAction implements DeleteCustomerUserActionInterface
 {
@@ -68,6 +68,7 @@ final class DeleteCustomerUserAction implements DeleteCustomerUserActionInterfac
         }
 
         $cache->delete('find'.$customerUser->getUid());
+        $this->entityManager->merge($customerUser);
         $this->entityManager->remove($customerUser);
         $this->entityManager->flush();
 

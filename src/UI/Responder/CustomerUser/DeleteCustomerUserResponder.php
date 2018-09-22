@@ -29,7 +29,7 @@ final class DeleteCustomerUserResponder implements DeleteCustomerUserResponderIn
      */
     public function __invoke(Request $request): Response
     {
-        return new JsonResponse('Product Deleted !', Response::HTTP_ACCEPTED);
+        return new JsonResponse('CustomerUser Deleted !', Response::HTTP_ACCEPTED);
     }
 
 }

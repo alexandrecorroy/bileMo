@@ -2,10 +2,8 @@
 
 namespace App\Repository;
 
-use App\Entity\Customer;
 use App\Entity\CustomerUser;
 use App\Entity\Interfaces\CustomerUserInterface;
-use App\Entity\Product;
 use App\Repository\Interfaces\CustomerUserRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Cache\ApcuCache;
@@ -28,7 +26,6 @@ final class CustomerUserRepository extends ServiceEntityRepository implements Cu
     {
         parent::__construct($registry, CustomerUser::class);
         $this->cache = $cache;
-        $cache->deleteAll();
     }
 
     /**
@@ -55,7 +52,17 @@ final class CustomerUserRepository extends ServiceEntityRepository implements Cu
      */
     public function findAllCustomerUser(): array
     {
-        // TODO: Implement findAllCustomerUser() method.
+        if($this->cache->contains('findAllCustomerUser')) {
+            $query = $this->cache->fetch('findAllCustomerUser');
+        }
+        else {
+            $query = $this->createQueryBuilder('cu')
+                ->setMaxResults(10)
+                ->getQuery()
+                ->getResult();
+            $this->cache->save('findAllCustomerUser', $query);
+        }
+        return $query;
     }
 
     /**

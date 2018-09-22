@@ -27,7 +27,6 @@ final class ProductRepository extends ServiceEntityRepository implements Product
     {
         parent::__construct($registry, Product::class);
         $this->cache = $cache;
-        $cache->deleteAll();
     }
 
     /**

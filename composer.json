@@ -45,6 +45,8 @@
             "App\\Entity\\Interfaces\\": "src/Entity/Interfaces/",
             "App\\EventSubscriber\\": "src/EventSubscriber/",
             "App\\EventSubscriber\\Interfaces\\": "src/EventSubscriber/Interfaces/",
+            "App\\DoctrineListener\\": "src/DoctrineListener/",
+            "App\\DoctrineListener\\Interfaces\\": "src/DoctrineListener/Interfaces/",
             "App\\Service\\": "src/Service/",
             "App\\Service\\Interfaces\\": "src/Service/Interfaces/",
             "App\\UI\\Action\\Product\\": "src/UI/Action/Product/",
@@ -61,12 +63,15 @@
         "psr-4": {
             "App\\Tests\\": "tests/",
             "App\\Tests\\Entity\\": "tests/entity/",
+            "App\\Tests\\DoctrineListener\\": "tests/DoctrineListener/",
             "App\\Tests\\DataFixtures\\": "tests/DataFixtures/",
             "App\\Tests\\EventSubscriber\\": "tests/EventSubscriber/",
             "App\\Tests\\Repository\\": "tests/Repository/",
             "App\\Tests\\Service\\": "tests/Service/",
             "App\\Tests\\UI\\Action\\Product\\": "tests/UI/Action/Product",
-            "App\\Tests\\UI\\Responder\\Product\\": "tests/UI/Responder/Product"
+            "App\\Tests\\UI\\Responder\\Product\\": "tests/UI/Responder/Product",
+            "App\\Tests\\UI\\Action\\CustomerUser\\": "tests/UI/Action/CustomerUser",
+            "App\\Tests\\UI\\Responder\\CustomerUser\\": "tests/UI/Responder/CustomerUser"
         }
     },
     "replace": {

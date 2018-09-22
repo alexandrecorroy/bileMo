@@ -24,11 +24,10 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * final Class GetCustomerUserAction.
  *
- * @Route("/customer_user/{id}", name="customer_user_show", methods={"GET"})
+ * @Route("/customerUser/{id}", name="customer_user_show", methods={"GET"})
  */
 final class GetCustomerUserAction implements GetCustomerUserActionInterface
 {
-
     /**
      * @var CustomerUserRepositoryInterface
      */
@@ -59,5 +58,4 @@ final class GetCustomerUserAction implements GetCustomerUserActionInterface
 
         return $getCustomerUserResponder($request, $customerUser);
     }
-
 }

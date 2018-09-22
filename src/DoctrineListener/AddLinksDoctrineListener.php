@@ -44,22 +44,18 @@ final class AddLinksDoctrineListener implements AddLinksDoctrineListenerInterfac
      */
     public function postLoad(LifecycleEventArgs $args)
     {
-        if($args->getEntity() instanceof Product)
-        {
+        if ($args->getEntity() instanceof Product) {
             $product = $args->getEntity();
             $product->addLinks(['get' => ['href' => $this->urlGenerator->generate('product_show', array('id' => $product->getUid()))]]);
             $product->addLinks(['patch' => ['href' => $this->urlGenerator->generate('product_update', array('id' => $product->getUid()))]]);
             $product->addLinks(['delete' => ['href' => $this->urlGenerator->generate('product_delete', array('id' => $product->getUid()))]]);
         }
 
-        if($args->getEntity() instanceof CustomerUser)
-        {
+        if ($args->getEntity() instanceof CustomerUser) {
             $customerUser = $args->getEntity();
             $customerUser->addLinks(['get' => ['href' => $this->urlGenerator->generate('customer_user_show', array('id' => $customerUser->getUid()))]]);
             $customerUser->addLinks(['patch' => ['href' => $this->urlGenerator->generate('customer_user_show', array('id' => $customerUser->getUid()))]]);
             $customerUser->addLinks(['delete' => ['href' => $this->urlGenerator->generate('customer_user_delete', array('id' => $customerUser->getUid()))]]);
         }
-
     }
-
 }

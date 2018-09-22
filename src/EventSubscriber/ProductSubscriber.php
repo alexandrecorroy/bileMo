@@ -13,13 +13,11 @@ declare(strict_types=1);
 
 namespace App\EventSubscriber;
 
-use App\Entity\Product;
 use App\EventSubscriber\Interfaces\ProductSubscriberInterface;
 use App\Service\Interfaces\ReturnBlankParameterNameInterface;
 use App\Service\ReturnBlankParameterName;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -59,7 +57,7 @@ final class ProductSubscriber implements EventSubscriberInterface, ProductSubscr
      */
     public function missingConstructorException(GetResponseForExceptionEvent $event): void
     {
-        if (!$event->getException() instanceof MissingConstructorArgumentsException || !$event->getRequest() instanceof Product) {
+        if (!$event->getException() instanceof MissingConstructorArgumentsException) {
             return;
         }
         else {

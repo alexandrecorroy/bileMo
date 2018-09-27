@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Repository\Interfaces;
 
+use App\Entity\Customer;
 use App\Entity\Interfaces\CustomerUserInterface;
 use Doctrine\Common\Cache\ApcuCache;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -38,9 +39,10 @@ interface CustomerUserRepositoryInterface
     public function findOneByUuidField($value): ?CustomerUserInterface;
 
     /**
+     * @param Customer $customer
      * @return array|null
      */
-    public function findAllCustomerUser(): array ;
+    public function findAllCustomerUser(Customer $customer): ?array ;
 
     /**
      * @param CustomerUserInterface $customerUser

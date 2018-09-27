@@ -51,6 +51,8 @@ class Customer implements CustomerInterface, \JsonSerializable
      */
     private $phone = null;
 
+    private $customerUsers = [];
+
     /**
      * Customer constructor.
      *
@@ -73,6 +75,8 @@ class Customer implements CustomerInterface, \JsonSerializable
         $this->username = $username;
         $this->password = $password;
         $this->phone = $phone;
+
+        $this->customerUsers = [];
     }
 
     /**
@@ -121,6 +125,42 @@ class Customer implements CustomerInterface, \JsonSerializable
     public function getPhone(): ?string
     {
         return $this->phone;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addCustomerUser(CustomerUser $customerUser)
+    {
+        $customerUser->setCustomer($this);
+        $this->customerUsers[] = $customerUser;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeCustomerUser(CustomerUser $customerUser)
+    {
+        $customerUserId = $customerUser->getUid();
+        foreach ($this->customerUsers as $customerUser)
+        {
+            if($customerUser->getUid() === $customerUserId)
+                unset($customerUser);
+            break;
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCustomerUsers()
+    {
+        $list = [];
+        foreach ($this->customerUsers as $customerUser)
+        {
+            $list[] = $customerUser;
+        }
+        return $list;
     }
 
     public function jsonSerialize()

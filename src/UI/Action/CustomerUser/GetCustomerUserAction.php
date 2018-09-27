@@ -52,6 +52,8 @@ final class GetCustomerUserAction implements GetCustomerUserActionInterface
 
         $customerUser = $this->customerUserRepository->findOneByUuidField($request->attributes->get('id'));
 
+        // check if Customer is own of customerUser
+
         if(\is_null($customerUser)) {
             return $notFoundCustomerUserResponder();
         }

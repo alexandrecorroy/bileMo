@@ -14,37 +14,42 @@ declare(strict_types=1);
 namespace App\UI\Action\CustomerUser\Interfaces;
 
 use App\Repository\Interfaces\CustomerUserRepositoryInterface;
-use App\UI\Responder\CustomerUser\Interfaces\DeleteCustomerUserResponderInterface;
-use App\UI\Responder\CustomerUser\Interfaces\NotFoundCustomerUserResponderInterface;
+use App\UI\Responder\CustomerUser\Interfaces\AddCustomerUserResponderInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * Interface DeleteCustomerUserActionInterface.
+ * Interface AddCustomerUserActionInterface.
  */
-interface DeleteCustomerUserActionInterface
+interface AddCustomerUserActionInterface
 {
 
     /**
-     * DeleteCustomerUserActionInterface constructor.
+     * AddCustomerUserActionInterface constructor.
      *
      * @param EntityManagerInterface $entityManager
      * @param CustomerUserRepositoryInterface $customerUserRepository
+     * @param SerializerInterface $serializer
+     * @param ValidatorInterface $validator
      */
-    public function __construct(EntityManagerInterface $entityManager, CustomerUserRepositoryInterface $customerUserRepository);
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        CustomerUserRepositoryInterface $customerUserRepository,
+        SerializerInterface $serializer,
+        ValidatorInterface $validator
+    );
 
     /**
      * @param Request $request
-     * @param DeleteCustomerUserResponderInterface $deleteCustomerUserResponder
-     * @param NotFoundCustomerUserResponderInterface $notFoundCustomerUserResponder
+     * @param AddCustomerUserResponderInterface $addCustomerUserResponder
      *
      * @return Response
      */
     public function __invoke(
         Request $request,
-        DeleteCustomerUserResponderInterface $deleteCustomerUserResponder,
-        NotFoundCustomerUserResponderInterface $notFoundCustomerUserResponder
+        AddCustomerUserResponderInterface $addCustomerUserResponder
     ): Response;
-
 }

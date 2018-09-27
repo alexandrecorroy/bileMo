@@ -34,7 +34,6 @@ final class LoadCustomerUserData extends Fixture implements DependentFixtureInte
             'greytup.audrey@gmail.com',
             '97 rue de la chaussée ',
             '58740',
-            $this->getReference('sfr'),
             '0147586633'
         );
 
@@ -44,7 +43,6 @@ final class LoadCustomerUserData extends Fixture implements DependentFixtureInte
             'goal.paul@gmail.com',
             '78 rue de paris',
             '54760',
-            $this->getReference('sfr'),
             '0155889966'
         );
 
@@ -52,9 +50,12 @@ final class LoadCustomerUserData extends Fixture implements DependentFixtureInte
         $customerUser1->addProduct($this->getReference('p_s9'));
         $customerUser2->addProduct($this->getReference('p_iphonex'));
 
+        $customer = $this->getReference('sfr');
 
-        $manager->persist($customerUser1);
-        $manager->persist($customerUser2);
+        $customer->addCustomerUser($customerUser1);
+        $customer->addCustomerUser($customerUser2);
+
+        $manager->persist($customer);
 
         $manager->flush();
 

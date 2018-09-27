@@ -11,19 +11,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace App\UI\Responder\Product\Interfaces;
+namespace App\UI\Responder\CustomerUser\Interfaces;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Interface NotFoundProductResponderInterface.
+ * Interface ListCustomerUserResponderInterface.
  */
-interface NotFoundProductResponderInterface
+interface ListCustomerUserResponderInterface
 {
 
-    /**
-     * @return Response
-     */
-    public function __invoke(): Response;
+    public function __invoke(
+        Request $request,
+        array $customerUsers
+    ) : Response;
 
 }

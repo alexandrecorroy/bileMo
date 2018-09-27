@@ -15,7 +15,6 @@ namespace App\Entity;
 
 use App\Entity\Interfaces\ProductDetailInterface;
 use App\Entity\Interfaces\ProductInterface;
-use phpDocumentor\Reflection\DocBlock\Tags\Throws;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 

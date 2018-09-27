@@ -62,6 +62,8 @@ final class DeleteCustomerUserAction implements DeleteCustomerUserActionInterfac
 
         $customerUser = $this->customerUserRepository->findOneByUuidField($request->get("id"));
 
+        // check if Customer is own of customerUser
+
         if(\is_null($customerUser))
         {
             return $notFoundCustomerUserResponder();

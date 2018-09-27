@@ -48,7 +48,6 @@ final class CustomerUserUnitTest extends TestCase
             "paulmike@test.fr",
             "1048 baker street",
             "56233",
-            $this->customer,
             "0123456789"
         );
 

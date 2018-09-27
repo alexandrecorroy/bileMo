@@ -13,11 +13,10 @@ declare(strict_types = 1);
 
 namespace App\Entity;
 
-use App\Entity\Interfaces\CustomerInterface;
 use App\Entity\Interfaces\CustomerUserInterface;
 use App\Entity\Interfaces\ProductInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Class CustomerUser.
@@ -25,7 +24,7 @@ use Ramsey\Uuid\Uuid;
 class CustomerUser implements CustomerUserInterface, \JsonSerializable
 {
     /**
-     * @var \Ramsey\Uuid\UuidInterface
+     * @var UuidInterface
      */
     private $uid;
 
@@ -83,7 +82,7 @@ class CustomerUser implements CustomerUserInterface, \JsonSerializable
      * @param string $email
      * @param string $address
      * @param string $zip
-     * @param CustomerInterface $customer
+     * @param Customer $customer
      * @param string|null $phone
      */
     public function __construct(
@@ -92,7 +91,6 @@ class CustomerUser implements CustomerUserInterface, \JsonSerializable
         string $email,
         string $address,
         string $zip,
-        CustomerInterface $customer,
         string $phone = null
     ) {
         $this->uid = Uuid::uuid4();
@@ -102,7 +100,6 @@ class CustomerUser implements CustomerUserInterface, \JsonSerializable
         $this->address = $address;
         $this->zip = $zip;
         $this->phone = $phone;
-        $this->customer = $customer;
 
         $this->products = [];
     }
@@ -132,7 +129,7 @@ class CustomerUser implements CustomerUserInterface, \JsonSerializable
     /**
      * {@inheritdoc}
      */
-    public function getProducts()
+    public function getProducts(): array
     {
         $list = [];
         foreach ($this->products as $product)
@@ -201,9 +198,14 @@ class CustomerUser implements CustomerUserInterface, \JsonSerializable
     /**
      * {@inheritdoc}
      */
-    public function getCustomer()
+    public function getCustomer(): Customer
     {
         return $this->customer;
+    }
+
+    public function setCustomer(Customer $customer)
+    {
+        $this->customer = $customer;
     }
 
     /**
@@ -225,7 +227,19 @@ class CustomerUser implements CustomerUserInterface, \JsonSerializable
     /**
      * {@inheritdoc}
      */
-    public function jsonSerialize()
+    public function updateCustomer(array $customerUser): void
+    {
+        foreach ($customerUser as $key => $value) {
+            if (property_exists(self::class, $key)) {
+                $this->$key = $value;
+            }
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function jsonSerialize(): array
     {
         return [
             'uid' => $this->uid,

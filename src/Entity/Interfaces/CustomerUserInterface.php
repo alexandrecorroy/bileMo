@@ -15,7 +15,7 @@ namespace App\Entity\Interfaces;
 
 use App\Entity\Customer;
 use App\Entity\Product;
-use Doctrine\Common\Collections\Collection;
+use Ramsey\Uuid\Uuid;
 
 /**
  * Interface CustomerUserInterface
@@ -35,12 +35,12 @@ interface CustomerUserInterface
     public function removeProduct(Product $product);
 
     /**
-     * @return Collection
+     * @return array
      */
-    public function getProducts();
+    public function getProducts(): array;
 
     /**
-     * @return int
+     * @return Uuid
      */
     public function getUid();
 
@@ -77,5 +77,10 @@ interface CustomerUserInterface
     /**
      * @return Customer
      */
-    public function getCustomer();
+    public function getCustomer(): Customer;
+
+    /**
+     * @param array $customerUser
+     */
+    public function updateCustomer(array $customerUser): void;
 }

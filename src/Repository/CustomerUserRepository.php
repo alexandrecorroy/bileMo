@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Customer;
 use App\Entity\CustomerUser;
 use App\Entity\Interfaces\CustomerUserInterface;
 use App\Repository\Interfaces\CustomerUserRepositoryInterface;
@@ -26,6 +27,7 @@ final class CustomerUserRepository extends ServiceEntityRepository implements Cu
     {
         parent::__construct($registry, CustomerUser::class);
         $this->cache = $cache;
+        $cache->deleteAll();
     }
 
     /**
@@ -50,17 +52,19 @@ final class CustomerUserRepository extends ServiceEntityRepository implements Cu
     /**
      * {@inheritdoc}
      */
-    public function findAllCustomerUser(): array
+    public function findAllCustomerUser(Customer $customer): ?array
     {
-        if($this->cache->contains('findAllCustomerUser')) {
-            $query = $this->cache->fetch('findAllCustomerUser');
-        }
-        else {
+        $customerUid = $customer->getUid()->toString();
+        if($this->cache->contains('findAllCustomerUser' . $customerUid)) {
+            $query = $this->cache->fetch('findAllCustomerUser' . $customerUid);
+        } else {
             $query = $this->createQueryBuilder('cu')
+                ->where('cu.customer = :customer')
+                ->setParameter('customer', $customerUid)
                 ->setMaxResults(10)
                 ->getQuery()
                 ->getResult();
-            $this->cache->save('findAllCustomerUser', $query);
+            $this->cache->save('findAllCustomerUser' . $customerUid, $query);
         }
         return $query;
     }
@@ -70,8 +74,14 @@ final class CustomerUserRepository extends ServiceEntityRepository implements Cu
      */
     public function findOtherCustomerUser(CustomerUserInterface $customerUser): ?CustomerUserInterface
     {
-        // TODO: Implement findOtherCustomerUser() method.
+        return $this->createQueryBuilder('cu')
+            ->where('cu.email = :email')
+            ->setParameters(array(
+                'email'      => $customerUser->getEmail()
+            ))
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
     }
-
-
 }

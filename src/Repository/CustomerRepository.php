@@ -3,48 +3,39 @@
 namespace App\Repository;
 
 use App\Entity\Customer;
+use App\Repository\Interfaces\CustomerRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Cache\ApcuCache;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
- * @method Customer|null find($id, $lockMode = null, $lockVersion = null)
- * @method Customer|null findOneBy(array $criteria, array $orderBy = null)
- * @method Customer[]    findAll()
- * @method Customer[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * Class CustomerRepository.
  */
-class CustomerRepository extends ServiceEntityRepository
+final class CustomerRepository extends ServiceEntityRepository implements CustomerRepositoryInterface
 {
-    public function __construct(RegistryInterface $registry)
+    /**
+     * @var ApcuCache
+     */
+    private $cache;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct(RegistryInterface $registry, ApcuCache $cache)
     {
         parent::__construct($registry, Customer::class);
+        $this->cache = $cache;
     }
 
-//    /**
-//     * @return Customer[] Returns an array of Customer objects
-//     */
-    /*
-    public function findByExampleField($value)
+    /**
+     * {@inheritdoc}
+     */
+    public function getOneCustomer(): ?Customer
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
+        $query = $this->createQueryBuilder('c')
+            ->setMaxResults(1)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getOneOrNullResult();
+        return $query;
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Customer
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

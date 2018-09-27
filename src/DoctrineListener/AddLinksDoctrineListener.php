@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace App\DoctrineListener;
 
-
 use App\DoctrineListener\Interfaces\AddLinksDoctrineListenerInterface;
 use App\Entity\CustomerUser;
 use App\Entity\Product;
@@ -54,7 +53,7 @@ final class AddLinksDoctrineListener implements AddLinksDoctrineListenerInterfac
         if ($args->getEntity() instanceof CustomerUser) {
             $customerUser = $args->getEntity();
             $customerUser->addLinks(['get' => ['href' => $this->urlGenerator->generate('customer_user_show', array('id' => $customerUser->getUid()))]]);
-            $customerUser->addLinks(['patch' => ['href' => $this->urlGenerator->generate('customer_user_show', array('id' => $customerUser->getUid()))]]);
+            $customerUser->addLinks(['patch' => ['href' => $this->urlGenerator->generate('customer_user_update', array('id' => $customerUser->getUid()))]]);
             $customerUser->addLinks(['delete' => ['href' => $this->urlGenerator->generate('customer_user_delete', array('id' => $customerUser->getUid()))]]);
         }
     }

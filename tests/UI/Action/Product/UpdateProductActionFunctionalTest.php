@@ -58,17 +58,21 @@ final class UpdateProductActionFunctionalTest extends DataFixtureTestCase
         foreach ($this->products as $product) {
             $uri = $this->router->generate('product_update', ['id' => $product->getUid()->__toString()]);
 
-            $this->client->request('PATCH', $uri, array(), array(), array(), \json_encode($productUpdated));
+            $this->client = self::createAuthenticatedRoleAdmin();
+            $this->client->request('PATCH', $uri, array(), array(), array(), json_encode($productUpdated));
 
             $product->updateProduct($productUpdated);
             $productDetail = $product->getProductDetail();
             $productDetail->updateProductDetail($productUpdated['productDetail']);
 
             static::assertEquals(Response::HTTP_NO_CONTENT, $this->client->getResponse()->getStatusCode());
-            static::assertSame($product, $this->entityManager->getRepository(Product::class)->findOneByUuidField($product->getUid()));
+
+            $uri = $this->router->generate('product_show', ['id' => $product->getUid()->__toString()]);
+            $this->client = self::createAuthenticatedRoleAdmin();
+            $this->client->request('GET', $uri);
+            static::assertEquals(json_encode($product), $this->client->getResponse()->getContent());
 
             break;
         }
-
     }
 }

@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace App\Tests\UI\Action\Product;
 
 use App\Entity\Product;
-use App\Entity\ProductDetail;
 use App\Tests\DataFixtures\DataFixtureTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -23,7 +22,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 final class AddProductActionFunctionalTest extends DataFixtureTestCase
 {
-
     /**
      * test add new product
      */
@@ -47,7 +45,8 @@ final class AddProductActionFunctionalTest extends DataFixtureTestCase
 
         $json = json_encode($array);
 
-        $this->client->request('POST', '/product', array(), array(), array(), $json);
+        $this->client = self::createAuthenticatedRoleAdmin();
+        $this->client->request('POST', 'api/product', array(), array(), array(), $json);
 
         static::assertEquals(Response::HTTP_CREATED, $this->client->getResponse()->getStatusCode());
         static::assertTrue($this->client->getResponse()->headers->contains('content-type', 'application/json'));;
@@ -75,7 +74,8 @@ final class AddProductActionFunctionalTest extends DataFixtureTestCase
 
         $json = json_encode($array);
 
-        $this->client->request('POST', '/product', array(), array(), array(), $json);
+        $this->client = self::createAuthenticatedRoleAdmin();
+        $this->client->request('POST', 'api/product', array(), array(), array(), $json);
 
         static::assertEquals(Response::HTTP_PARTIAL_CONTENT, $this->client->getResponse()->getStatusCode());
         static::assertTrue($this->client->getResponse()->headers->contains('content-type', 'application/json'));;
@@ -104,7 +104,8 @@ final class AddProductActionFunctionalTest extends DataFixtureTestCase
 
         $json = json_encode($array);
 
-        $this->client->request('POST', '/product', array(), array(), array(), $json);
+        $this->client = self::createAuthenticatedRoleAdmin();
+        $this->client->request('POST', 'api/product', array(), array(), array(), $json);
 
         static::assertEquals(Response::HTTP_REQUESTED_RANGE_NOT_SATISFIABLE, $this->client->getResponse()->getStatusCode());
         static::assertTrue($this->client->getResponse()->headers->contains('content-type', 'application/json'));;
@@ -119,7 +120,8 @@ final class AddProductActionFunctionalTest extends DataFixtureTestCase
 
         $json = json_encode($array);
 
-        $this->client->request('POST', '/product', array(), array(), array(), $json);
+        $this->client = self::createAuthenticatedRoleAdmin();
+        $this->client->request('POST', 'api/product', array(), array(), array(), $json);
 
         static::assertEquals(Response::HTTP_PARTIAL_CONTENT, $this->client->getResponse()->getStatusCode());
         static::assertTrue($this->client->getResponse()->headers->contains('content-type', 'application/json'));;
@@ -152,7 +154,8 @@ final class AddProductActionFunctionalTest extends DataFixtureTestCase
 
         $json = json_encode($array);
 
-        $this->client->request('POST', '/product', array(), array(), array(), $json);
+        $this->client = self::createAuthenticatedRoleAdmin();
+        $this->client->request('POST', 'api/product', array(), array(), array(), $json);
 
         static::assertEquals(Response::HTTP_SEE_OTHER, $this->client->getResponse()->getStatusCode());
         static::assertTrue($this->client->getResponse()->headers->contains('content-type', 'application/json'));;

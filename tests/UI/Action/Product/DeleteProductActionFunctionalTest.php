@@ -49,6 +49,8 @@ final class DeleteProductActionFunctionalTest extends DataFixtureTestCase
      */
     public function testDeleteProduct()
     {
+        $this->client = self::createAuthenticatedRoleAdmin();
+
         foreach ($this->products as $product)
         {
             $uri = $this->router->generate('product_delete', ['id' => $product->getUid()]);

@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace App\UI\Action\CustomerUser;
 
 
-use App\Entity\Customer;
 use App\Entity\CustomerUser;
 use App\Repository\Interfaces\CustomerUserRepositoryInterface;
 use App\UI\Action\CustomerUser\Interfaces\AddCustomerUserActionInterface;
@@ -23,12 +22,13 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Class AddCustomerUserAction.
- * @Route("/customerUser", name="customer_user_add", methods={"POST"})
+ * @Route("api/customerUser", name="customer_user_add", methods={"POST"})
  */
 final class AddCustomerUserAction implements AddCustomerUserActionInterface
 {
@@ -54,18 +54,25 @@ final class AddCustomerUserAction implements AddCustomerUserActionInterface
     private $validator;
 
     /**
+     * @var TokenStorageInterface
+     */
+    private $tokenStorage;
+
+    /**
      * {@inheritdoc}
      */
     public function __construct(
         EntityManagerInterface $entityManager,
         CustomerUserRepositoryInterface $customerUserRepository,
         SerializerInterface $serializer,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        TokenStorageInterface $tokenStorage
     ) {
-        $this->entityManager = $entityManager;
+        $this->entityManager          = $entityManager;
         $this->customerUserRepository = $customerUserRepository;
-        $this->serializer = $serializer;
-        $this->validator = $validator;
+        $this->serializer             = $serializer;
+        $this->validator              = $validator;
+        $this->tokenStorage           = $tokenStorage;
     }
 
     /**
@@ -78,15 +85,9 @@ final class AddCustomerUserAction implements AddCustomerUserActionInterface
 
         $data = $request->getContent();
 
-        // start auto add uuid customer connected
+        $customer = $this->tokenStorage->getToken()->getUser();
 
-        $repository = $this->entityManager->getRepository(Customer::class);
-
-        $customer = $repository->getOneCustomer();
-
-        // end auto add uuid customer connected
-
-        $customerUser = $this->serializer->deserialize($data, CustomerUser::class, 'json', array('enable_max_depth' => true));
+        $customerUser = $this->serializer->deserialize($data, CustomerUser::class, 'json');
 
         $errors = $this->validator->validate($customerUser);
 
@@ -94,7 +95,7 @@ final class AddCustomerUserAction implements AddCustomerUserActionInterface
             return $addCustomerUserResponder($request, $errors);
         }
 
-        if ($this->customerUserRepository->findOtherCustomerUser($customerUser)) {
+        if (!\is_null($this->customerUserRepository->findOtherCustomerUser($customerUser))) {
             return $addCustomerUserResponder($request, Response::HTTP_SEE_OTHER);
         }
 

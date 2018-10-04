@@ -23,10 +23,11 @@ interface AddCustomerUserResponderInterface
 {
     /**
      * @param Request $request
+     * @param int $statusCode
      * @param null $errors
      *
      * @return Response
      */
-    public function __invoke(Request $request, $errors = null): Response;
+    public function __invoke(Request $request, $statusCode = Response::HTTP_CREATED, $errors = null): Response;
 
 }

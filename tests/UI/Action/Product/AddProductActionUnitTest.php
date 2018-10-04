@@ -69,10 +69,10 @@ final class AddProductActionUnitTest extends TestCase
         $this->productRepository = static::createMock(ProductRepositoryInterface::class);
         $this->serializer = static::createMock(SerializerInterface::class);
         $this->validator = static::createMock(ValidatorInterface::class);
+        $this->responder = $this->createMock(AddProductResponderInterface::class);
 
         $request = Request::create('/', 'POST');
-        $this->request = $request->duplicate(null, null, ['id' => 1]);
-        $this->responder = $this->createMock(AddProductResponderInterface::class);
+        $this->request = $request->duplicate(null, null);
     }
 
     /**

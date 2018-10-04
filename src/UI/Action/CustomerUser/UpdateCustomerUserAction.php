@@ -15,6 +15,7 @@ namespace App\UI\Action\CustomerUser;
 
 use App\Repository\Interfaces\CustomerUserRepositoryInterface;
 use App\UI\Action\CustomerUser\Interfaces\UpdateCustomerUserActionInterface;
+use App\UI\Responder\CustomerUser\Interfaces\ForbiddenCustomerUserResponderInterface;
 use App\UI\Responder\CustomerUser\Interfaces\NotFoundCustomerUserResponderInterface;
 use App\UI\Responder\CustomerUser\Interfaces\UpdateCustomerUserResponderInterface;
 use Doctrine\Common\Cache\ApcuCache;
@@ -22,12 +23,15 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Class UpdateCustomerUserAction.
  *
- * @Route("/customerUser/{id}", name="customer_user_update", methods={"PATCH"})
+ * @Route("api/customerUser/{id}", name="customer_user_update", methods={"PATCH"})
  */
 final class UpdateCustomerUserAction implements UpdateCustomerUserActionInterface
 {
@@ -48,16 +52,23 @@ final class UpdateCustomerUserAction implements UpdateCustomerUserActionInterfac
     private $validator;
 
     /**
+     * @var TokenStorageInterface
+     */
+    private $tokenStorage;
+
+    /**
      *{@inheritdoc}
      */
     public function __construct(
         EntityManagerInterface $entityManager,
         CustomerUserRepositoryInterface $customerUserRepository,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        TokenStorageInterface $tokenStorage
     ) {
-        $this->entityManager     = $entityManager;
+        $this->entityManager          = $entityManager;
         $this->customerUserRepository = $customerUserRepository;
-        $this->validator         = $validator;
+        $this->validator              = $validator;
+        $this->tokenStorage           = $tokenStorage;
     }
 
     /**
@@ -66,7 +77,8 @@ final class UpdateCustomerUserAction implements UpdateCustomerUserActionInterfac
     public function __invoke(
         Request $request,
         UpdateCustomerUserResponderInterface $updateCustomerUserResponder,
-        NotFoundCustomerUserResponderInterface $notFoundCustomerUserResponder
+        NotFoundCustomerUserResponderInterface $notFoundCustomerUserResponder,
+        ForbiddenCustomerUserResponderInterface $forbiddenCustomerUserResponder
     ): Response {
 
         $cache = new ApcuCache();
@@ -75,10 +87,13 @@ final class UpdateCustomerUserAction implements UpdateCustomerUserActionInterfac
 
         $customerUser = $this->customerUserRepository->findOneByUuidField($request->attributes->get('id'));
 
-        // check if Customer is own of customerUser
-
         if (\is_null($customerUser)) {
             return $notFoundCustomerUserResponder();
+        }
+
+        if($customerUser->getCustomer()!==$this->tokenStorage->getToken()->getUser())
+        {
+            return $forbiddenCustomerUserResponder();
         }
 
         $customerUser->updateCustomer($array);

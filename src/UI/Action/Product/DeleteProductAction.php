@@ -26,7 +26,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * final Class DeleteProductAction.
  *
- * @Route("/product/{id}", name="product_delete", methods={"DELETE"})
+ * @Route("api/product/{id}", name="product_delete", methods={"DELETE"})
  */
 final class DeleteProductAction implements DeleteProductActionInterface
 {

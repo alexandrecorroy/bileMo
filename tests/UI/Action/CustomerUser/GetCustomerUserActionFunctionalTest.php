@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace App\Tests\UI\Action\CustomerUser;
 
-use App\Entity\CustomerUser;
 use App\Tests\DataFixtures\DataFixtureTestCase;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,17 +29,11 @@ final class GetCustomerUserActionFunctionalTest extends DataFixtureTestCase
     private $router = null;
 
     /**
-     * @var array|null
-     */
-    private $customerUsers = null;
-
-    /**
      * {@inheritdoc}
      */
     public function setUp()
     {
         parent::setUp();
-        $this->customerUsers = $this->entityManager->getRepository(CustomerUser::class)->findAllCustomerUser();
         $this->router = self::$container->get('router');
     }
 
@@ -49,9 +42,15 @@ final class GetCustomerUserActionFunctionalTest extends DataFixtureTestCase
      */
     public function testCustomerUserIsReturned()
     {
-        foreach ($this->customerUsers as $customerUser)
+        $uri = $this->router->generate('customer_user_list');
+        $this->client = self::createAuthenticatedRoleUser();
+        $this->client->request('GET', $uri);
+
+        $customerUsers = json_decode($this->client->getResponse()->getContent());
+
+        foreach ($customerUsers as $customerUser)
         {
-            $uri = $this->router->generate('customer_user_show', ['id' => $customerUser->getUid()]);
+            $uri = $this->router->generate('customer_user_show', ['id' => $customerUser->{'uid'}]);
 
             $this->client->request('GET', $uri);
 
@@ -67,6 +66,7 @@ final class GetCustomerUserActionFunctionalTest extends DataFixtureTestCase
     {
         $uri = $this->router->generate('customer_user_show', ['id' => Uuid::uuid4()]);
 
+        $this->client = self::createAuthenticatedRoleUser();
         $this->client->request('GET', $uri);
 
         static::assertEquals(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace App\UI\Action\CustomerUser;
 
-use App\Entity\Customer;
 use App\Repository\Interfaces\CustomerUserRepositoryInterface;
 use App\UI\Action\CustomerUser\Interfaces\ListCustomerUserActionInterface;
 use App\UI\Responder\CustomerUser\Interfaces\ListCustomerUserResponderInterface;
@@ -22,11 +21,13 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 /**
  * final Class ListCustomerUserAction.
  *
- * @Route("/customerUsers", name="customer_user_list", methods={"GET"})
+ * @Route("api/customerUsers", name="customer_user_list", methods={"GET"})
  */
 final class ListCustomerUserAction implements ListCustomerUserActionInterface
 {
@@ -42,14 +43,21 @@ final class ListCustomerUserAction implements ListCustomerUserActionInterface
     private $entityManager;
 
     /**
+     * @var TokenStorageInterface
+     */
+    private $tokenStorage;
+
+    /**
      * {@inheritdoc}
      */
     public function __construct(
         CustomerUserRepositoryInterface $customerUserRepository,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        TokenStorageInterface $tokenStorage
     ) {
         $this->customerUserRepository = $customerUserRepository;
-        $this->entityManager = $entityManager;
+        $this->entityManager          = $entityManager;
+        $this->tokenStorage           = $tokenStorage;
     }
 
     /**
@@ -61,15 +69,7 @@ final class ListCustomerUserAction implements ListCustomerUserActionInterface
         NotFoundCustomerUserResponderInterface $notFoundCustomerUserResponder
     ): Response {
 
-        // start auto add uuid customer connected
-
-        $repository = $this->entityManager->getRepository(Customer::class);
-
-        $customer = $repository->getOneCustomer();
-
-        // end auto add uuid customer connected
-
-        $customerUsers = $this->customerUserRepository->findAllCustomerUser($customer);
+        $customerUsers = $this->customerUserRepository->findAllCustomerUser($this->tokenStorage->getToken()->getUser());
 
         if(\is_null($customerUsers)) {
             return $notFoundCustomerUserResponder();

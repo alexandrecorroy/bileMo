@@ -17,7 +17,9 @@ namespace App\Tests\UI\Action\CustomerUser;
 use App\Entity\CustomerUser;
 use App\Tests\DataFixtures\DataFixtureTestCase;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Router;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * final Class DeleteCustomerUserFunctionalTest.
@@ -30,17 +32,11 @@ final class DeleteCustomerUserFunctionalTest extends DataFixtureTestCase
     private $router = null;
 
     /**
-     * @var array|null
-     */
-    private $customerUsers = null;
-
-    /**
      * {@inheritdoc}
      */
     public function setUp()
     {
         parent::setUp();
-        $this->customerUsers = $this->entityManager->getRepository(CustomerUser::class)->findAllCustomerUser();
         $this->router = self::$container->get('router');
     }
 
@@ -49,9 +45,15 @@ final class DeleteCustomerUserFunctionalTest extends DataFixtureTestCase
      */
     public function testDeleteCustomerUser()
     {
-        foreach ($this->customerUsers as $customerUser)
+        $uri = $this->router->generate('customer_user_list');
+        $this->client = self::createAuthenticatedRoleUser();
+        $this->client->request('GET', $uri);
+
+        $customerUsers = json_decode($this->client->getResponse()->getContent());
+
+        foreach ($customerUsers as $customerUser)
         {
-            $uri = $this->router->generate('customer_user_delete', ['id' => $customerUser->getUid()]);
+            $uri = $this->router->generate('customer_user_delete', ['id' => $customerUser->{'uid'}]);
 
             $this->client->request('DELETE', $uri);
 

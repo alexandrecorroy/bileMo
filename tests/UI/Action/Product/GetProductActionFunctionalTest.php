@@ -46,6 +46,7 @@ final class GetProductActionFunctionalTest extends DataFixtureTestCase
      */
     public function testResponse()
     {
+        $this->client = self::createAuthenticatedRoleUser();
         foreach ($this->products as $product) {
             $uri = $this->router->generate('product_show', ['id' => $product->getUid()->__toString()]);
 
@@ -64,10 +65,10 @@ final class GetProductActionFunctionalTest extends DataFixtureTestCase
     {
         $uri = $this->router->generate('product_show', ['id' => Uuid::uuid4()]);
 
+        $this->client = self::createAuthenticatedRoleUser();
         $this->client->request('GET', $uri);
 
         static::assertEquals(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
         static::assertTrue($this->client->getResponse()->headers->contains('content-type', 'application/json'));
-
     }
 }

@@ -17,11 +17,15 @@ use App\Entity\Interfaces\CustomerUserInterface;
 use App\Repository\Interfaces\CustomerUserRepositoryInterface;
 use App\UI\Action\CustomerUser\GetCustomerUserAction;
 use App\UI\Action\CustomerUser\Interfaces\GetCustomerUserActionInterface;
+use App\UI\Responder\CustomerUser\Interfaces\ForbiddenCustomerUserResponderInterface;
 use App\UI\Responder\CustomerUser\Interfaces\GetCustomerUserResponderInterface;
 use App\UI\Responder\CustomerUser\Interfaces\NotFoundCustomerUserResponderInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class GetCustomerUserActionUnitTest.
@@ -44,9 +48,19 @@ final class GetCustomerUserActionUnitTest extends TestCase
     private $notFoundResponder = null;
 
     /**
-     * @var Request|null
+     * @var null
      */
     private $request = null;
+
+    /**
+     * @var ForbiddenCustomerUserResponderInterface|null
+     */
+    private $forbiddenResponder = null;
+
+    /**
+     * @var TokenStorageInterface|null
+     */
+    private $tokenStorage = null;
 
     /**
      * {@inheritdoc}
@@ -56,6 +70,9 @@ final class GetCustomerUserActionUnitTest extends TestCase
         $this->repository = $this->createMock(CustomerUserRepositoryInterface::class);
         $this->responder = $this->createMock(GetCustomerUserResponderInterface::class);
         $this->notFoundResponder = $this->createMock(NotFoundCustomerUserResponderInterface::class);
+        $this->tokenStorage = $this->createMock(TokenStorageInterface::class);
+        $this->forbiddenResponder = $this->createMock(ForbiddenCustomerUserResponderInterface::class);
+
         $request = Request::create('/', 'GET');
         $this->request = $request->duplicate(null, null, ['id' => 1]);
     }
@@ -65,7 +82,7 @@ final class GetCustomerUserActionUnitTest extends TestCase
      */
     public function testImplementInterface()
     {
-        static::assertInstanceOf(GetCustomerUserActionInterface::class, new GetCustomerUserAction($this->repository));
+        static::assertInstanceOf(GetCustomerUserActionInterface::class, new GetCustomerUserAction($this->repository, $this->tokenStorage));
     }
 
     /**
@@ -73,12 +90,16 @@ final class GetCustomerUserActionUnitTest extends TestCase
      */
     public function testResponseIsReturned()
     {
-        $customerUserMock = $this->createMock(CustomerUserInterface::class);
+        $customerUser = $this->createMock(CustomerUserInterface::class);
+        $tokenInterface = $this->createMock(TokenInterface::class);
+        $user = $this->createMock(UserInterface::class);
 
-        $this->repository->method('findOneByUuidField')->willReturn($customerUserMock);
+        $this->repository->method('findOneByUuidField')->willReturn($customerUser);
+        $this->tokenStorage->method('getToken')->willReturn($tokenInterface);
+        $tokenInterface->method('getUser')->willReturn($user);
 
-        $customerUser = new GetCustomerUserAction($this->repository);
+        $customerUser = new GetCustomerUserAction($this->repository, $this->tokenStorage);
 
-        static::assertInstanceOf(Response::class, $customerUser($this->request, $this->responder, $this->notFoundResponder));
+        static::assertInstanceOf(Response::class, $customerUser($this->request, $this->responder, $this->notFoundResponder, $this->forbiddenResponder));
     }
 }

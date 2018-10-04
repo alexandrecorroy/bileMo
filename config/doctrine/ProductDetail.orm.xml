@@ -2,7 +2,7 @@
                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                    https://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
-    <entity name="App\Entity\ProductDetail" table="bilemo_product_detail" repository-class="App\Repository\ProductDetailRepository">
+    <entity name="App\Entity\ProductDetail" table="bilemo_product_detail">
         <id name="uid" column="uid" type="uuid"/>
         <field name="brand" length="56"/>
         <field name="color" length="32" />

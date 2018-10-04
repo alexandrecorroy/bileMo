@@ -13,6 +13,8 @@ declare(strict_types = 1);
 
 namespace App\Entity\Interfaces;
 
+use App\Entity\CustomerUser;
+
 /**
  * Interface CustomerInterface
  */
@@ -47,4 +49,9 @@ interface CustomerInterface
      * @return null|string
      */
     public function getPhone(): ?string;
+
+    /**
+     * @param CustomerUser $customerUser
+     */
+    public function addCustomerUser(CustomerUser $customerUser): void;
 }

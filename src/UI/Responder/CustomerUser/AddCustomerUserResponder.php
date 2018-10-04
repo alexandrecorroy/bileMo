@@ -26,22 +26,22 @@ final class AddCustomerUserResponder implements AddCustomerUserResponderInterfac
     /**
      * {@inheritdoc}
      */
-    public function __invoke(Request $request, $errors = null): Response
+    public function __invoke(Request $request, $statusCode = Response::HTTP_CREATED, $errors = null): Response
     {
-        if (!\is_null($errors)) {
-            if ($errors === Response::HTTP_SEE_OTHER) {
-                return new JsonResponse('CustomerUser already added!', Response::HTTP_SEE_OTHER);
-            } else {
-                $errorList = [];
-                foreach ($errors as $error) {
-                    array_push($errorList, $error->getMessage());
-                }
-
-                return new JsonResponse($errorList, Response::HTTP_REQUESTED_RANGE_NOT_SATISFIABLE);
-            }
-        } else {
-            return new JsonResponse('CustomerUser added !', Response::HTTP_CREATED);
+        if ($statusCode === Response::HTTP_SEE_OTHER) {
+            return new JsonResponse('CustomerUser already added!', Response::HTTP_SEE_OTHER);
         }
-    }
 
+        if (!\is_null($errors)) {
+            $errorList = [];
+            foreach ($errors as $error) {
+                $errorList[] = $error->getMessage();
+            }
+
+            return new JsonResponse($errorList, Response::HTTP_REQUESTED_RANGE_NOT_SATISFIABLE);
+        }
+
+        return new JsonResponse('CustomerUser added !', $statusCode);
+
+    }
 }

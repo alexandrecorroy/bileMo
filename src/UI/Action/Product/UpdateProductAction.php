@@ -27,7 +27,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 /**
  * final Class UpdateProductAction.
  *
- * @Route("/product/{id}", name="product_update", methods={"PATCH"})
+ * @Route("api/product/{id}", name="product_update", methods={"PATCH"})
  */
 final class UpdateProductAction implements UpdateProductActionInterface
 {

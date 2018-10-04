@@ -24,7 +24,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * final Class ListProductAction.
  *
- * @Route("/products", name="product_list", methods={"GET"})
+ * @Route("api/products", name="product_list", methods={"GET"})
  */
 final class ListProductAction implements ListProductActionInterface
 {

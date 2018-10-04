@@ -27,7 +27,6 @@ final class CustomerUserRepository extends ServiceEntityRepository implements Cu
     {
         parent::__construct($registry, CustomerUser::class);
         $this->cache = $cache;
-        $cache->deleteAll();
     }
 
     /**

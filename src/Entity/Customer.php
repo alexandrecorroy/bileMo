@@ -15,11 +15,12 @@ namespace App\Entity;
 
 use App\Entity\Interfaces\CustomerInterface;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class Customer.
  */
-class Customer implements CustomerInterface, \JsonSerializable
+class Customer implements CustomerInterface, \JsonSerializable, UserInterface
 {
     /**
      * @var \Ramsey\Uuid\UuidInterface
@@ -51,6 +52,9 @@ class Customer implements CustomerInterface, \JsonSerializable
      */
     private $phone = null;
 
+    /**
+     * @var CustomerUser[]
+     */
     private $customerUsers = [];
 
     /**
@@ -130,7 +134,7 @@ class Customer implements CustomerInterface, \JsonSerializable
     /**
      * {@inheritdoc}
      */
-    public function addCustomerUser(CustomerUser $customerUser)
+    public function addCustomerUser(CustomerUser $customerUser): void
     {
         $customerUser->setCustomer($this);
         $this->customerUsers[] = $customerUser;
@@ -163,6 +167,9 @@ class Customer implements CustomerInterface, \JsonSerializable
         return $list;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function jsonSerialize()
     {
         return [
@@ -174,5 +181,32 @@ class Customer implements CustomerInterface, \JsonSerializable
         ];
     }
 
+    public function updatePassword($password): void
+    {
+        $this->password = $password;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRoles()
+    {
+        return array('ROLE_USER');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSalt()
+    {
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function eraseCredentials()
+    {
+    }
 
 }

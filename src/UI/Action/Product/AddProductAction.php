@@ -27,7 +27,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 /**
  * final Class AddProductAction.
  *
- * @Route("/product", name="product_add", methods={"POST"})
+ * @Route("api/product", name="product_add", methods={"POST"})
  */
 final class AddProductAction implements AddProductActionInterface
 {

@@ -19,6 +19,7 @@ use App\UI\Responder\CustomerUser\Interfaces\NotFoundCustomerUserResponderInterf
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * Interface ListCustomerUserActionInterface.
@@ -30,10 +31,12 @@ interface ListCustomerUserActionInterface
      *
      * @param CustomerUserRepositoryInterface $customerUserRepository
      * @param EntityManagerInterface $entityManager
+     * @param TokenStorageInterface $tokenStorage
      */
     public function __construct(
         CustomerUserRepositoryInterface $customerUserRepository,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        TokenStorageInterface $tokenStorage
     );
 
     /**

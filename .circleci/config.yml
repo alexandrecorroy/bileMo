@@ -1,38 +1,42 @@
-# PHP CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-php/ for more details
-#
 version: 2
 jobs:
   build:
     docker:
-      # specify the version you desire here
-      - image: circleci/php:7.1-browsers
-      
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mysql:9.4
-
-    working_directory: ~/repo
+    - image: hermsi/alpine-fpm-php:7.2.8
 
     steps:
-      - checkout
+    - checkout
 
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "composer.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
+    - run: pecl install && docker-php-ext-enable apcu
+    - run: apk add --no-cache zlib-dev
+    - run: docker-php-ext-install mysqli
+    - run: docker-php-ext-install zip
 
-      - run: composer install -n --prefer-dist
+    - run:
+        name: Install Composer
+        command: |
+          php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+          php -r "if (hash_file('SHA384', 'composer-setup.php') === trim(file_get_contents('https://composer.github.io/installer.sig'))) { echo 'Installer verified'; } else { echo 'Installer invalid'; unlink('composer-setup.php'); } echo PHP_EOL;"
+          php composer-setup.php
+          php -r "unlink('composer-setup.php');"
+    - run:
+        name: Display PHP information
+        command: |
+          php -v
+          php composer.phar --version
+    - run:
+        name: Install project dependencies
+        command: php composer.phar install
 
-      - save_cache:
-          paths:
-            - ./vendor
-          key: v1-dependencies-{{ checksum "composer.json" }}
-        
-      # run tests!
-      - run: phpunit
-        
+    - run:
+        name: install jwt ssh keys
+        command: |
+            mkdir config/jwt
+            openssl genrsa -out config/jwt/private.pem 4096
+            openssl rsa -pubout -in config/jwt/private.pem -out config/jwt/public.pem
+            php bin/console lexik:jwt:check-config
+
+    # run tests with phpunit
+    - run: |
+        chmod +x bin/phpunit
+        bin/phpunit

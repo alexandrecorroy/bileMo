@@ -33,6 +33,9 @@ final class UpdateProductActionFunctionalTest extends DataFixtureTestCase
      */
     private $products;
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         parent::setUp();

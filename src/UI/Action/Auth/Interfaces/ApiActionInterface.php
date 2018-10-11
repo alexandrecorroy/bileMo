@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace App\UI\Action\Auth\Interfaces;
 
 use App\UI\Responder\Auth\ApiResponder;
+use App\UI\Responder\Auth\Interfaces\ApiResponderInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -21,5 +22,5 @@ use Symfony\Component\HttpFoundation\Response;
  */
 interface ApiActionInterface
 {
-    public function __invoke(ApiResponder $loginResponder): Response;
+    public function __invoke(ApiResponderInterface $loginResponder): Response;
 }

@@ -13,7 +13,7 @@ declare(strict_types = 1);
 
 namespace App\Entity\Interfaces;
 
-use App\Entity\ProductDetail;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Interface ProductInterface
@@ -21,29 +21,37 @@ use App\Entity\ProductDetail;
 interface ProductInterface
 {
     /**
-     * @return int
+     * @return UuidInterface
      */
-    public function getUid();
+    public function getUid(): UuidInterface;
 
     /**
      * @return string
      */
-    public function getName(): ?string;
+    public function getName(): string;
 
     /**
      * @return float
      */
-    public function getPrice();
+    public function getPrice(): float;
 
     /**
-     * @return ProductDetail
+     * @return ProductDetailInterface
      */
-    public function getProductDetail();
+    public function getProductDetail(): ProductDetailInterface;
 
     /**
      * @param array $product
-     *
-     * @return mixed
      */
-    public function updateProduct(array $product);
+    public function updateProduct(array $product): void;
+
+    /**
+     * @return array
+     */
+    public function getLinks(): array;
+
+    /**
+     * @param array $links
+     */
+    public function addLinks(array $links): void;
 }

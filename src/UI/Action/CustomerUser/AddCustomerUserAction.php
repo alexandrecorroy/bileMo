@@ -15,9 +15,11 @@ namespace App\UI\Action\CustomerUser;
 
 
 use App\Entity\CustomerUser;
+use App\Entity\Product;
 use App\Repository\Interfaces\CustomerUserRepositoryInterface;
 use App\UI\Action\CustomerUser\Interfaces\AddCustomerUserActionInterface;
 use App\UI\Responder\CustomerUser\Interfaces\AddCustomerUserResponderInterface;
+use Doctrine\Common\Cache\ApcuCache;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -82,8 +84,10 @@ final class AddCustomerUserAction implements AddCustomerUserActionInterface
         Request $request,
         AddCustomerUserResponderInterface $addCustomerUserResponder
     ): Response {
+        $cache = new ApcuCache();
 
         $data = $request->getContent();
+        $products = json_decode($data, true)['products'] ?? null;
 
         $customer = $this->tokenStorage->getToken()->getUser();
 
@@ -92,15 +96,28 @@ final class AddCustomerUserAction implements AddCustomerUserActionInterface
         $errors = $this->validator->validate($customerUser);
 
         if (\count($errors) > 0) {
-            return $addCustomerUserResponder($request, $errors);
+            return $addCustomerUserResponder($request, Response::HTTP_REQUESTED_RANGE_NOT_SATISFIABLE, $errors);
         }
 
         if (!\is_null($this->customerUserRepository->findOtherCustomerUser($customerUser))) {
             return $addCustomerUserResponder($request, Response::HTTP_SEE_OTHER);
         }
 
+        if(!\is_null($products))
+        {
+            foreach ($products as $product)
+            {
+                $product = $this->entityManager->getRepository(Product::class)->findOneByUuidField($product['uid']);
+                if(!\is_null($product))
+                {
+                    $customerUser->addProduct($product);
+                }
+            }
+        }
+
         $customer->addCustomerUser($customerUser);
         $this->entityManager->persist($customer);
+        $cache->delete('findAllCustomerUser'.$customerUser->getCustomer()->getUid()->toString());
         $this->entityManager->flush();
 
         return $addCustomerUserResponder($request);

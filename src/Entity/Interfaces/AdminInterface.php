@@ -13,31 +13,25 @@ declare(strict_types=1);
 
 namespace App\Entity\Interfaces;
 
+use Ramsey\Uuid\UuidInterface;
+
 /**
  * Interface AdminInterface.
  */
 interface AdminInterface
 {
     /**
-     * AdminInterface constructor.
-     *
-     * @param $username
+     * @return UuidInterface
+     */
+    public function  getUid(): UuidInterface;
+
+    /**
+     * @return string
+     */
+    public function getEmail(): string;
+
+    /**
      * @param $password
-     * @param $email
      */
-    public function __construct(
-        $username,
-        $password,
-        $email
-    );
-
-    /**
-     * @return mixed
-     */
-    public function  getUuid();
-
-    /**
-     * @return mixed
-     */
-    public function getEmail();
+    public function updatePassword($password): void;
 }

@@ -16,7 +16,7 @@ namespace App\Tests\Entity;
 use App\Entity\Customer;
 use App\Entity\Interfaces\CustomerInterface;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * final Class CustomerUnitTest
@@ -29,7 +29,7 @@ final class CustomerUnitTest extends TestCase
     public function testAddCustomer()
     {
         $customer = new Customer(
-            "societest",
+            "societyTest",
             "test@test.fr",
             "user",
             "password",
@@ -42,6 +42,6 @@ final class CustomerUnitTest extends TestCase
         static::assertEquals("password", $customer->getPassword());
         static::assertEquals("user", $customer->getUsername());
         static::assertEquals("0123456789", $customer->getPhone());
-        static::assertEquals("societest", $customer->getSociety());
+        static::assertEquals("societyTest", $customer->getSociety());
     }
 }

@@ -67,7 +67,7 @@ final class DeleteProductAction implements DeleteProductActionInterface
             return $notFoundProductResponder();
         }
 
-        $cache->delete('find'.$product->getUid());
+        $cache->delete('find'.$product->getUid()->toString());
         $this->entityManager->remove($product);
         $this->entityManager->flush();
 

@@ -25,23 +25,5 @@ final class CustomerRepository extends ServiceEntityRepository implements Custom
     {
         parent::__construct($registry, Customer::class);
         $this->cache = $cache;
-        $cache->deleteAll();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getOneCustomer(): ?Customer
-    {
-        if($this->cache->contains('customer')) {
-            $query = $this->cache->fetch('customer');
-        } else {
-            $query = $this->createQueryBuilder('c')
-                ->setMaxResults(1)
-                ->getQuery()
-                ->getOneOrNullResult();
-            $this->cache->save('customer', $query);
-        }
-        return $query;
     }
 }

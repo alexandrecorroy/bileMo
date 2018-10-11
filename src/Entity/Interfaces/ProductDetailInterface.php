@@ -13,65 +13,65 @@ declare(strict_types = 1);
 
 namespace App\Entity\Interfaces;
 
+use Ramsey\Uuid\UuidInterface;
+
 /**
  * Interface ProductDetailInterface
  */
 interface ProductDetailInterface
 {
     /**
+     * @return UuidInterface
+     */
+    public function getUid(): UuidInterface;
+
+    /**
+     * @return string
+     */
+    public function getBrand(): string;
+
+    /**
+     * @return string
+     */
+    public function getColor(): string;
+
+    /**
+     * @return float
+     */
+    public function getScreenSize(): float;
+
+    /**
+     * @return string
+     */
+    public function getOs(): string;
+
+    /**
      * @return int
      */
-    public function getUid();
-
-    /**
-     * @return string
-     */
-    public function getBrand(): ?string;
-
-    /**
-     * @return string
-     */
-    public function getColor(): ?string;
+    public function getMemory(): int;
 
     /**
      * @return float
      */
-    public function getScreenSize();
-
-    /**
-     * @return string
-     */
-    public function getOs(): ?string;
-
-    /**
-     * @return int
-     */
-    public function getMemory(): ?int;
+    public function getWeight(): float;
 
     /**
      * @return float
      */
-    public function getWeight();
+    public function getHeight(): float;
 
     /**
      * @return float
      */
-    public function getHeight();
+    public function getWidth(): float;
 
     /**
      * @return float
      */
-    public function getWidth();
-
-    /**
-     * @return float
-     */
-    public function getThickness();
+    public function getThickness(): float;
 
     /**
      * @param array|null $productDetail
-     *
-     * @return mixed
      */
-    public function updateProductDetail(array $productDetail = null);
+    public function updateProductDetail(array $productDetail = null): void;
 }

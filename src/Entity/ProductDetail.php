@@ -15,6 +15,7 @@ namespace App\Entity;
 
 use App\Entity\Interfaces\ProductDetailInterface;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -135,6 +136,8 @@ class ProductDetail implements ProductDetailInterface, \JsonSerializable
      * @param $height
      * @param $width
      * @param $thickness
+     *
+     * @throws \Exception
      */
     public function __construct(
         $brand,
@@ -162,7 +165,7 @@ class ProductDetail implements ProductDetailInterface, \JsonSerializable
     /**
      * {@inheritdoc}
      */
-    public function getUid()
+    public function getUid(): UuidInterface
     {
         return $this->uid;
     }
@@ -170,7 +173,7 @@ class ProductDetail implements ProductDetailInterface, \JsonSerializable
     /**
      * {@inheritdoc}
      */
-    public function getBrand(): ?string
+    public function getBrand(): string
     {
         return $this->brand;
     }
@@ -178,7 +181,7 @@ class ProductDetail implements ProductDetailInterface, \JsonSerializable
     /**
      * {@inheritdoc}
      */
-    public function getColor(): ?string
+    public function getColor(): string
     {
         return $this->color;
     }
@@ -186,7 +189,7 @@ class ProductDetail implements ProductDetailInterface, \JsonSerializable
     /**
      * {@inheritdoc}
      */
-    public function getOs(): ?string
+    public function getOs(): string
     {
         return $this->os;
     }
@@ -194,7 +197,7 @@ class ProductDetail implements ProductDetailInterface, \JsonSerializable
     /**
      * {@inheritdoc}
      */
-    public function getMemory(): ?int
+    public function getMemory(): int
     {
         return $this->memory;
     }
@@ -202,7 +205,7 @@ class ProductDetail implements ProductDetailInterface, \JsonSerializable
     /**
      * {@inheritdoc}
      */
-    public function getWeight()
+    public function getWeight(): float
     {
         return $this->weight;
     }
@@ -210,7 +213,7 @@ class ProductDetail implements ProductDetailInterface, \JsonSerializable
     /**
      * {@inheritdoc}
      */
-    public function getScreenSize()
+    public function getScreenSize(): float
     {
         return $this->screenSize;
     }
@@ -218,7 +221,7 @@ class ProductDetail implements ProductDetailInterface, \JsonSerializable
     /**
      * {@inheritdoc}
      */
-    public function getHeight()
+    public function getHeight(): float
     {
         return $this->height;
     }
@@ -226,7 +229,7 @@ class ProductDetail implements ProductDetailInterface, \JsonSerializable
     /**
      * {@inheritdoc}
      */
-    public function getWidth()
+    public function getWidth(): float
     {
         return $this->width;
     }
@@ -234,7 +237,7 @@ class ProductDetail implements ProductDetailInterface, \JsonSerializable
     /**
      * {@inheritdoc}
      */
-    public function getThickness()
+    public function getThickness(): float
     {
         return $this->thickness;
     }
@@ -242,7 +245,7 @@ class ProductDetail implements ProductDetailInterface, \JsonSerializable
     /**
      * {@inheritdoc}
      */
-    public function updateProductDetail(array $productDetail = null)
+    public function updateProductDetail(array $productDetail = null): void
     {
         if($productDetail)
         {
@@ -252,9 +255,11 @@ class ProductDetail implements ProductDetailInterface, \JsonSerializable
                 }
             }
         }
-
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function jsonSerialize()
     {
         return [

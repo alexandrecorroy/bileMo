@@ -67,7 +67,7 @@ final class GetCustomerUserAction implements GetCustomerUserActionInterface
             return $notFoundCustomerUserResponder();
         }
 
-        if($customerUser->getCustomer()!==$this->tokenStorage->getToken()->getUser())
+        if($customerUser->getCustomer()->getUid()->toString()!==$this->tokenStorage->getToken()->getUser()->getUid()->toString())
         {
             return $forbiddenCustomerUserResponder();
         }

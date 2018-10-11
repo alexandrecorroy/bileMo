@@ -15,6 +15,7 @@ namespace App\Entity;
 
 use App\Entity\Interfaces\AdminInterface;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -43,7 +44,13 @@ class Admin implements AdminInterface, UserInterface
     private $password;
 
     /**
-     * {@inheritdoc}
+     * Admin constructor.
+     *
+     * @param $username
+     * @param $password
+     * @param $email
+     *
+     * @throws \Exception
      */
     public function __construct(
         $username,
@@ -99,7 +106,7 @@ class Admin implements AdminInterface, UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getEmail()
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -107,12 +114,12 @@ class Admin implements AdminInterface, UserInterface
     /**
      * {@inheritdoc}
      */
-    public function  getUuid()
+    public function getUid(): UuidInterface
     {
         return $this->uid;
     }
 
-    public function updatePassword($password)
+    public function updatePassword($password): void
     {
         $this->password = $password;
     }

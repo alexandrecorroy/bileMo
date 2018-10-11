@@ -92,11 +92,10 @@ final class GetCustomerUserActionUnitTest extends TestCase
     {
         $customerUser = $this->createMock(CustomerUserInterface::class);
         $tokenInterface = $this->createMock(TokenInterface::class);
-        $user = $this->createMock(UserInterface::class);
 
         $this->repository->method('findOneByUuidField')->willReturn($customerUser);
         $this->tokenStorage->method('getToken')->willReturn($tokenInterface);
-        $tokenInterface->method('getUser')->willReturn($user);
+        $tokenInterface->method('getUser')->willReturn($customerUser);
 
         $customerUser = new GetCustomerUserAction($this->repository, $this->tokenStorage);
 

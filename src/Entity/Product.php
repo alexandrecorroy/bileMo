@@ -16,6 +16,7 @@ namespace App\Entity;
 use App\Entity\Interfaces\ProductDetailInterface;
 use App\Entity\Interfaces\ProductInterface;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -57,6 +58,9 @@ class Product implements ProductInterface, \JsonSerializable
      */
     private $productDetail;
 
+    /**
+     * @var array
+     */
     private $links = [];
 
     /**
@@ -65,6 +69,8 @@ class Product implements ProductInterface, \JsonSerializable
      * @param $name
      * @param $price
      * @param ProductDetail $productDetail
+     *
+     * @throws \Exception
      */
     public function __construct(
         $name,
@@ -77,11 +83,17 @@ class Product implements ProductInterface, \JsonSerializable
         $this->productDetail = $productDetail;
     }
 
-    public function addLinks(array $links)
+    /**
+     * {@inheritdoc}
+     */
+    public function addLinks(array $links): void
     {
         $this->links[] = $links;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getLinks(): array
     {
         return $this->links;
@@ -90,7 +102,7 @@ class Product implements ProductInterface, \JsonSerializable
     /**
      * {@inheritdoc}
      */
-    public function getUid()
+    public function getUid(): UuidInterface
     {
         return $this->uid;
     }
@@ -98,7 +110,7 @@ class Product implements ProductInterface, \JsonSerializable
     /**
      * {@inheritdoc}
      */
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -106,13 +118,13 @@ class Product implements ProductInterface, \JsonSerializable
     /**
      * {@inheritdoc}
      */
-    public function getPrice()
+    public function getPrice(): float
     {
         return $this->price;
     }
 
     /**
-     * @return array|mixed
+     * {@inheritdoc}
      */
     public function jsonSerialize()
     {
@@ -138,7 +150,7 @@ class Product implements ProductInterface, \JsonSerializable
     /**
      * @param array $product
      */
-    public function updateProduct(array $product)
+    public function updateProduct(array $product): void
     {
         foreach ($product as $key => $value) {
             if (property_exists(self::class, $key) && $key!='productDetail') {

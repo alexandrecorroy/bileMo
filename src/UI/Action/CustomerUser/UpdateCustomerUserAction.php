@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\UI\Action\CustomerUser;
 
+use App\Entity\Product;
 use App\Repository\Interfaces\CustomerUserRepositoryInterface;
 use App\UI\Action\CustomerUser\Interfaces\UpdateCustomerUserActionInterface;
 use App\UI\Responder\CustomerUser\Interfaces\ForbiddenCustomerUserResponderInterface;
@@ -83,7 +84,8 @@ final class UpdateCustomerUserAction implements UpdateCustomerUserActionInterfac
 
         $cache = new ApcuCache();
 
-        $array = \json_decode($request->getContent(), true);
+        $array = json_decode($request->getContent(), true);
+        $products = $array['products'] ?? null;
 
         $customerUser = $this->customerUserRepository->findOneByUuidField($request->attributes->get('id'));
 
@@ -91,20 +93,33 @@ final class UpdateCustomerUserAction implements UpdateCustomerUserActionInterfac
             return $notFoundCustomerUserResponder();
         }
 
-        if($customerUser->getCustomer()!==$this->tokenStorage->getToken()->getUser())
+        if($customerUser->getCustomer()->getUid()->toString()!==$this->tokenStorage->getToken()->getUser()->getUid()->toString())
         {
             return $forbiddenCustomerUserResponder();
         }
 
-        $customerUser->updateCustomer($array);
+        if(!\is_null($products))
+        {
+            unset($array['products']);
+            $customerUser->deleteProducts();
+              foreach ($products as $product)
+            {
+                $product = $this->entityManager->getRepository(Product::class)->findOneByUuidField($product['uid']);
+                if(!\is_null($product))
+                {
+                    $customerUser->addProduct($product);
+                }
+            }
+        }
 
+        $customerUser->updateCustomer($array);
         $errors = $this->validator->validate($customerUser);
 
         if (\count($errors) > 0) {
             return $updateCustomerUserResponder($request, $errors);
         }
 
-        $cache->delete('find'.$customerUser->getUid());
+        $cache->deleteAll();
         $this->entityManager->flush();
 
         return $updateCustomerUserResponder($request);

@@ -90,7 +90,7 @@ final class UpdateProductAction implements UpdateProductActionInterface
             return $updateProductResponder($request, $errors);
         }
 
-        $cache->delete('find'.$product->getUid());
+        $cache->delete('find'.$product->getUid()->toString());
         $this->entityManager->flush();
 
         return $updateProductResponder($request);

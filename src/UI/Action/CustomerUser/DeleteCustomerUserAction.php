@@ -79,12 +79,12 @@ final class DeleteCustomerUserAction implements DeleteCustomerUserActionInterfac
             return $notFoundCustomerUserResponder();
         }
 
-        if($customerUser->getCustomer()!==$this->tokenStorage->getToken()->getUser())
+        if($customerUser->getCustomer()->getUid()->toString()!==$this->tokenStorage->getToken()->getUser()->getUid()->toString())
         {
             return $forbiddenCustomerUserResponder();
         }
 
-        $cache->delete('find'.$customerUser->getUid());
+        $cache->delete('find'.$customerUser->getUid()->toString());
         $this->entityManager->merge($customerUser);
         $this->entityManager->remove($customerUser);
         $this->entityManager->flush();

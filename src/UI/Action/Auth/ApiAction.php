@@ -15,6 +15,7 @@ namespace App\UI\Action\Auth;
 
 use App\UI\Action\Auth\Interfaces\ApiActionInterface;
 use App\UI\Responder\Auth\ApiResponder;
+use App\UI\Responder\Auth\Interfaces\ApiResponderInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -25,7 +26,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ApiAction implements ApiActionInterface
 {
 
-    public function __invoke(ApiResponder $loginResponder): Response
+    public function __invoke(ApiResponderInterface $loginResponder): Response
     {
         return $loginResponder();
     }

@@ -21,6 +21,7 @@ use App\UI\Action\CustomerUser\Interfaces\AddCustomerUserActionInterface;
 use App\UI\Responder\CustomerUser\Interfaces\AddCustomerUserResponderInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -103,6 +104,7 @@ final class AddCustomerUserActionUnitTest extends TestCase
         $tokenInterfaceMock = $this->createMock(TokenInterface::class);
         $customerMock = $this->createMock(Customer::class);
 
+        $customerUserMock->method('getCustomer')->willReturn($customerMock);
         $this->serializer->method('deserialize')->willReturn($customerUserMock);
         $this->validator->method('validate')->willReturn([]);
         $tokenInterfaceMock->method('getUser')->willReturn($customerMock);

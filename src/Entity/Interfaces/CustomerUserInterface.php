@@ -16,6 +16,7 @@ namespace App\Entity\Interfaces;
 use App\Entity\Customer;
 use App\Entity\Product;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Interface CustomerUserInterface
@@ -24,15 +25,13 @@ interface CustomerUserInterface
 {
     /**
      * @param Product $product
-     * @return null
      */
-    public function addProduct(Product $product);
+    public function addProduct(Product $product): void;
 
     /**
      * @param Product $product
-     * @return null
      */
-    public function removeProduct(Product $product);
+    public function removeProduct(Product $product): void;
 
     /**
      * @return array
@@ -40,34 +39,34 @@ interface CustomerUserInterface
     public function getProducts(): array;
 
     /**
-     * @return Uuid
+     * @return UuidInterface
      */
-    public function getUid();
+    public function getUid(): UuidInterface;
 
     /**
      * @return string
      */
-    public function getName(): ?string;
+    public function getName(): string;
 
     /**
      * @return string
      */
-    public function getFirstName(): ?string;
+    public function getFirstName(): string;
 
     /**
      * @return string
      */
-    public function getEmail(): ?string;
+    public function getEmail(): string;
 
     /**
      * @return string
      */
-    public function getAddress(): ?string;
+    public function getAddress(): string;
 
     /**
      * @return string
      */
-    public function getZip(): ?string;
+    public function getZip(): string;
 
     /**
      * @return null|string
@@ -83,4 +82,24 @@ interface CustomerUserInterface
      * @param array $customerUser
      */
     public function updateCustomer(array $customerUser): void;
+
+    /**
+     * @param Customer $customer
+     */
+    public function setCustomer(Customer $customer): void;
+
+    /**
+     * @return array
+     */
+    public function getLinks(): array;
+
+    /**
+     * @param array $links
+     */
+    public function addLinks(array $links): void;
+
+    /**
+     * delete all products of customerUSer
+     */
+    public function deleteProducts(): void;
 }

@@ -15,6 +15,7 @@ namespace App\Entity;
 
 use App\Entity\Interfaces\CustomerInterface;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -60,18 +61,20 @@ class Customer implements CustomerInterface, \JsonSerializable, UserInterface
     /**
      * Customer constructor.
      *
-     * @param string $society
-     * @param string $email
-     * @param string $username
-     * @param string $password
-     * @param string|null $phone
+     * @param $society
+     * @param $email
+     * @param $username
+     * @param $password
+     * @param null $phone
+     *
+     * @throws \Exception
      */
     public function __construct(
-        string $society,
-        string $email,
-        string $username,
-        string $password,
-        string $phone = null
+        $society,
+        $email,
+        $username,
+        $password,
+        $phone = null
     ) {
         $this->uid = Uuid::uuid4();
         $this->society = $society;
@@ -86,7 +89,7 @@ class Customer implements CustomerInterface, \JsonSerializable, UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getUid()
+    public function getUid(): UuidInterface
     {
         return $this->uid;
     }
@@ -94,7 +97,7 @@ class Customer implements CustomerInterface, \JsonSerializable, UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getSociety(): ?string
+    public function getSociety(): string
     {
         return $this->society;
     }
@@ -102,7 +105,7 @@ class Customer implements CustomerInterface, \JsonSerializable, UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getEmail(): ?string
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -110,7 +113,7 @@ class Customer implements CustomerInterface, \JsonSerializable, UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getUsername(): ?string
+    public function getUsername(): string
     {
         return $this->username;
     }
@@ -118,7 +121,7 @@ class Customer implements CustomerInterface, \JsonSerializable, UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getPassword(): ?string
+    public function getPassword(): string
     {
         return $this->password;
     }
@@ -143,7 +146,7 @@ class Customer implements CustomerInterface, \JsonSerializable, UserInterface
     /**
      * {@inheritdoc}
      */
-    public function removeCustomerUser(CustomerUser $customerUser)
+    public function removeCustomerUser(CustomerUser $customerUser): void
     {
         $customerUserId = $customerUser->getUid();
         foreach ($this->customerUsers as $customerUser)
@@ -157,7 +160,7 @@ class Customer implements CustomerInterface, \JsonSerializable, UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getCustomerUsers()
+    public function getCustomerUsers(): array
     {
         $list = [];
         foreach ($this->customerUsers as $customerUser)
@@ -181,6 +184,9 @@ class Customer implements CustomerInterface, \JsonSerializable, UserInterface
         ];
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function updatePassword($password): void
     {
         $this->password = $password;
@@ -207,6 +213,6 @@ class Customer implements CustomerInterface, \JsonSerializable, UserInterface
      */
     public function eraseCredentials()
     {
-    }
 
+    }
 }

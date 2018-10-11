@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace App\Repository\Interfaces;
 
-
-use App\Entity\Customer;
-use App\Entity\CustomerUser;
 use Doctrine\Common\Cache\ApcuCache;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -31,9 +28,4 @@ interface CustomerRepositoryInterface
      * @param ApcuCache $cache
      */
     public function __construct(RegistryInterface $registry, ApcuCache $cache);
-
-    /**
-     * @return CustomerUser|null
-     */
-    public function getOneCustomer(): ?Customer;
 }

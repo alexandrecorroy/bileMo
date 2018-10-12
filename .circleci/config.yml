@@ -42,5 +42,9 @@ jobs:
         command: php composer.phar dump-autoload -o
     # run tests with phpunit
     - run: |
+        mkdir /coverage-result
+        chmod +x /coverage-result
         chmod +x bin/phpunit
-        bin/phpunit --coverage-html "${CIRCLE_ARTIFACTS}/phpunit/html"
+        bin/phpunit --coverage-html /coverage-result
+    - store_artifacts:
+        path: /coverage-result

@@ -13,10 +13,32 @@ declare(strict_types=1);
 
 namespace App\UI\Responder\Auth;
 
-/**
- * Class RegisterResponder.
- */
-final class RegisterResponder
-{
+use App\UI\Responder\Auth\Interfaces\RegisterResponderInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * final Class RegisterResponder.
+ */
+final class RegisterResponder implements RegisterResponderInterface
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function __invoke(
+        $statusCode = Response::HTTP_CREATED,
+        $errors = null
+    ): Response {
+        if(!\is_null($errors))
+        {
+            $errorList = [];
+            foreach ($errors as $error) {
+                $errorList[] = $error->getMessage();
+            }
+
+            return new JsonResponse($errorList, Response::HTTP_REQUESTED_RANGE_NOT_SATISFIABLE);
+        }
+
+        return new JsonResponse('Customer added !', $statusCode);
+    }
 }

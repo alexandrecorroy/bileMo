@@ -75,7 +75,7 @@ final class UpdateCustomerUserFunctionalTest extends DataFixtureTestCase
 
             $this->client = self::createAuthenticatedRoleUser();
             $this->client->request('PATCH', $uri, array(), array(), array(), json_encode($customerUserUpdated));
-            
+
             static::assertEquals(Response::HTTP_NO_CONTENT, $this->client->getResponse()->getStatusCode());
 
             $uri = $this->router->generate('customer_user_show', ['id' => $customerUser['uid']]);

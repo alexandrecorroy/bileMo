@@ -13,8 +13,18 @@ declare(strict_types=1);
 
 namespace App\UI\Responder\Auth\Interfaces;
 
+use Symfony\Component\HttpFoundation\Response;
 
-class RegisterResponderInterface
+interface RegisterResponderInterface
 {
-
+    /**
+     * @param int $statusCode
+     * @param null $errors
+     *
+     * @return Response
+     */
+    public function __invoke(
+        $statusCode = Response::HTTP_CREATED,
+        $errors = null
+    ): Response;
 }

@@ -17,6 +17,7 @@ use App\Entity\Interfaces\CustomerInterface;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Customer.
@@ -30,16 +31,40 @@ class Customer implements CustomerInterface, \JsonSerializable, UserInterface
 
     /**
      * @var string
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 56,
+     *      minMessage = "Society's name must be at least {{ limit }} characters long",
+     *      maxMessage = "Society's name be longer than {{ limit }} characters"
+     * )
+     *
      */
     private $society;
 
     /**
      * @var string
+     *
+     * @Assert\Email()
+     * @Assert\Length(
+     *      min = 5,
+     *      max = 255,
+     *      minMessage = "Email must be at least {{ limit }} characters long",
+     *      maxMessage = "Email cannot be longer than {{ limit }} characters"
+     * )
+     *
      */
     private $email;
 
     /**
      * @var string
+     *
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 56,
+     *      minMessage = "Username must be at least {{ limit }} characters long",
+     *      maxMessage = "Username cannot be longer than {{ limit }} characters"
+     * )
+     *
      */
     private $username;
 
@@ -50,6 +75,14 @@ class Customer implements CustomerInterface, \JsonSerializable, UserInterface
 
     /**
      * @var null|string
+     *
+     * @Assert\Length(
+     *      min = 8,
+     *      max = 12,
+     *      minMessage = "Phone must be at least {{ limit }} characters long",
+     *      maxMessage = "Phone cannot be longer than {{ limit }} characters"
+     * )
+     *
      */
     private $phone = null;
 

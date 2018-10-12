@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace App\UI\Action\Auth;
 
 use App\UI\Action\Auth\Interfaces\ApiActionInterface;
-use App\UI\Responder\Auth\ApiResponder;
 use App\UI\Responder\Auth\Interfaces\ApiResponderInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;

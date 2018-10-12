@@ -15,7 +15,6 @@ namespace App\Test\UI\Action\CustomerUser;
 
 use App\Tests\DataFixtures\DataFixtureTestCase;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Router;
 
 /**
  * Class AddCustomerUserFunctionalTest.
@@ -23,27 +22,12 @@ use Symfony\Component\Routing\Router;
 final class AddCustomerUserFunctionalTest extends DataFixtureTestCase
 {
     /**
-     * @var null|Router
-     */
-    private $router = null;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setUp()
-    {
-        parent::setUp();
-        $this->router = self::$container->get('router');
-    }
-
-    /**
      * test add new CustomerUser
      */
     public function testAddCustomerUser()
     {
         $this->client = self::createAuthenticatedRoleUser();
-        $uri = $this->router->generate('product_list');
-        $this->client->request('GET', $uri);
+        $this->client->request('GET', 'api/products');
 
         $data = json_decode($this->client->getResponse()->getContent(), true);
 
@@ -67,8 +51,7 @@ final class AddCustomerUserFunctionalTest extends DataFixtureTestCase
         $json = json_encode($array);
 
         $this->client = self::createAuthenticatedRoleUser();
-        $uri = $this->router->generate('customer_user_add');
-        $this->client->request('POST', $uri, array(), array(), array(), $json);
+        $this->client->request('POST', 'api/customerUser', array(), array(), array(), $json);
 
         static::assertEquals(Response::HTTP_CREATED, $this->client->getResponse()->getStatusCode());
         static::assertTrue($this->client->getResponse()->headers->contains('content-type', 'application/json'));;
@@ -80,8 +63,7 @@ final class AddCustomerUserFunctionalTest extends DataFixtureTestCase
     public function testAddCustomerUserAlreadyExist()
     {
         $this->client = self::createAuthenticatedRoleUser();
-        $uri = $this->router->generate('product_list');
-        $this->client->request('GET', $uri);
+        $this->client->request('GET', 'api/products');
 
         $data = json_decode($this->client->getResponse()->getContent(), true);
 
@@ -104,8 +86,7 @@ final class AddCustomerUserFunctionalTest extends DataFixtureTestCase
         $json = json_encode($array);
 
         $this->client = self::createAuthenticatedRoleUser();
-        $uri = $this->router->generate('customer_user_add');
-        $this->client->request('POST', $uri, array(), array(), array(), $json);
+        $this->client->request('POST', 'api/customerUser', array(), array(), array(), $json);
 
         static::assertEquals(Response::HTTP_SEE_OTHER, $this->client->getResponse()->getStatusCode());
         static::assertTrue($this->client->getResponse()->headers->contains('content-type', 'application/json'));;
@@ -117,8 +98,7 @@ final class AddCustomerUserFunctionalTest extends DataFixtureTestCase
     public function testAddCustomerUserWithoutOneParameter()
     {
         $this->client = self::createAuthenticatedRoleUser();
-        $uri = $this->router->generate('product_list');
-        $this->client->request('GET', $uri);
+        $this->client->request('GET', 'api/products');
 
         $data = json_decode($this->client->getResponse()->getContent(), true);
 
@@ -141,7 +121,7 @@ final class AddCustomerUserFunctionalTest extends DataFixtureTestCase
         $json = json_encode($array);
 
         $this->client = self::createAuthenticatedRoleUser();
-        $this->client->request('POST', $this->router->generate('customer_user_add'), array(), array(), array(), $json);
+        $this->client->request('POST', 'api/customerUser', array(), array(), array(), $json);
 
         static::assertEquals(Response::HTTP_PARTIAL_CONTENT, $this->client->getResponse()->getStatusCode());
         static::assertTrue($this->client->getResponse()->headers->contains('content-type', 'application/json'));;
@@ -153,7 +133,7 @@ final class AddCustomerUserFunctionalTest extends DataFixtureTestCase
     public function testAddCustomerUserWithBadAssert()
     {
         $this->client = self::createAuthenticatedRoleUser();
-        $this->client->request('GET', $this->router->generate('product_list'));
+        $this->client->request('GET', 'api/products');
 
         $data = json_decode($this->client->getResponse()->getContent(), true);
 
@@ -176,8 +156,7 @@ final class AddCustomerUserFunctionalTest extends DataFixtureTestCase
         $json = json_encode($array);
 
         $this->client = self::createAuthenticatedRoleUser();
-        $uri = $this->router->generate('customer_user_add');
-        $this->client->request('POST', $uri, array(), array(), array(), $json);
+        $this->client->request('POST', 'api/customerUser', array(), array(), array(), $json);
 
         static::assertEquals(Response::HTTP_REQUESTED_RANGE_NOT_SATISFIABLE, $this->client->getResponse()->getStatusCode());
         static::assertTrue($this->client->getResponse()->headers->contains('content-type', 'application/json'));;

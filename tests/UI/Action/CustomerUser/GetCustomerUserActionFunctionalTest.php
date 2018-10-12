@@ -16,7 +16,6 @@ namespace App\Tests\UI\Action\CustomerUser;
 use App\Tests\DataFixtures\DataFixtureTestCase;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Router;
 
 /**
  * final Class GetCustomerUserActionFunctionalTest.
@@ -24,35 +23,18 @@ use Symfony\Component\Routing\Router;
 final class GetCustomerUserActionFunctionalTest extends DataFixtureTestCase
 {
     /**
-     * @var Router|null
-     */
-    private $router = null;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setUp()
-    {
-        parent::setUp();
-        $this->router = self::$container->get('router');
-    }
-
-    /**
      * test customer user is returned
      */
     public function testCustomerUserIsReturned()
     {
-        $uri = $this->router->generate('customer_user_list');
         $this->client = self::createAuthenticatedRoleUser();
-        $this->client->request('GET', $uri);
+        $this->client->request('GET', '/api/customerUsers');
 
-        $customerUsers = json_decode($this->client->getResponse()->getContent());
+        $customerUsers = json_decode($this->client->getResponse()->getContent(), true);
 
         foreach ($customerUsers as $customerUser)
         {
-            $uri = $this->router->generate('customer_user_show', ['id' => $customerUser->{'uid'}]);
-
-            $this->client->request('GET', $uri);
+            $this->client->request('GET', '/api/customerUser/'.$customerUser['uid']);
 
             static::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
             static::assertTrue($this->client->getResponse()->headers->contains('content-type', 'application/json'));
@@ -64,10 +46,8 @@ final class GetCustomerUserActionFunctionalTest extends DataFixtureTestCase
      */
     public function testCustomerUserNotFound()
     {
-        $uri = $this->router->generate('customer_user_show', ['id' => Uuid::uuid4()]);
-
         $this->client = self::createAuthenticatedRoleUser();
-        $this->client->request('GET', $uri);
+        $this->client->request('GET', '/api/customerUser/'.Uuid::uuid4());
 
         static::assertEquals(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
         static::assertTrue($this->client->getResponse()->headers->contains('content-type', 'application/json'));

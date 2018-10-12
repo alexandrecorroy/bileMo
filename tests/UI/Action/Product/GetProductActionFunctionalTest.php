@@ -17,18 +17,12 @@ use App\Entity\Product;
 use App\Tests\DataFixtures\DataFixtureTestCase;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Router;
 
 /**
  * final Class GetProductActionFunctionalTest.
  */
 final class GetProductActionFunctionalTest extends DataFixtureTestCase
 {
-    /**
-     * @var Router
-     */
-    private $router;
-
     /**
      * @var array
      */
@@ -38,7 +32,6 @@ final class GetProductActionFunctionalTest extends DataFixtureTestCase
     {
         parent::setUp();
         $this->products = $this->entityManager->getRepository(Product::class)->findAllProducts();
-        $this->router = self::$container->get('router');
     }
 
     /**
@@ -48,9 +41,7 @@ final class GetProductActionFunctionalTest extends DataFixtureTestCase
     {
         $this->client = self::createAuthenticatedRoleUser();
         foreach ($this->products as $product) {
-            $uri = $this->router->generate('product_show', ['id' => $product->getUid()->__toString()]);
-
-            $this->client->request('GET', $uri);
+            $this->client->request('GET', '/api/product/'.$product->getUid()->__toString());
 
             static::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
             static::assertTrue($this->client->getResponse()->headers->contains('content-type', 'application/json'));
@@ -63,10 +54,8 @@ final class GetProductActionFunctionalTest extends DataFixtureTestCase
      */
     public function testNotFound()
     {
-        $uri = $this->router->generate('product_show', ['id' => Uuid::uuid4()]);
-
         $this->client = self::createAuthenticatedRoleUser();
-        $this->client->request('GET', $uri);
+        $this->client->request('GET', '/api/product/'.Uuid::uuid4());
 
         static::assertEquals(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
         static::assertTrue($this->client->getResponse()->headers->contains('content-type', 'application/json'));

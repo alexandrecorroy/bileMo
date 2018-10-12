@@ -15,7 +15,6 @@ namespace App\Test\UI\Action\CustomerUser;
 
 use App\Tests\DataFixtures\DataFixtureTestCase;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Router;
 
 /**
  * final Class ListCustomerUserFunctionalTest.
@@ -23,27 +22,13 @@ use Symfony\Component\Routing\Router;
 final class ListCustomerUserFunctionalTest extends DataFixtureTestCase
 {
     /**
-     * @var Router|null
-     */
-    private $router = null;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setUp()
-    {
-        parent::setUp();
-        $this->router = self::$container->get('router');
-    }
-
-    /**
      * test Response
      */
     public function testResponse()
     {
         $this->client = self::createAuthenticatedRoleUser();
 
-        $this->client->request('GET', $this->router->generate('customer_user_list'));
+        $this->client->request('GET', '/api/customerUsers');
 
         static::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         static::assertTrue($this->client->getResponse()->headers->contains('content-type', 'application/json'));

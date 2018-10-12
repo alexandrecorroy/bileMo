@@ -15,24 +15,9 @@ namespace App\Test\UI\Action\Auth;
 
 use App\Tests\DataFixtures\DataFixtureTestCase;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Router;
 
 class RegisterActionFunctionalTest extends DataFixtureTestCase
 {
-    /**
-     * @var Router|null
-     */
-    private $router = null;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setUp()
-    {
-        parent::setUp();
-        $this->router = self::$container->get('router');
-    }
-
     /**
      * test add customer
      */
@@ -48,9 +33,7 @@ class RegisterActionFunctionalTest extends DataFixtureTestCase
             'phone' => '0566223355'
         ];
 
-        $uri = $this->router->generate('api_register');
-
-        $this->client->request('POST', $uri, array(), array(), array(), json_encode($customer));
+        $this->client->request('POST', '/api/register', array(), array(), array(), json_encode($customer));
 
         static::assertEquals(Response::HTTP_CREATED, $this->client->getResponse()->getStatusCode());
         static::assertTrue($this->client->getResponse()->headers->contains('content-type', 'application/json'));
@@ -70,9 +53,7 @@ class RegisterActionFunctionalTest extends DataFixtureTestCase
             'phone' => '0566223355'
         ];
 
-        $uri = $this->router->generate('api_register');
-
-        $this->client->request('POST', $uri, array(), array(), array(), json_encode($customer));
+        $this->client->request('POST', '/api/register', array(), array(), array(), json_encode($customer));
 
         static::assertEquals(Response::HTTP_PARTIAL_CONTENT, $this->client->getResponse()->getStatusCode());
         static::assertTrue($this->client->getResponse()->headers->contains('content-type', 'application/json'));
@@ -93,9 +74,7 @@ class RegisterActionFunctionalTest extends DataFixtureTestCase
             'phone' => '0566223355'
         ];
 
-        $uri = $this->router->generate('api_register');
-
-        $this->client->request('POST', $uri, array(), array(), array(), json_encode($customer));
+        $this->client->request('POST', '/api/register', array(), array(), array(), json_encode($customer));
 
         static::assertEquals(Response::HTTP_REQUESTED_RANGE_NOT_SATISFIABLE, $this->client->getResponse()->getStatusCode());
         static::assertTrue($this->client->getResponse()->headers->contains('content-type', 'application/json'));

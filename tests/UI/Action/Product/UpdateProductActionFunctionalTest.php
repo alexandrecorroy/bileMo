@@ -16,18 +16,12 @@ namespace App\Tests\UI\Action\Product;
 use App\Entity\Product;
 use App\Tests\DataFixtures\DataFixtureTestCase;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Router;
 
 /**
  * final Class UpdateProductActionFunctionalTest.
  */
 final class UpdateProductActionFunctionalTest extends DataFixtureTestCase
 {
-    /**
-     * @var Router
-     */
-    private $router;
-
     /**
      * @var array
      */
@@ -40,7 +34,6 @@ final class UpdateProductActionFunctionalTest extends DataFixtureTestCase
     {
         parent::setUp();
         $this->products = $this->entityManager->getRepository(Product::class)->findAllProducts();
-        $this->router = self::$container->get('router');
     }
 
     /**
@@ -59,10 +52,8 @@ final class UpdateProductActionFunctionalTest extends DataFixtureTestCase
         ];
 
         foreach ($this->products as $product) {
-            $uri = $this->router->generate('product_update', ['id' => $product->getUid()->__toString()]);
-
             $this->client = self::createAuthenticatedRoleAdmin();
-            $this->client->request('PATCH', $uri, array(), array(), array(), json_encode($productUpdated));
+            $this->client->request('PATCH', '/api/product/'.$product->getUid()->__toString(), array(), array(), array(), json_encode($productUpdated));
 
             $product->updateProduct($productUpdated);
             $productDetail = $product->getProductDetail();
@@ -70,9 +61,8 @@ final class UpdateProductActionFunctionalTest extends DataFixtureTestCase
 
             static::assertEquals(Response::HTTP_NO_CONTENT, $this->client->getResponse()->getStatusCode());
 
-            $uri = $this->router->generate('product_show', ['id' => $product->getUid()->__toString()]);
             $this->client = self::createAuthenticatedRoleAdmin();
-            $this->client->request('GET', $uri);
+            $this->client->request('GET', '/api/product/'.$product->getUid()->__toString());
             static::assertEquals(json_encode($product), $this->client->getResponse()->getContent());
 
             break;

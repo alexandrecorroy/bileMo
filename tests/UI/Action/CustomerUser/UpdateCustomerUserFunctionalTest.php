@@ -13,10 +13,8 @@ declare(strict_types=1);
 
 namespace App\Test\UI\Action\CustomerUser;
 
-use App\Entity\CustomerUser;
 use App\Tests\DataFixtures\DataFixtureTestCase;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Router;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
@@ -24,11 +22,6 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 final class UpdateCustomerUserFunctionalTest extends DataFixtureTestCase
 {
-    /**
-     * @var Router|null
-     */
-    private $router = null;
-
     /**
      * @var SerializerInterface|null
      */
@@ -40,7 +33,6 @@ final class UpdateCustomerUserFunctionalTest extends DataFixtureTestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->router = self::$container->get('router');
         $this->serializer = self::$container->get('serializer');
     }
 
@@ -51,11 +43,11 @@ final class UpdateCustomerUserFunctionalTest extends DataFixtureTestCase
     {
         $this->client = self::createAuthenticatedRoleUser();
 
-        $this->client->request('GET', $this->router->generate('customer_user_list'));
+        $this->client->request('GET', '/api/customerUsers');
 
         $customerUsers = json_decode($this->client->getResponse()->getContent(), true);
 
-        $this->client->request('GET', $this->router->generate('product_list'));
+        $this->client->request('GET', '/api/products');
 
         $data = json_decode($this->client->getResponse()->getContent(), true);
 
@@ -71,16 +63,13 @@ final class UpdateCustomerUserFunctionalTest extends DataFixtureTestCase
         ];
 
         foreach ($customerUsers as $customerUser) {
-            $uri = $this->router->generate('customer_user_update', ['id' => $customerUser['uid']]);
-
             $this->client = self::createAuthenticatedRoleUser();
-            $this->client->request('PATCH', $uri, array(), array(), array(), json_encode($customerUserUpdated));
+            $this->client->request('PATCH', '/api/customerUser/'.$customerUser['uid'], array(), array(), array(), json_encode($customerUserUpdated));
 
             static::assertEquals(Response::HTTP_NO_CONTENT, $this->client->getResponse()->getStatusCode());
 
-            $uri = $this->router->generate('customer_user_show', ['id' => $customerUser['uid']]);
             $this->client = self::createAuthenticatedRoleUser();
-            $this->client->request('GET', $uri);
+            $this->client->request('GET', '/api/customerUser/'.$customerUser['uid']);
 
             $customer = json_decode($this->client->getResponse()->getContent(), true);
             static::assertEquals($customer['name'], $customerUserUpdated['name']);

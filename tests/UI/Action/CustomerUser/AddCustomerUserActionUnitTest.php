@@ -21,7 +21,6 @@ use App\UI\Action\CustomerUser\Interfaces\AddCustomerUserActionInterface;
 use App\UI\Responder\CustomerUser\Interfaces\AddCustomerUserResponderInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;

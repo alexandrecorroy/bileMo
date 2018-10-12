@@ -43,4 +43,4 @@ jobs:
     # run tests with phpunit
     - run: |
         chmod +x bin/phpunit
-        bin/phpunit --coverage-html=$CIRCLE_ARTIFACTS
+        bin/phpunit --coverage-html "${CIRCLE_ARTIFACTS}/phpunit/html"

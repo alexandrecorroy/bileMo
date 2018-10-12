@@ -33,7 +33,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 final class UpdateCustomerUserActionUnitTest extends TestCase
 {
-
     /**
      * @var EntityManagerInterface|null
      */
@@ -79,16 +78,15 @@ final class UpdateCustomerUserActionUnitTest extends TestCase
      */
     public function setUp()
     {
-        $this->entityManager = $this->createMock(EntityManagerInterface::class);
-        $this->repository = $this->createMock(CustomerUserRepositoryInterface::class);
-        $this->validator = $this->createMock(ValidatorInterface::class);
-        $this->tokenStorage = $this->createMock(TokenStorageInterface::class);
-        $this->responder = $this->createMock(UpdateCustomerUserResponderInterface::class);
-        $this->notFoundResponder = $this->createMock(NotFoundCustomerUserResponderInterface::class);
+        $this->entityManager      = $this->createMock(EntityManagerInterface::class);
+        $this->repository         = $this->createMock(CustomerUserRepositoryInterface::class);
+        $this->validator          = $this->createMock(ValidatorInterface::class);
+        $this->tokenStorage       = $this->createMock(TokenStorageInterface::class);
+        $this->responder          = $this->createMock(UpdateCustomerUserResponderInterface::class);
+        $this->notFoundResponder  = $this->createMock(NotFoundCustomerUserResponderInterface::class);
         $this->forbiddenResponder = $this->createMock(ForbiddenCustomerUserResponderInterface::class);
-
-        $request = Request::create('/', 'PATCH');
-        $this->request = $request->duplicate(null, null, ['id' => 1]);
+        $request                  = Request::create('/', 'PATCH');
+        $this->request            = $request->duplicate(null, null, ['id' => 1]);
 
     }
 
@@ -97,7 +95,12 @@ final class UpdateCustomerUserActionUnitTest extends TestCase
      */
     public function testUpdateCustomerUserAction()
     {
-        $updateCustomerUserAction = new UpdateCustomerUserAction($this->entityManager, $this->repository, $this->validator, $this->tokenStorage);
+        $updateCustomerUserAction = new UpdateCustomerUserAction(
+            $this->entityManager,
+            $this->repository,
+            $this->validator,
+            $this->tokenStorage
+        );
 
         static::assertInstanceOf(UpdateCustomerUserActionInterface::class, $updateCustomerUserAction);
     }
@@ -113,7 +116,12 @@ final class UpdateCustomerUserActionUnitTest extends TestCase
         $tokenInterfaceMock->method('getUser')->willReturn($customerMock);
         $this->tokenStorage->method('getToken')->willReturn($tokenInterfaceMock);
 
-        $action = new UpdateCustomerUserAction($this->entityManager, $this->repository, $this->validator, $this->tokenStorage);
+        $action = new UpdateCustomerUserAction(
+            $this->entityManager,
+            $this->repository,
+            $this->validator,
+            $this->tokenStorage
+        );
 
         static::assertInstanceOf(Response::class, $action($this->request, $this->responder, $this->notFoundResponder, $this->forbiddenResponder));
     }

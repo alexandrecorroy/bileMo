@@ -26,11 +26,11 @@ class RegisterActionFunctionalTest extends DataFixtureTestCase
         $this->client = self::createAuthenticatedRoleAdmin();
 
         $customer = [
-            'society' => 'test',
-            'email' => 'test@gmail.com',
+            'society'  => 'test',
+            'email'    => 'test@gmail.com',
             'username' => 'test',
             'password' => 'test',
-            'phone' => '0566223355'
+            'phone'    => '0566223355'
         ];
 
         $this->client->request('POST', '/api/register', array(), array(), array(), json_encode($customer));
@@ -47,10 +47,10 @@ class RegisterActionFunctionalTest extends DataFixtureTestCase
         $this->client = self::createAuthenticatedRoleAdmin();
 
         $customer = [
-            'society' => 'test',
+            'society'  => 'test',
             'username' => 'test',
             'password' => 'test',
-            'phone' => '0566223355'
+            'phone'    => '0566223355'
         ];
 
         $this->client->request('POST', '/api/register', array(), array(), array(), json_encode($customer));
@@ -67,11 +67,11 @@ class RegisterActionFunctionalTest extends DataFixtureTestCase
         $this->client = self::createAuthenticatedRoleAdmin();
 
         $customer = [
-            'society' => 'A very very very very very very very very very very very very very very very long society',
-            'email' => 'test@gmail.com',
+            'society'  => 'A very very very very very very very very very very very very very very very long society',
+            'email'    => 'test@gmail.com',
             'username' => 'test',
             'password' => 'test',
-            'phone' => '0566223355'
+            'phone'    => '0566223355'
         ];
 
         $this->client->request('POST', '/api/register', array(), array(), array(), json_encode($customer));

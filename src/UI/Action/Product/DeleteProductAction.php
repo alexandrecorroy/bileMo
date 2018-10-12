@@ -44,9 +44,11 @@ final class DeleteProductAction implements DeleteProductActionInterface
     /**
      * {@inheritdoc}
      */
-    public function __construct(EntityManagerInterface $entityManager, ProductRepositoryInterface $productRepository)
-    {
-        $this->entityManager = $entityManager;
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        ProductRepositoryInterface $productRepository
+    ) {
+        $this->entityManager     = $entityManager;
         $this->productRepository = $productRepository;
     }
 

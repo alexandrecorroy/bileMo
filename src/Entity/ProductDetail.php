@@ -150,16 +150,16 @@ class ProductDetail implements ProductDetailInterface, \JsonSerializable
         $width,
         $thickness
     ) {
-        $this->uid = Uuid::uuid4();
-        $this->brand = $brand;
-        $this->color = $color;
-        $this->os = $os;
-        $this->memory = $memory;
-        $this->weight = $weight;
+        $this->uid        = Uuid::uuid4();
+        $this->brand      = $brand;
+        $this->color      = $color;
+        $this->os         = $os;
+        $this->memory     = $memory;
+        $this->weight     = $weight;
         $this->screenSize = $screenSize;
-        $this->height = $height;
-        $this->width = $width;
-        $this->thickness = $thickness;
+        $this->height     = $height;
+        $this->width      = $width;
+        $this->thickness  = $thickness;
     }
 
     /**
@@ -263,15 +263,15 @@ class ProductDetail implements ProductDetailInterface, \JsonSerializable
     public function jsonSerialize()
     {
         return [
-            'brand'   => $this->getBrand(),
-            'color'  => $this->getColor(),
-            'os' => $this->getOs(),
-            'memory' => $this->getMemory(),
-            'weight' => $this->getWeight(),
+            'brand'      => $this->getBrand(),
+            'color'      => $this->getColor(),
+            'os'         => $this->getOs(),
+            'memory'     => $this->getMemory(),
+            'weight'     => $this->getWeight(),
             'screenSize' => $this->getScreenSize(),
-            'height' => $this->getHeight(),
-            'width' => $this->getWidth(),
-            'thickness' => $this->getThickness()
+            'height'     => $this->getHeight(),
+            'width'      => $this->getWidth(),
+            'thickness'  => $this->getThickness()
         ];
     }
 }

@@ -58,7 +58,7 @@ final class UpdateCustomerUserFunctionalTest extends DataFixtureTestCase
         }
 
         $customerUserUpdated = [
-            'name' => 'updated name',
+            'name'     => 'updated name',
             'products' => $products
         ];
 

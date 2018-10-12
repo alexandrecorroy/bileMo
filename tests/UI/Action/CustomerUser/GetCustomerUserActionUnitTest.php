@@ -25,7 +25,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class GetCustomerUserActionUnitTest.
@@ -67,14 +66,13 @@ final class GetCustomerUserActionUnitTest extends TestCase
      */
     public function setUp()
     {
-        $this->repository = $this->createMock(CustomerUserRepositoryInterface::class);
-        $this->responder = $this->createMock(GetCustomerUserResponderInterface::class);
-        $this->notFoundResponder = $this->createMock(NotFoundCustomerUserResponderInterface::class);
-        $this->tokenStorage = $this->createMock(TokenStorageInterface::class);
+        $this->repository         = $this->createMock(CustomerUserRepositoryInterface::class);
+        $this->responder          = $this->createMock(GetCustomerUserResponderInterface::class);
+        $this->notFoundResponder  = $this->createMock(NotFoundCustomerUserResponderInterface::class);
+        $this->tokenStorage       = $this->createMock(TokenStorageInterface::class);
         $this->forbiddenResponder = $this->createMock(ForbiddenCustomerUserResponderInterface::class);
-
-        $request = Request::create('/', 'GET');
-        $this->request = $request->duplicate(null, null, ['id' => 1]);
+        $request                  = Request::create('/', 'GET');
+        $this->request            = $request->duplicate(null, null, ['id' => 1]);
     }
 
     /**
@@ -90,14 +88,17 @@ final class GetCustomerUserActionUnitTest extends TestCase
      */
     public function testResponseIsReturned()
     {
-        $customerUser = $this->createMock(CustomerUserInterface::class);
+        $customerUser   = $this->createMock(CustomerUserInterface::class);
         $tokenInterface = $this->createMock(TokenInterface::class);
 
         $this->repository->method('findOneByUuidField')->willReturn($customerUser);
         $this->tokenStorage->method('getToken')->willReturn($tokenInterface);
         $tokenInterface->method('getUser')->willReturn($customerUser);
 
-        $customerUser = new GetCustomerUserAction($this->repository, $this->tokenStorage);
+        $customerUser = new GetCustomerUserAction(
+            $this->repository,
+            $this->tokenStorage
+        );
 
         static::assertInstanceOf(Response::class, $customerUser($this->request, $this->responder, $this->notFoundResponder, $this->forbiddenResponder));
     }

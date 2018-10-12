@@ -28,6 +28,9 @@ interface GetCustomerUserResponderInterface
      *
      * @return Response
      */
-    public function __invoke(Request $request, CustomerUserInterface $customerUser): Response;
+    public function __invoke(
+        Request $request,
+        CustomerUserInterface $customerUser
+    ): Response;
 
 }

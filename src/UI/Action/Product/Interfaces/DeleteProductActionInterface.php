@@ -33,7 +33,10 @@ interface DeleteProductActionInterface
      * @param EntityManagerInterface $entityManager
      * @param ProductRepositoryInterface $productRepository
      */
-    public function __construct(EntityManagerInterface $entityManager, ProductRepositoryInterface $productRepository);
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        ProductRepositoryInterface $productRepository
+    );
 
     /**
      * @param Request $request

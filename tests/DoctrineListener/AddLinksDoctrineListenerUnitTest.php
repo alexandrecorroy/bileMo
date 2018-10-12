@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace App\Tests\DoctrineListener;
 
-
 use App\DoctrineListener\AddLinksDoctrineListener;
 use App\DoctrineListener\Interfaces\AddLinksDoctrineListenerInterface;
 use PHPUnit\Framework\TestCase;

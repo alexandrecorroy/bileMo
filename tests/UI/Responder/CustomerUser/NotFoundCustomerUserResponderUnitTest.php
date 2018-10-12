@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace App\Tests\UI\Responder\CustomerUser;
 
-
 use App\UI\Responder\CustomerUser\Interfaces\NotFoundCustomerUserResponderInterface;
 use App\UI\Responder\CustomerUser\NotFoundCustomerUserResponder;
 use PHPUnit\Framework\TestCase;

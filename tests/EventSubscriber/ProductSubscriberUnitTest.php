@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace App\Tests\EventSubscriber;
 
-
 use App\EventSubscriber\Interfaces\ProductSubscriberInterface;
 use App\EventSubscriber\ProductSubscriber;
 use App\Service\Interfaces\ReturnBlankParameterNameInterface;
@@ -25,9 +24,14 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 final class ProductSubscriberUnitTest extends TestCase
 {
+    /**
+     * @var ReturnBlankParameterNameInterface|null
+     */
+    private $returnBlankParameterName = null;
 
-    private $returnBlankParameterName;
-
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         $this->returnBlankParameterName = $this->createMock(ReturnBlankParameterNameInterface::class);

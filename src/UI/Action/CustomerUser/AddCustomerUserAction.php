@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace App\UI\Action\CustomerUser;
 
-
 use App\Entity\CustomerUser;
 use App\Entity\Product;
 use App\Repository\Interfaces\CustomerUserRepositoryInterface;
@@ -24,6 +23,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -61,6 +61,11 @@ final class AddCustomerUserAction implements AddCustomerUserActionInterface
     private $tokenStorage;
 
     /**
+     * @var RouterInterface
+     */
+    private $router;
+
+    /**
      * {@inheritdoc}
      */
     public function __construct(
@@ -68,13 +73,15 @@ final class AddCustomerUserAction implements AddCustomerUserActionInterface
         CustomerUserRepositoryInterface $customerUserRepository,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        RouterInterface $router
     ) {
         $this->entityManager          = $entityManager;
         $this->customerUserRepository = $customerUserRepository;
         $this->serializer             = $serializer;
         $this->validator              = $validator;
         $this->tokenStorage           = $tokenStorage;
+        $this->router                 = $router;
     }
 
     /**
@@ -96,11 +103,11 @@ final class AddCustomerUserAction implements AddCustomerUserActionInterface
         $errors = $this->validator->validate($customerUser);
 
         if (\count($errors) > 0) {
-            return $addCustomerUserResponder($request, Response::HTTP_REQUESTED_RANGE_NOT_SATISFIABLE, $errors);
+            return $addCustomerUserResponder(Response::HTTP_REQUESTED_RANGE_NOT_SATISFIABLE, null,$errors);
         }
 
         if (!\is_null($this->customerUserRepository->findOtherCustomerUser($customerUser))) {
-            return $addCustomerUserResponder($request, Response::HTTP_SEE_OTHER);
+            return $addCustomerUserResponder(Response::HTTP_SEE_OTHER);
         }
 
         if(!\is_null($products))
@@ -117,10 +124,10 @@ final class AddCustomerUserAction implements AddCustomerUserActionInterface
 
         $customer->addCustomerUser($customerUser);
         $this->entityManager->persist($customer);
-        $cache->delete('findAllCustomerUser'.$customerUser->getCustomer()->getUid()->toString());
+        $cache->delete('findAllCustomerUser'.$customer->getUid()->toString());
         $this->entityManager->flush();
 
-        return $addCustomerUserResponder($request);
+        return $addCustomerUserResponder(Response::HTTP_CREATED, $this->router->generate('customer_user_show', ['id' => $customerUser->getUid()->toString()]));
     }
 
 }

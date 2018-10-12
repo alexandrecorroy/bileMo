@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace App\UI\Responder\CustomerUser\Interfaces;
 
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -22,12 +21,16 @@ use Symfony\Component\HttpFoundation\Response;
 interface AddCustomerUserResponderInterface
 {
     /**
-     * @param Request $request
      * @param int $statusCode
+     * @param null $uri
      * @param null $errors
      *
      * @return Response
      */
-    public function __invoke(Request $request, $statusCode = Response::HTTP_CREATED, $errors = null): Response;
+    public function __invoke(
+        $statusCode,
+        $uri = null,
+        $errors = null
+    ): Response;
 
 }

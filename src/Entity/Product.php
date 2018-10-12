@@ -77,9 +77,9 @@ class Product implements ProductInterface, \JsonSerializable
         $price,
         ProductDetail $productDetail
     ) {
-        $this->uid = Uuid::uuid4();
-        $this->name = $name;
-        $this->price = $price;
+        $this->uid           = Uuid::uuid4();
+        $this->name          = $name;
+        $this->price         = $price;
         $this->productDetail = $productDetail;
     }
 
@@ -130,11 +130,11 @@ class Product implements ProductInterface, \JsonSerializable
     {
         return [
 
-            'uid'   => $this->uid,
-            'name'  => $this->name,
-            'price' => $this->price,
+            'uid'           => $this->uid,
+            'name'          => $this->name,
+            'price'         => $this->price,
             'productDetail' => $this->productDetail,
-            '_links' => $this->getLinks()
+            '_links'        => $this->getLinks()
 
         ];
     }

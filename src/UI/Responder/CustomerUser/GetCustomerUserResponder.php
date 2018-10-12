@@ -24,7 +24,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 final class GetCustomerUserResponder implements GetCustomerUserResponderInterface
 {
-
     /**
      * {@inheritdoc}
      */
@@ -36,5 +35,4 @@ final class GetCustomerUserResponder implements GetCustomerUserResponderInterfac
         return new JsonResponse($customerUser);
 
     }
-
 }

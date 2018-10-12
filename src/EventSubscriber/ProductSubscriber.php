@@ -65,7 +65,7 @@ final class ProductSubscriber implements EventSubscriberInterface, ProductSubscr
 
             $errorMessage = [
                 'Message:' => 'Partial Content',
-                'Detail' => $param.' parameter is required'
+                'Detail'   => $param.' parameter is required'
             ];
 
             $response = new JsonResponse($errorMessage, Response::HTTP_PARTIAL_CONTENT);

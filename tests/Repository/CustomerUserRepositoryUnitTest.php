@@ -42,7 +42,7 @@ final class CustomerUserRepositoryUnitTest extends TestCase
     public function setUp()
     {
         $this->registry = $this->createMock(RegistryInterface::class);
-        $this->cache = $this->createMock(ApcuCache::class);
+        $this->cache    = $this->createMock(ApcuCache::class);
     }
 
     /**
@@ -56,7 +56,10 @@ final class CustomerUserRepositoryUnitTest extends TestCase
         $entityManagerMock->method('getClassMetaData')->willReturn($classMetaDataMock);
         $this->registry->method('getManagerForClass')->willReturn($entityManagerMock);
 
-        $repository = new CustomerUserRepository($this->registry, $this->cache);
+        $repository = new CustomerUserRepository(
+            $this->registry,
+            $this->cache
+        );
 
         static::assertInstanceOf(CustomerUserRepositoryInterface::class, $repository);
     }

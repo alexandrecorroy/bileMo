@@ -38,13 +38,13 @@ final class AddCustomerUserFunctionalTest extends DataFixtureTestCase
         }
 
         $array = [
-            'name' => 'Charles',
+            'name'      => 'Charles',
             'firstName' => "Leroy",
-            'email' => "letest@gmail.com",
-            'address' => "58 rue charles gaulois - St Petersbourg",
-            'zip' => "58445",
-            'phone' => "0599886633",
-            'products' => $products
+            'email'     => "letest@gmail.com",
+            'address'   => "58 rue charles gaulois - St Petersbourg",
+            'zip'       => "58445",
+            'phone'     => "0599886633",
+            'products'  => $products
         ];
 
 
@@ -55,6 +55,7 @@ final class AddCustomerUserFunctionalTest extends DataFixtureTestCase
 
         static::assertEquals(Response::HTTP_CREATED, $this->client->getResponse()->getStatusCode());
         static::assertTrue($this->client->getResponse()->headers->contains('content-type', 'application/json'));;
+        static::assertTrue($this->client->getResponse()->headers->has('Location'));;
     }
 
     /**
@@ -74,13 +75,13 @@ final class AddCustomerUserFunctionalTest extends DataFixtureTestCase
         }
 
         $array = [
-            'name' => 'Goal',
+            'name'      => 'Goal',
             'firstName' => "Paul",
-            'email' => "goal.paul@gmail.com",
-            'address' => "58 rue charles gaulois - St Petersbourg",
-            'zip' => "58445",
-            'phone' => "0599886633",
-            'products' => $products
+            'email'     => "goal.paul@gmail.com",
+            'address'   => "58 rue charles gaulois - St Petersbourg",
+            'zip'       => "58445",
+            'phone'     => "0599886633",
+            'products'  => $products
         ];
 
         $json = json_encode($array);
@@ -109,12 +110,12 @@ final class AddCustomerUserFunctionalTest extends DataFixtureTestCase
         }
 
         $array = [
-            'name' => 'Charles',
+            'name'      => 'Charles',
             'firstName' => "Leroy",
-            'address' => "58 rue charles gaulois - St Petersbourg",
-            'zip' => "58445",
-            'phone' => "0599886633",
-            'products' => $products
+            'address'   => "58 rue charles gaulois - St Petersbourg",
+            'zip'       => "58445",
+            'phone'     => "0599886633",
+            'products'  => $products
         ];
 
 
@@ -144,13 +145,13 @@ final class AddCustomerUserFunctionalTest extends DataFixtureTestCase
         }
 
         $array = [
-            'name' => 'A Very Very Very Very Very Very Very Very Very Very Very Very Very Very Very Very Very Very Very Very Long Name !',
+            'name'      => 'A Very Very Very Very Very Very Very Very Very Very Very Very Very Very Very Very Very Very Very Very Long Name !',
             'firstName' => "Leroy",
-            'email' => "letest@gmail.com",
-            'address' => "58 rue charles gaulois - St Petersbourg",
-            'zip' => "58445",
-            'phone' => "0599886633",
-            'products' => $products
+            'email'     => "letest@gmail.com",
+            'address'   => "58 rue charles gaulois - St Petersbourg",
+            'zip'       => "58445",
+            'phone'     => "0599886633",
+            'products'  => $products
         ];
 
         $json = json_encode($array);

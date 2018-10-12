@@ -23,8 +23,10 @@ final class CustomerUserRepository extends ServiceEntityRepository implements Cu
     /**
      * {@inheritdoc}
      */
-    public function __construct(RegistryInterface $registry, ApcuCache $cache)
-    {
+    public function __construct(
+        RegistryInterface $registry,
+        ApcuCache $cache
+    ) {
         parent::__construct($registry, CustomerUser::class);
         $this->cache = $cache;
     }

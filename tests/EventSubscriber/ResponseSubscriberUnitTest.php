@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace App\Tests\EventSubscriber;
 
-
 use App\EventSubscriber\Interfaces\ResponseSubscriberInterface;
 use App\EventSubscriber\ResponseSubscriber;
 use PHPUnit\Framework\TestCase;

@@ -22,6 +22,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -61,15 +62,21 @@ final class AddProductActionUnitTest extends TestCase
     private $responder = null;
 
     /**
+     * @var RouterInterface|null
+     */
+    private $router = null;
+
+    /**
      * {@inheritdoc}
      */
     protected function setUp()
     {
-        $this->entityManager = static::createMock(EntityManagerInterface::class);
-        $this->productRepository = static::createMock(ProductRepositoryInterface::class);
-        $this->serializer = static::createMock(SerializerInterface::class);
-        $this->validator = static::createMock(ValidatorInterface::class);
-        $this->responder = $this->createMock(AddProductResponderInterface::class);
+        $this->entityManager     = $this->createMock(EntityManagerInterface::class);
+        $this->productRepository = $this->createMock(ProductRepositoryInterface::class);
+        $this->serializer        = $this->createMock(SerializerInterface::class);
+        $this->validator         = $this->createMock(ValidatorInterface::class);
+        $this->responder         = $this->createMock(AddProductResponderInterface::class);
+        $this->router            = $this->createMock(RouterInterface::class);
 
         $request = Request::create('/', 'POST');
         $this->request = $request->duplicate(null, null);
@@ -80,7 +87,13 @@ final class AddProductActionUnitTest extends TestCase
      */
     public function testAddProductAction()
     {
-        $addProductAction = new AddProductAction($this->entityManager, $this->productRepository, $this->serializer, $this->validator);
+        $addProductAction = new AddProductAction(
+            $this->entityManager,
+            $this->productRepository,
+            $this->serializer,
+            $this->validator,
+            $this->router
+        );
 
         static::assertInstanceOf(AddProductActionInterface::class, $addProductAction);
     }
@@ -95,7 +108,13 @@ final class AddProductActionUnitTest extends TestCase
         $this->serializer->method('deserialize')->willReturn($productMock);
         $this->validator->method('validate')->willReturn([]);
 
-        $action = new AddProductAction($this->entityManager, $this->productRepository, $this->serializer, $this->validator);
+        $action = new AddProductAction(
+            $this->entityManager,
+            $this->productRepository,
+            $this->serializer,
+            $this->validator,
+            $this->router
+        );
 
         static::assertInstanceOf(Response::class, $action($this->request, $this->responder));
     }

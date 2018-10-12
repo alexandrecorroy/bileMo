@@ -17,7 +17,6 @@ use App\Entity\Interfaces\ProductInterface;
 use App\Repository\Interfaces\ProductRepositoryInterface;
 use App\UI\Action\Product\GetProductAction;
 use App\UI\Action\Product\Interfaces\GetProductActionInterface;
-use App\UI\Responder\Product\GetProductResponder;
 use App\UI\Responder\Product\Interfaces\GetProductResponderInterface;
 use App\UI\Responder\Product\Interfaces\NotFoundProductResponderInterface;
 use PHPUnit\Framework\TestCase;
@@ -54,10 +53,10 @@ final class GetProductActionUnitTest extends TestCase
      */
     protected function setUp()
     {
-        $this->productRepository = $this->createMock(ProductRepositoryInterface::class);
-        $request = Request::create('/', 'GET');
-        $this->request = $request->duplicate(null, null, ['id' => 1]);
-        $this->responder = $this->createMock(GetProductResponderInterface::class);
+        $this->productRepository        = $this->createMock(ProductRepositoryInterface::class);
+        $request                        = Request::create('/', 'GET');
+        $this->request                  = $request->duplicate(null, null, ['id' => 1]);
+        $this->responder                = $this->createMock(GetProductResponderInterface::class);
         $this->notFoundProductResponder = $this->createMock(NotFoundProductResponderInterface::class);
 
     }

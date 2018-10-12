@@ -26,7 +26,6 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 final class ProductRepositoryUnitTest extends TestCase
 {
-
     /**
      * @var RegistryInterface|null
      */
@@ -43,7 +42,7 @@ final class ProductRepositoryUnitTest extends TestCase
     public function setUp()
     {
         $this->registry = $this->createMock(RegistryInterface::class);
-        $this->cache = $this->createMock(ApcuCache::class);
+        $this->cache    = $this->createMock(ApcuCache::class);
     }
 
     /**
@@ -57,7 +56,10 @@ final class ProductRepositoryUnitTest extends TestCase
         $entityManagerMock->method('getClassMetaData')->willReturn($classMetaDataMock);
         $this->registry->method('getManagerForClass')->willReturn($entityManagerMock);
 
-        $repository = new ProductRepository($this->registry, $this->cache);
+        $repository = new ProductRepository(
+            $this->registry,
+            $this->cache
+        );
 
         static::assertInstanceOf(ProductRepositoryInterface::class, $repository);
     }

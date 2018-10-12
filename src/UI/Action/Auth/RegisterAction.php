@@ -59,9 +59,9 @@ final class RegisterAction implements RegisterActionInterface
         ValidatorInterface $validator,
         EntityManagerInterface $entityManager
     ) {
-        $this->serializer = $serializer;
-        $this->encoder = $encoder;
-        $this->validator = $validator;
+        $this->serializer    = $serializer;
+        $this->encoder       = $encoder;
+        $this->validator     = $validator;
         $this->entityManager = $entityManager;
     }
 

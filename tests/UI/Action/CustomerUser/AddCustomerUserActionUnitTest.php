@@ -23,6 +23,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -69,19 +70,24 @@ final class AddCustomerUserActionUnitTest extends TestCase
     private $responder = null;
 
     /**
+     * @var RouterInterface|null
+     */
+    private $router = null;
+
+    /**
      * {@inheritdoc}
      */
     public function setUp()
     {
-        $this->entityManager = $this->createMock(EntityManagerInterface::class);
+        $this->entityManager          = $this->createMock(EntityManagerInterface::class);
         $this->customerUserRepository = $this->createMock(CustomerUserRepositoryInterface::class);
-        $this->serializer = $this->createMock(SerializerInterface::class);
-        $this->validator = $this->createMock(ValidatorInterface::class);
-        $this->tokenStorage = $this->createMock(TokenStorageInterface::class);
-        $this->responder = $this->createMock(AddCustomerUserResponderInterface::class);
-
-        $request = Request::create('/', 'POST');
-        $this->request = $request->duplicate(null, null);
+        $this->serializer             = $this->createMock(SerializerInterface::class);
+        $this->validator              = $this->createMock(ValidatorInterface::class);
+        $this->tokenStorage           = $this->createMock(TokenStorageInterface::class);
+        $this->responder              = $this->createMock(AddCustomerUserResponderInterface::class);
+        $this->router                 = $this->createMock(RouterInterface::class);
+        $request                      = Request::create('/', 'POST');
+        $this->request                = $request->duplicate(null, null);
     }
 
     /**
@@ -89,7 +95,14 @@ final class AddCustomerUserActionUnitTest extends TestCase
      */
     public function testAddCustomerUserAction()
     {
-        $addCustomerUserAction = new AddCustomerUserAction($this->entityManager, $this->customerUserRepository, $this->serializer, $this->validator, $this->tokenStorage);
+        $addCustomerUserAction = new AddCustomerUserAction(
+            $this->entityManager,
+            $this->customerUserRepository,
+            $this->serializer,
+            $this->validator,
+            $this->tokenStorage,
+            $this->router
+        );
 
         static::assertInstanceOf(AddCustomerUserActionInterface::class, $addCustomerUserAction);
     }
@@ -99,9 +112,9 @@ final class AddCustomerUserActionUnitTest extends TestCase
      */
     public function testResponseIsReturned()
     {
-        $customerUserMock = $this->createMock(CustomerUser::class);
+        $customerUserMock   = $this->createMock(CustomerUser::class);
         $tokenInterfaceMock = $this->createMock(TokenInterface::class);
-        $customerMock = $this->createMock(Customer::class);
+        $customerMock       = $this->createMock(Customer::class);
 
         $customerUserMock->method('getCustomer')->willReturn($customerMock);
         $this->serializer->method('deserialize')->willReturn($customerUserMock);
@@ -109,7 +122,14 @@ final class AddCustomerUserActionUnitTest extends TestCase
         $tokenInterfaceMock->method('getUser')->willReturn($customerMock);
         $this->tokenStorage->method('getToken')->willReturn($tokenInterfaceMock);
 
-        $action = new AddCustomerUserAction($this->entityManager, $this->customerUserRepository, $this->serializer, $this->validator, $this->tokenStorage);
+        $action = new AddCustomerUserAction(
+            $this->entityManager,
+            $this->customerUserRepository,
+            $this->serializer,
+            $this->validator,
+            $this->tokenStorage,
+            $this->router
+        );
 
         static::assertInstanceOf(Response::class, $action($this->request, $this->responder));
     }

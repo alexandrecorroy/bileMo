@@ -139,15 +139,15 @@ class CustomerUser implements CustomerUserInterface, \JsonSerializable
         $zip,
         $phone = null
     ) {
-        $this->uid = Uuid::uuid4();
-        $this->name = $name;
+        $this->uid       = Uuid::uuid4();
+        $this->name      = $name;
         $this->firstName = $firstName;
-        $this->email = $email;
-        $this->address = $address;
-        $this->zip = $zip;
-        $this->phone = $phone;
+        $this->email     = $email;
+        $this->address   = $address;
+        $this->zip       = $zip;
+        $this->phone     = $phone;
 
-        $this->products = [];
+        $this->products  = [];
     }
 
     /**
@@ -299,15 +299,15 @@ class CustomerUser implements CustomerUserInterface, \JsonSerializable
     public function jsonSerialize(): array
     {
         return [
-            'uid' => $this->uid,
-            'name' => $this->name,
+            'uid'       => $this->uid,
+            'name'      => $this->name,
             'firstName' => $this->firstName,
-            'email' => $this->email,
-            'address' => $this->address,
-            'zip' => $this->zip,
-            'phone' => $this->phone,
-            'products' => $this->getProducts(),
-            '_links' => $this->getLinks(),
+            'email'     => $this->email,
+            'address'   => $this->address,
+            'zip'       => $this->zip,
+            'phone'     => $this->phone,
+            'products'  => $this->getProducts(),
+            '_links'    => $this->getLinks(),
             '_embedded' => [
                 'customer' => $this->customer
             ]

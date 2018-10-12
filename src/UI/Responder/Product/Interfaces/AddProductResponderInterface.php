@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace App\UI\Responder\Product\Interfaces;
 
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -21,12 +20,14 @@ use Symfony\Component\HttpFoundation\Response;
  */
 interface AddProductResponderInterface
 {
-
     /**
-     * @param Request $request
+     * @param null $uri
      * @param null $errors
      *
      * @return Response
      */
-    public function __invoke(Request $request, $errors = null): Response;
+    public function __invoke(
+        $uri = null,
+        $errors = null
+    ): Response;
 }

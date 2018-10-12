@@ -15,7 +15,6 @@ namespace App\UI\Responder\CustomerUser;
 
 use App\UI\Responder\CustomerUser\Interfaces\AddCustomerUserResponderInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -26,8 +25,11 @@ final class AddCustomerUserResponder implements AddCustomerUserResponderInterfac
     /**
      * {@inheritdoc}
      */
-    public function __invoke(Request $request, $statusCode = Response::HTTP_CREATED, $errors = null): Response
-    {
+    public function __invoke(
+        $statusCode,
+        $uri = null,
+        $errors = null
+    ): Response {
         if ($statusCode === Response::HTTP_SEE_OTHER) {
             return new JsonResponse('CustomerUser already added!', Response::HTTP_SEE_OTHER);
         }
@@ -41,7 +43,8 @@ final class AddCustomerUserResponder implements AddCustomerUserResponderInterfac
             return new JsonResponse($errorList, Response::HTTP_REQUESTED_RANGE_NOT_SATISFIABLE);
         }
 
-        return new JsonResponse('CustomerUser added !', $statusCode);
-
+        $response = new JsonResponse('CustomerUser added !', $statusCode);
+        $response->headers->set('Location', $uri);
+        return $response;
     }
 }

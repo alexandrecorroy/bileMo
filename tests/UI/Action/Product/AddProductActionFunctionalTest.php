@@ -28,18 +28,18 @@ final class AddProductActionFunctionalTest extends DataFixtureTestCase
     public function testAddProduct()
     {
         $array = [
-            'name' => 'Phone',
-            'price' => 255.90,
+            'name'          => 'Phone',
+            'price'         => 255.90,
             'productDetail' => [
-                'brand' => 'brand',
-                'color' => 'orange',
-                'os' => 'Android 10',
-                'memory' => 64,
-                'weight' => 166.4,
+                'brand'      => 'brand',
+                'color'      => 'orange',
+                'os'         => 'Android 10',
+                'memory'     => 64,
+                'weight'     => 166.4,
                 'screenSize' => 5.5,
-                'height' => 155.7,
-                'width' => 55.8,
-                'thickness' => 8.8
+                'height'     => 155.7,
+                'width'      => 55.8,
+                'thickness'  => 8.8
             ]
         ];
 
@@ -50,6 +50,7 @@ final class AddProductActionFunctionalTest extends DataFixtureTestCase
 
         static::assertEquals(Response::HTTP_CREATED, $this->client->getResponse()->getStatusCode());
         static::assertTrue($this->client->getResponse()->headers->contains('content-type', 'application/json'));;
+        static::assertTrue($this->client->getResponse()->headers->has('Location'));;
     }
 
     /**
@@ -58,16 +59,16 @@ final class AddProductActionFunctionalTest extends DataFixtureTestCase
     public function testAddProductWithoutOneParameter()
     {
         $array = [
-            'name' => 'Phone',
-            'price' => 255.90,
+            'name'          => 'Phone',
+            'price'         => 255.90,
             'productDetail' => [
-                'brand' => 'brand',
-                'color' => 'orange',
-                'os' => 'Android 10',
-                'memory' => 64,
-                'weight' => 166.4,
-                'height' => 155.7,
-                'width' => 55.8,
+                'brand'     => 'brand',
+                'color'     => 'orange',
+                'os'        => 'Android 10',
+                'memory'    => 64,
+                'weight'    => 166.4,
+                'height'    => 155.7,
+                'width'     => 55.8,
                 'thickness' => 8.8
             ]
         ];
@@ -87,18 +88,18 @@ final class AddProductActionFunctionalTest extends DataFixtureTestCase
     public function testAddProductWithBadType()
     {
         $array = [
-            'name' => 'Phone',
-            'price' => 255.90,
+            'name'          => 'Phone',
+            'price'         => 255.90,
             'productDetail' => [
-                'brand' => 'brand',
-                'color' => 'orange',
-                'os' => 'Android 10',
-                'memory' => 64,
-                'weight' => "166.4",
+                'brand'      => 'brand',
+                'color'      => 'orange',
+                'os'         => 'Android 10',
+                'memory'     => 64,
+                'weight'     => "166.4",
                 'screenSize' => 5.5,
-                'height' => 155.7,
-                'width' => 55.8,
-                'thickness' => 8.8
+                'height'     => 155.7,
+                'width'      => 55.8,
+                'thickness'  => 8.8
             ]
         ];
 
@@ -137,18 +138,18 @@ final class AddProductActionFunctionalTest extends DataFixtureTestCase
         $product = $products[0];
         $productDetail = $product->getProductDetail();
         $array = [
-            'name' => $product->getName(),
-            'price' => $product->getPrice(),
+            'name'          => $product->getName(),
+            'price'         => $product->getPrice(),
             'productDetail' => [
-                'brand' => $productDetail->getBrand(),
-                'color' => $productDetail->getColor(),
-                'os' => $productDetail->getOs(),
-                'memory' => $productDetail->getMemory(),
-                'weight' => $productDetail->getWeight(),
+                'brand'      => $productDetail->getBrand(),
+                'color'      => $productDetail->getColor(),
+                'os'         => $productDetail->getOs(),
+                'memory'     => $productDetail->getMemory(),
+                'weight'     => $productDetail->getWeight(),
                 'screenSize' => $productDetail->getScreenSize(),
-                'height' => $productDetail->getHeight(),
-                'width' => $productDetail->getWidth(),
-                'thickness' => $productDetail->getThickness()
+                'height'     => $productDetail->getHeight(),
+                'width'      => $productDetail->getWidth(),
+                'thickness'  => $productDetail->getThickness()
             ]
         ];
 
@@ -160,5 +161,4 @@ final class AddProductActionFunctionalTest extends DataFixtureTestCase
         static::assertEquals(Response::HTTP_SEE_OTHER, $this->client->getResponse()->getStatusCode());
         static::assertTrue($this->client->getResponse()->headers->contains('content-type', 'application/json'));;
     }
-
 }

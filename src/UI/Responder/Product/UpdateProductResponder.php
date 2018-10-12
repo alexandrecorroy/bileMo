@@ -23,7 +23,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 final class UpdateProductResponder implements UpdateProductResponderInterface
 {
-
     /**
      * {@inheritdoc}
      */

@@ -55,9 +55,9 @@ final class RegisterActionUnitTest extends TestCase
      */
     public function setUp()
     {
-        $this->serializer = $this->createMock(SerializerInterface::class);
-        $this->encoder = $this->createMock(UserPasswordEncoderInterface::class);
-        $this->validator = $this->createMock(ValidatorInterface::class);
+        $this->serializer    = $this->createMock(SerializerInterface::class);
+        $this->encoder       = $this->createMock(UserPasswordEncoderInterface::class);
+        $this->validator     = $this->createMock(ValidatorInterface::class);
         $this->entityManager = $this->createMock(EntityManagerInterface::class);
     }
 
@@ -66,7 +66,12 @@ final class RegisterActionUnitTest extends TestCase
      */
     public function testImplementInterface()
     {
-        $class = new RegisterAction($this->serializer, $this->encoder, $this->validator, $this->entityManager);
+        $class = new RegisterAction(
+            $this->serializer,
+            $this->encoder,
+            $this->validator,
+            $this->entityManager
+        );
 
         static::assertInstanceOf(RegisterActionInterface::class, $class);
     }
@@ -76,14 +81,20 @@ final class RegisterActionUnitTest extends TestCase
      */
     public function testResponseIsReturned()
     {
-        $request = Request::create('/', 'POST');
-        $request = $request->duplicate(null, null);
-        $customer = $this->createMock(Customer::class);
+        $request   = Request::create('/', 'POST');
+        $request   = $request->duplicate(null, null);
+        $customer  = $this->createMock(Customer::class);
         $responder = $this->createMock(RegisterResponderInterface::class);
+
         $this->validator->method('validate')->willReturn([]);
         $this->serializer->method('deserialize')->willReturn($customer);
 
-        $class = new RegisterAction($this->serializer, $this->encoder, $this->validator, $this->entityManager);
+        $class = new RegisterAction(
+            $this->serializer,
+            $this->encoder,
+            $this->validator,
+            $this->entityManager
+        );
 
         static::assertInstanceOf(Response::class, $class($request, $responder));
     }

@@ -36,8 +36,8 @@ interface UpdateProductActionInterface
      */
     public function __construct(
         EntityManagerInterface $entityManager,
-                                ProductRepositoryInterface $productRepository,
-                                ValidatorInterface $validator
+        ProductRepositoryInterface $productRepository,
+        ValidatorInterface $validator
     );
 
     /**

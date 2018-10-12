@@ -57,10 +57,10 @@ class Admin implements AdminInterface, UserInterface
         $password,
         $email
     ) {
-        $this->uid = Uuid::uuid4();
+        $this->uid      = Uuid::uuid4();
         $this->username = $username;
         $this->password = $password;
-        $this->email = $email;
+        $this->email    = $email;
     }
 
     /**

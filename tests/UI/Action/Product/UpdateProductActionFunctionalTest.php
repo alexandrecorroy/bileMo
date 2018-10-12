@@ -42,12 +42,12 @@ final class UpdateProductActionFunctionalTest extends DataFixtureTestCase
     public function testUpdateProduct()
     {
         $productUpdated = [
-            'name' => 'updated name',
+            'name'          => 'updated name',
             'productDetail' => [
-                'brand' => 'brand',
+                'brand'      => 'brand',
                 'screenSize' => 5.5,
-                'height' => 155.7,
-                'width' => 55.8
+                'height'     => 155.7,
+                'width'      => 55.8
             ]
         ];
 

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace App\Tests\UI\Action\CustomerUser;
 
-
 use App\Entity\Customer;
 use App\Repository\Interfaces\CustomerUserRepositoryInterface;
 use App\UI\Action\CustomerUser\Interfaces\ListCustomerUserActionInterface;
@@ -67,14 +66,13 @@ final class ListCustomerUserActionUnitTest extends TestCase
      */
     public function setUp()
     {
-        $this->repository = $this->createMock(CustomerUserRepositoryInterface::class);
-        $this->entityManager = $this->createMock(EntityManagerInterface::class);
-        $this->tokenStorage = $this->createMock(TokenStorageInterface::class);
-        $this->responder = $this->createMock(ListCustomerUserResponderInterface::class);
+        $this->repository        = $this->createMock(CustomerUserRepositoryInterface::class);
+        $this->entityManager     = $this->createMock(EntityManagerInterface::class);
+        $this->tokenStorage      = $this->createMock(TokenStorageInterface::class);
+        $this->responder         = $this->createMock(ListCustomerUserResponderInterface::class);
         $this->notFoundResponder = $this->createMock(NotFoundCustomerUserResponderInterface::class);
-
-        $request = Request::create('/', 'GET');
-        $this->request = $request->duplicate(null, null, ['id' => 1]);
+        $request                 = Request::create('/', 'GET');
+        $this->request           = $request->duplicate(null, null, ['id' => 1]);
     }
 
     /**
@@ -82,7 +80,11 @@ final class ListCustomerUserActionUnitTest extends TestCase
      */
     public function testListCustomerUserAction()
     {
-        $listCustomerUserAction = new ListCustomerUserAction($this->repository, $this->entityManager, $this->tokenStorage);
+        $listCustomerUserAction = new ListCustomerUserAction(
+            $this->repository,
+            $this->entityManager,
+            $this->tokenStorage
+        );
 
         static::assertInstanceOf(ListCustomerUserActionInterface::class, $listCustomerUserAction);
     }
@@ -98,7 +100,11 @@ final class ListCustomerUserActionUnitTest extends TestCase
         $tokenInterfaceMock->method('getUser')->willReturn($customerMock);
         $this->tokenStorage->method('getToken')->willReturn($tokenInterfaceMock);
 
-        $action = new ListCustomerUserAction($this->repository, $this->entityManager, $this->tokenStorage);
+        $action = new ListCustomerUserAction(
+            $this->repository,
+            $this->entityManager,
+            $this->tokenStorage
+        );
 
         static::assertInstanceOf(Response::class, $action($this->request, $this->responder, $this->notFoundResponder));
     }

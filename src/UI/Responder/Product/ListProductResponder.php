@@ -30,9 +30,7 @@ final class ListProductResponder implements ListProductResponderInterface
         Request $request,
         array $products
     ): Response {
-
         $response = new JsonResponse($products);
         return $response;
-
     }
 }

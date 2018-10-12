@@ -28,7 +28,10 @@ interface ProductRepositoryInterface
      * @param RegistryInterface $registry
      * @param ApcuCache $cache
      */
-    public function __construct(RegistryInterface $registry, ApcuCache $cache);
+    public function __construct(
+        RegistryInterface $registry,
+        ApcuCache $cache
+    );
 
     /**
      * @param $value

@@ -40,7 +40,7 @@ final class GetCustomerUserResponderUnitTest extends TestCase
      */
     public function setUp()
     {
-        $this->request = $this->createMock(Request::class);
+        $this->request      = $this->createMock(Request::class);
         $this->customerUser = $this->createMock(CustomerUserInterface::class);
     }
 

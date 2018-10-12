@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace App\Tests\UI\Responder\CustomerUser;
 
-
 use App\UI\Responder\CustomerUser\DeleteCustomerUserResponder;
 use App\UI\Responder\CustomerUser\Interfaces\DeleteCustomerUserResponderInterface;
 use PHPUnit\Framework\TestCase;

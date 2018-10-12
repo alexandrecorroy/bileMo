@@ -20,7 +20,6 @@ use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class DataFixtureTestCase.
@@ -49,8 +48,8 @@ class DataFixtureTestCase extends WebTestCase
         self::runCommand('doctrine:schema:create');
         self::runCommand('doctrine:fixtures:load --append --no-interaction');
 
-        $this->client = static::createClient();
-        self::$container = $this->client->getContainer();
+        $this->client        = static::createClient();
+        self::$container     = $this->client->getContainer();
         $this->entityManager = self::$container->get('doctrine.orm.entity_manager');
 
         parent::setUp();

@@ -18,6 +18,7 @@ use App\UI\Responder\Product\Interfaces\AddProductResponderInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -34,12 +35,14 @@ interface AddProductActionInterface
      * @param ProductRepositoryInterface $productRepository
      * @param SerializerInterface $serializer
      * @param ValidatorInterface $validator
+     * @param RouterInterface $router
      */
     public function __construct(
         EntityManagerInterface $entityManager,
         ProductRepositoryInterface $productRepository,
         SerializerInterface $serializer,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        RouterInterface $router
     );
 
     /**

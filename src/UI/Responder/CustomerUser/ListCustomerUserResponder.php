@@ -30,8 +30,6 @@ final class ListCustomerUserResponder implements ListCustomerUserResponderInterf
         Request $request,
         array $customerUsers
     ): Response {
-
         return new JsonResponse($customerUsers);
-
     }
 }

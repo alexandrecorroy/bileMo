@@ -23,7 +23,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 final class DeleteCustomerUserResponder implements DeleteCustomerUserResponderInterface
 {
-
     /**
      * {@inheritdoc}
      */
@@ -31,5 +30,4 @@ final class DeleteCustomerUserResponder implements DeleteCustomerUserResponderIn
     {
         return new JsonResponse('CustomerUser Deleted !', Response::HTTP_ACCEPTED);
     }
-
 }

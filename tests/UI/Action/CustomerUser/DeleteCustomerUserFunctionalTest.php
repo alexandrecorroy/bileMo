@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace App\Tests\UI\Action\CustomerUser;
 
-
 use App\Tests\DataFixtures\DataFixtureTestCase;
 use Symfony\Component\HttpFoundation\Response;
 

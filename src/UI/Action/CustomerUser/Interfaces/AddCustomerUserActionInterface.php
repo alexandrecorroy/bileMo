@@ -18,6 +18,7 @@ use App\UI\Responder\CustomerUser\Interfaces\AddCustomerUserResponderInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -36,13 +37,15 @@ interface AddCustomerUserActionInterface
      * @param SerializerInterface $serializer
      * @param ValidatorInterface $validator
      * @param TokenStorageInterface $tokenStorage
+     * @param RouterInterface $router
      */
     public function __construct(
         EntityManagerInterface $entityManager,
         CustomerUserRepositoryInterface $customerUserRepository,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        RouterInterface $router
     );
 
     /**

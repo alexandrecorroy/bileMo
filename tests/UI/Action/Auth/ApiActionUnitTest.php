@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace App\Test\UI\Action\Auth;
 
-
 use App\UI\Action\Auth\ApiAction;
 use App\UI\Action\Auth\Interfaces\ApiActionInterface;
 use App\UI\Responder\Auth\Interfaces\ApiResponderInterface;

@@ -25,5 +25,8 @@ interface ListProductResponderInterface
      *
      * @return Response
      */
-    public function __invoke(Request $request, array $products): Response;
+    public function __invoke(
+        Request $request,
+        array $products
+    ): Response;
 }

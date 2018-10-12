@@ -109,13 +109,12 @@ class Customer implements CustomerInterface, \JsonSerializable, UserInterface
         $password,
         $phone = null
     ) {
-        $this->uid = Uuid::uuid4();
-        $this->society = $society;
-        $this->email = $email;
-        $this->username = $username;
-        $this->password = $password;
-        $this->phone = $phone;
-
+        $this->uid           = Uuid::uuid4();
+        $this->society       = $society;
+        $this->email         = $email;
+        $this->username      = $username;
+        $this->password      = $password;
+        $this->phone         = $phone;
         $this->customerUsers = [];
     }
 
@@ -209,11 +208,11 @@ class Customer implements CustomerInterface, \JsonSerializable, UserInterface
     public function jsonSerialize()
     {
         return [
-            'uid' => $this->uid,
-            'society' => $this->society,
-            'email' => $this->email,
+            'uid'      => $this->uid,
+            'society'  => $this->society,
+            'email'    => $this->email,
             'username' => $this->username,
-            'phone' => $this->phone
+            'phone'    => $this->phone
         ];
     }
 

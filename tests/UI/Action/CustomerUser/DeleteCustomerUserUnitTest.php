@@ -26,7 +26,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class DeleteCustomerUserUnitTest.
@@ -73,15 +72,14 @@ final class DeleteCustomerUserUnitTest extends TestCase
      */
     public function setUp()
     {
-        $this->repository = $this->createMock(CustomerUserRepositoryInterface::class);
-        $this->entityManager = $this->createMock(EntityManagerInterface::class);
-        $this->responder = $this->createMock(DeleteCustomerUserResponderInterface::class);
-        $this->notFoundResponder = $this->createMock(NotFoundCustomerUserResponderInterface::class);
-        $this->tokenStorage = $this->createMock(TokenStorageInterface::class);
+        $this->repository         = $this->createMock(CustomerUserRepositoryInterface::class);
+        $this->entityManager      = $this->createMock(EntityManagerInterface::class);
+        $this->responder          = $this->createMock(DeleteCustomerUserResponderInterface::class);
+        $this->notFoundResponder  = $this->createMock(NotFoundCustomerUserResponderInterface::class);
+        $this->tokenStorage       = $this->createMock(TokenStorageInterface::class);
         $this->forbiddenResponder = $this->createMock(ForbiddenCustomerUserResponderInterface::class);
-
-        $request = Request::create('/', 'DELETE');
-        $this->request = $request->duplicate(null, null, ['id' => 1]);
+        $request                  = Request::create('/', 'DELETE');
+        $this->request            = $request->duplicate(null, null, ['id' => 1]);
     }
 
     /**
@@ -89,7 +87,13 @@ final class DeleteCustomerUserUnitTest extends TestCase
      */
     public function testImplementInterface()
     {
-        static::assertInstanceOf(DeleteCustomerUserActionInterface::class, new DeleteCustomerUserAction($this->entityManager, $this->repository, $this->tokenStorage));
+        $class = new DeleteCustomerUserAction(
+            $this->entityManager,
+            $this->repository,
+            $this->tokenStorage
+        );
+
+        static::assertInstanceOf(DeleteCustomerUserActionInterface::class, $class);
     }
 
     /**
@@ -97,14 +101,19 @@ final class DeleteCustomerUserUnitTest extends TestCase
      */
     public function testResponseIsReturned()
     {
-        $customerUser = $this->createMock(CustomerUserInterface::class);
+        $customerUser   = $this->createMock(CustomerUserInterface::class);
         $tokenInterface = $this->createMock(TokenInterface::class);
 
         $this->repository->method('findOneByUuidField')->willReturn($customerUser);
         $this->tokenStorage->method('getToken')->willReturn($tokenInterface);
         $tokenInterface->method('getUser')->willReturn($customerUser);
 
-        $deleteCustomerUserAction = new DeleteCustomerUserAction($this->entityManager, $this->repository, $this->tokenStorage);
+        $deleteCustomerUserAction = new DeleteCustomerUserAction(
+            $this->entityManager,
+            $this->repository,
+            $this->tokenStorage
+        );
+
         static::assertInstanceOf(Response::class, $deleteCustomerUserAction($this->request, $this->responder, $this->notFoundResponder, $this->forbiddenResponder));
     }
 }

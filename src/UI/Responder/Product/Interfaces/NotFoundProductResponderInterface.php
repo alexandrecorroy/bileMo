@@ -20,10 +20,8 @@ use Symfony\Component\HttpFoundation\Response;
  */
 interface NotFoundProductResponderInterface
 {
-
     /**
      * @return Response
      */
     public function __invoke(): Response;
-
 }

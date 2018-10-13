@@ -29,11 +29,6 @@ interface CustomerUserInterface
     public function addProduct(Product $product): void;
 
     /**
-     * @param Product $product
-     */
-    public function removeProduct(Product $product): void;
-
-    /**
      * @return array
      */
     public function getProducts(): array;

@@ -161,20 +161,6 @@ class CustomerUser implements CustomerUserInterface, \JsonSerializable
     /**
      * {@inheritdoc}
      */
-    public function removeProduct(Product $product): void
-    {
-        $productUid = $product->getUid();
-        foreach ($this->products as $product)
-        {
-            if($product->getUid() === $productUid)
-                unset($product);
-                break;
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getProducts(): array
     {
         $list = [];

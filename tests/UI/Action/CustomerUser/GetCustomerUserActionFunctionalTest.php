@@ -23,16 +23,30 @@ use Symfony\Component\HttpFoundation\Response;
 final class GetCustomerUserActionFunctionalTest extends DataFixtureTestCase
 {
     /**
+     * @var null
+     */
+    private $customerUsers = null;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setUp()
+    {
+        parent::setUp();
+        $this->client = self::createAuthenticatedRoleUser();
+        $this->client->request('GET', '/api/customerUsers');
+
+        $this->customerUsers = json_decode($this->client->getResponse()->getContent(), true);
+    }
+
+    /**
      * test customer user is returned
      */
     public function testCustomerUserIsReturned()
     {
         $this->client = self::createAuthenticatedRoleUser();
-        $this->client->request('GET', '/api/customerUsers');
 
-        $customerUsers = json_decode($this->client->getResponse()->getContent(), true);
-
-        foreach ($customerUsers as $customerUser)
+        foreach ($this->customerUsers as $customerUser)
         {
             $this->client->request('GET', '/api/customerUser/'.$customerUser['uid']);
 
@@ -51,5 +65,21 @@ final class GetCustomerUserActionFunctionalTest extends DataFixtureTestCase
 
         static::assertEquals(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
         static::assertTrue($this->client->getResponse()->headers->contains('content-type', 'application/json'));
+    }
+
+    /**
+     * test customer user is returned
+     */
+    public function testCustomerUserForbidden()
+    {
+        $this->client = self::createAuthenticatedRoleAnotherUser();
+
+        foreach ($this->customerUsers as $customerUser)
+        {
+            $this->client->request('GET', '/api/customerUser/'.$customerUser['uid']);
+
+            static::assertEquals(Response::HTTP_FORBIDDEN, $this->client->getResponse()->getStatusCode());
+            static::assertTrue($this->client->getResponse()->headers->contains('content-type', 'application/json'));
+        }
     }
 }

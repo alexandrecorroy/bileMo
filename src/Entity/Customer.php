@@ -178,33 +178,6 @@ class Customer implements CustomerInterface, \JsonSerializable, UserInterface
     /**
      * {@inheritdoc}
      */
-    public function removeCustomerUser(CustomerUser $customerUser): void
-    {
-        $customerUserId = $customerUser->getUid();
-        foreach ($this->customerUsers as $customerUser)
-        {
-            if($customerUser->getUid() === $customerUserId)
-                unset($customerUser);
-            break;
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCustomerUsers(): array
-    {
-        $list = [];
-        foreach ($this->customerUsers as $customerUser)
-        {
-            $list[] = $customerUser;
-        }
-        return $list;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function jsonSerialize()
     {
         return [

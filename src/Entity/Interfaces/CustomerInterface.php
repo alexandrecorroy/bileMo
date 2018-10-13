@@ -57,16 +57,6 @@ interface CustomerInterface
     public function addCustomerUser(CustomerUser $customerUser): void;
 
     /**
-     * @param CustomerUser $customerUser
-     */
-    public function removeCustomerUser(CustomerUser $customerUser): void;
-
-    /**
-     * @return array
-     */
-    public function getCustomerUsers(): array;
-
-    /**
      * @param $password
      */
     public function updatePassword($password): void;

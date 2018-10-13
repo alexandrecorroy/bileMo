@@ -127,7 +127,6 @@ class DataFixtureTestCase extends WebTestCase
         return $client;
     }
 
-
     /**
      * @return Client
      */
@@ -136,6 +135,34 @@ class DataFixtureTestCase extends WebTestCase
         $credentials = [
             'username' => 'admin',
             'password' => 'admin'
+        ];
+
+        $client = static::createClient();
+        $client->request(
+            'POST',
+            '/api/login_check',
+            array(),
+            array(),
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($credentials)
+        );
+
+        $data = json_decode($client->getResponse()->getContent(), true);
+
+        $client = static::createClient();
+        $client->setServerParameter('HTTP_Authorization', sprintf('Bearer %s', $data['token']));
+
+        return $client;
+    }
+
+    /**
+     * @return Client
+     */
+    protected function createAuthenticatedRoleAnotherUser()
+    {
+        $credentials = [
+            'username' => 'free',
+            'password' => 'free'
         ];
 
         $client = static::createClient();

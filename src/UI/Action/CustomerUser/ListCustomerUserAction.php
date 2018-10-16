@@ -17,12 +17,10 @@ use App\Repository\Interfaces\CustomerUserRepositoryInterface;
 use App\UI\Action\CustomerUser\Interfaces\ListCustomerUserActionInterface;
 use App\UI\Responder\CustomerUser\Interfaces\ListCustomerUserResponderInterface;
 use App\UI\Responder\CustomerUser\Interfaces\NotFoundCustomerUserResponderInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 /**
  * final Class ListCustomerUserAction.
@@ -38,11 +36,6 @@ final class ListCustomerUserAction implements ListCustomerUserActionInterface
     private $customerUserRepository;
 
     /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
-    /**
      * @var TokenStorageInterface
      */
     private $tokenStorage;
@@ -52,11 +45,9 @@ final class ListCustomerUserAction implements ListCustomerUserActionInterface
      */
     public function __construct(
         CustomerUserRepositoryInterface $customerUserRepository,
-        EntityManagerInterface $entityManager,
         TokenStorageInterface $tokenStorage
     ) {
         $this->customerUserRepository = $customerUserRepository;
-        $this->entityManager          = $entityManager;
         $this->tokenStorage           = $tokenStorage;
     }
 

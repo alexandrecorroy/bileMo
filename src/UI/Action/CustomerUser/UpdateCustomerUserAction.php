@@ -13,20 +13,17 @@ declare(strict_types=1);
 
 namespace App\UI\Action\CustomerUser;
 
-use App\Entity\Product;
 use App\Repository\Interfaces\CustomerUserRepositoryInterface;
+use App\Repository\Interfaces\ProductRepositoryInterface;
 use App\UI\Action\CustomerUser\Interfaces\UpdateCustomerUserActionInterface;
 use App\UI\Responder\CustomerUser\Interfaces\ForbiddenCustomerUserResponderInterface;
 use App\UI\Responder\CustomerUser\Interfaces\NotFoundCustomerUserResponderInterface;
 use App\UI\Responder\CustomerUser\Interfaces\UpdateCustomerUserResponderInterface;
 use Doctrine\Common\Cache\ApcuCache;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -36,11 +33,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 final class UpdateCustomerUserAction implements UpdateCustomerUserActionInterface
 {
-
     /**
-     * @var EntityManagerInterface
+     * @var ProductRepositoryInterface
      */
-    private $entityManager;
+    private $productRepository;
 
     /**
      * @var CustomerUserRepositoryInterface
@@ -61,12 +57,12 @@ final class UpdateCustomerUserAction implements UpdateCustomerUserActionInterfac
      *{@inheritdoc}
      */
     public function __construct(
-        EntityManagerInterface $entityManager,
         CustomerUserRepositoryInterface $customerUserRepository,
         ValidatorInterface $validator,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        ProductRepositoryInterface $productRepository
     ) {
-        $this->entityManager          = $entityManager;
+        $this->productRepository      = $productRepository;
         $this->customerUserRepository = $customerUserRepository;
         $this->validator              = $validator;
         $this->tokenStorage           = $tokenStorage;
@@ -104,7 +100,7 @@ final class UpdateCustomerUserAction implements UpdateCustomerUserActionInterfac
             $customerUser->deleteProducts();
               foreach ($products as $product)
             {
-                $product = $this->entityManager->getRepository(Product::class)->findOneByUuidField($product['uid']);
+                $product = $this->productRepository->findOneByUuidField($product['uid']);
                 if(!\is_null($product))
                 {
                     $customerUser->addProduct($product);
@@ -120,7 +116,7 @@ final class UpdateCustomerUserAction implements UpdateCustomerUserActionInterfac
         }
 
         $cache->deleteAll();
-        $this->entityManager->flush();
+        $this->customerUserRepository->save();
 
         return $updateCustomerUserResponder($request);
     }

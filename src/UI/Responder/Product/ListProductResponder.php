@@ -31,6 +31,14 @@ final class ListProductResponder implements ListProductResponderInterface
         array $products
     ): Response {
         $response = new JsonResponse($products);
+        $response->setPublic();
+        $response->setEtag(md5($response->getContent()));
+
+        if($response->isNotModified($request))
+        {
+            $response->setNotModified();
+        }
+
         return $response;
     }
 }

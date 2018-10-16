@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace App\UI\Action\Auth;
 
 use App\Entity\Customer;
+use App\Repository\Interfaces\CustomerRepositoryInterface;
 use App\UI\Action\Auth\Interfaces\RegisterActionInterface;
 use App\UI\Responder\Auth\Interfaces\RegisterResponderInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -46,9 +46,9 @@ final class RegisterAction implements RegisterActionInterface
     private $validator;
 
     /**
-     * @var EntityManagerInterface
+     * @var CustomerRepositoryInterface
      */
-    private $entityManager;
+    private $customerRepositoryInterface;
 
     /**
      * {@inheritdoc}
@@ -57,12 +57,12 @@ final class RegisterAction implements RegisterActionInterface
         SerializerInterface $serializer,
         UserPasswordEncoderInterface $encoder,
         ValidatorInterface $validator,
-        EntityManagerInterface $entityManager
+        CustomerRepositoryInterface $customerRepository
     ) {
-        $this->serializer    = $serializer;
-        $this->encoder       = $encoder;
-        $this->validator     = $validator;
-        $this->entityManager = $entityManager;
+        $this->serializer                  = $serializer;
+        $this->encoder                     = $encoder;
+        $this->validator                   = $validator;
+        $this->customerRepositoryInterface = $customerRepository;
     }
 
     /**
@@ -87,8 +87,7 @@ final class RegisterAction implements RegisterActionInterface
         $password = $this->encoder->encodePassword($customer, $customer->getPassword());
         $customer->updatePassword($password);
 
-        $this->entityManager->persist($customer);
-        $this->entityManager->flush();
+        $this->customerRepositoryInterface->create($customer);
 
         return $responder();
     }

@@ -35,9 +35,9 @@ if ($trustedHosts = $_SERVER['TRUSTED_HOSTS'] ?? false) {
 
     $kernel = new Kernel($env, $debug);
 
-//if ('prod' === $env) {
-//    $kernel = new CacheKernel($kernel);
-//}
+if ('prod' === $env) {
+    $kernel = new CacheKernel($kernel);
+}
 
     $request = Request::createFromGlobals();
     $response = $kernel->handle($request);

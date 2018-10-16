@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace App\Repository\Interfaces;
 
-use Doctrine\Common\Cache\ApcuCache;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -25,10 +24,18 @@ interface CustomerRepositoryInterface
      * CustomerRepositoryInterface constructor.
      *
      * @param RegistryInterface $registry
-     * @param ApcuCache $cache
      */
     public function __construct(
-        RegistryInterface $registry,
-        ApcuCache $cache
+        RegistryInterface $registry
     );
+
+    /**
+     * @param $entity
+     */
+    public function create($entity): void;
+
+    /**
+     * save to bdd
+     */
+    public function save(): void;
 }

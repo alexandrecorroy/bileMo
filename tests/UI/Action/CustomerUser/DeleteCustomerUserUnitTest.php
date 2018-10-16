@@ -20,7 +20,6 @@ use App\UI\Action\CustomerUser\Interfaces\DeleteCustomerUserActionInterface;
 use App\UI\Responder\CustomerUser\Interfaces\DeleteCustomerUserResponderInterface;
 use App\UI\Responder\CustomerUser\Interfaces\ForbiddenCustomerUserResponderInterface;
 use App\UI\Responder\CustomerUser\Interfaces\NotFoundCustomerUserResponderInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,11 +40,6 @@ final class DeleteCustomerUserUnitTest extends TestCase
      * @var null
      */
     private $request = null;
-
-    /**
-     * @var EntityManagerInterface|null
-     */
-    private $entityManager = null;
 
     /**
      * @var DeleteCustomerUserResponderInterface|null
@@ -73,7 +67,6 @@ final class DeleteCustomerUserUnitTest extends TestCase
     public function setUp()
     {
         $this->repository         = $this->createMock(CustomerUserRepositoryInterface::class);
-        $this->entityManager      = $this->createMock(EntityManagerInterface::class);
         $this->responder          = $this->createMock(DeleteCustomerUserResponderInterface::class);
         $this->notFoundResponder  = $this->createMock(NotFoundCustomerUserResponderInterface::class);
         $this->tokenStorage       = $this->createMock(TokenStorageInterface::class);
@@ -88,7 +81,6 @@ final class DeleteCustomerUserUnitTest extends TestCase
     public function testImplementInterface()
     {
         $class = new DeleteCustomerUserAction(
-            $this->entityManager,
             $this->repository,
             $this->tokenStorage
         );
@@ -109,7 +101,6 @@ final class DeleteCustomerUserUnitTest extends TestCase
         $tokenInterface->method('getUser')->willReturn($customerUser);
 
         $deleteCustomerUserAction = new DeleteCustomerUserAction(
-            $this->entityManager,
             $this->repository,
             $this->tokenStorage
         );

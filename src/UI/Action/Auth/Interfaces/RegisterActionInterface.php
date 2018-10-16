@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace App\UI\Action\Auth\Interfaces;
 
+use App\Repository\Interfaces\CustomerRepositoryInterface;
 use App\UI\Responder\Auth\Interfaces\RegisterResponderInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -32,13 +32,13 @@ interface RegisterActionInterface
      * @param SerializerInterface $serializer
      * @param UserPasswordEncoderInterface $encoder
      * @param ValidatorInterface $validator
-     * @param EntityManagerInterface $entityManager
+     * @param CustomerRepositoryInterface $customerRepository
      */
     public function __construct(
         SerializerInterface $serializer,
         UserPasswordEncoderInterface $encoder,
         ValidatorInterface $validator,
-        EntityManagerInterface $entityManager
+        CustomerRepositoryInterface $customerRepository
     );
 
     /**

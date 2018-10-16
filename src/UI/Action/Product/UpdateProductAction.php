@@ -18,7 +18,6 @@ use App\UI\Action\Product\Interfaces\UpdateProductActionInterface;
 use App\UI\Responder\Product\Interfaces\NotFoundProductResponderInterface;
 use App\UI\Responder\Product\Interfaces\UpdateProductResponderInterface;
 use Doctrine\Common\Cache\ApcuCache;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -31,12 +30,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 final class UpdateProductAction implements UpdateProductActionInterface
 {
-
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
     /**
      * @var ProductRepositoryInterface
      */
@@ -51,11 +44,9 @@ final class UpdateProductAction implements UpdateProductActionInterface
      *{@inheritdoc}
      */
     public function __construct(
-        EntityManagerInterface $entityManager,
         ProductRepositoryInterface $productRepository,
         ValidatorInterface $validator
     ) {
-        $this->entityManager     = $entityManager;
         $this->productRepository = $productRepository;
         $this->validator         = $validator;
     }
@@ -91,7 +82,8 @@ final class UpdateProductAction implements UpdateProductActionInterface
         }
 
         $cache->delete('find'.$product->getUid()->toString());
-        $this->entityManager->flush();
+        $cache->delete('find_all_products');
+        $this->productRepository->save();
 
         return $updateProductResponder($request);
     }

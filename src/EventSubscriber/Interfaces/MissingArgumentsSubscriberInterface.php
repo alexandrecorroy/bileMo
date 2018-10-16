@@ -13,14 +13,13 @@ declare(strict_types=1);
 
 namespace App\EventSubscriber\Interfaces;
 
-
 use App\Service\Interfaces\ReturnBlankParameterNameInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 
 /**
- * Interface ProductSubscriberInterface.
+ * Interface MissingArgumentsSubscriberInterface.
  */
-interface ProductSubscriberInterface
+interface MissingArgumentsSubscriberInterface
 {
     /**
      * ProductSubscriberInterface constructor.

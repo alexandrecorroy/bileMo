@@ -107,4 +107,30 @@ final class ProductRepository extends ServiceEntityRepository implements Product
             ->getOneOrNullResult()
         ;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function create($entity): void
+    {
+        $this->_em->persist($entity);
+        $this::save();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function delete($entity): void
+    {
+        $this->_em->remove($entity);
+        $this::save();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function save(): void
+    {
+        $this->_em->flush();
+    }
 }

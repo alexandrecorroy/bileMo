@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace App\UI\Action\CustomerUser;
 
 use App\Entity\CustomerUser;
-use App\Entity\Product;
+use App\Repository\Interfaces\CustomerRepositoryInterface;
 use App\Repository\Interfaces\CustomerUserRepositoryInterface;
+use App\Repository\Interfaces\ProductRepositoryInterface;
 use App\UI\Action\CustomerUser\Interfaces\AddCustomerUserActionInterface;
 use App\UI\Responder\CustomerUser\Interfaces\AddCustomerUserResponderInterface;
 use Doctrine\Common\Cache\ApcuCache;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -34,16 +34,20 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 final class AddCustomerUserAction implements AddCustomerUserActionInterface
 {
-
     /**
-     * @var EntityManagerInterface
+     * @var ProductRepositoryInterface
      */
-    private $entityManager;
+    private $productRepository;
 
     /**
      * @var CustomerUserRepositoryInterface
      */
     private $customerUserRepository;
+
+    /**
+     * @var CustomerRepositoryInterface
+     */
+    private $customerRepository;
 
     /**
      * @var SerializerInterface
@@ -69,14 +73,16 @@ final class AddCustomerUserAction implements AddCustomerUserActionInterface
      * {@inheritdoc}
      */
     public function __construct(
-        EntityManagerInterface $entityManager,
+        ProductRepositoryInterface $productRepository,
+        CustomerRepositoryInterface $customerRepository,
         CustomerUserRepositoryInterface $customerUserRepository,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
         TokenStorageInterface $tokenStorage,
         RouterInterface $router
     ) {
-        $this->entityManager          = $entityManager;
+        $this->productRepository      = $productRepository;
+        $this->customerRepository     = $customerRepository;
         $this->customerUserRepository = $customerUserRepository;
         $this->serializer             = $serializer;
         $this->validator              = $validator;
@@ -114,7 +120,7 @@ final class AddCustomerUserAction implements AddCustomerUserActionInterface
         {
             foreach ($products as $product)
             {
-                $product = $this->entityManager->getRepository(Product::class)->findOneByUuidField($product['uid']);
+                $product = $this->productRepository->findOneByUuidField($product['uid']);
                 if(!\is_null($product))
                 {
                     $customerUser->addProduct($product);
@@ -123,9 +129,8 @@ final class AddCustomerUserAction implements AddCustomerUserActionInterface
         }
 
         $customer->addCustomerUser($customerUser);
-        $this->entityManager->persist($customer);
         $cache->delete('findAllCustomerUser'.$customer->getUid()->toString());
-        $this->entityManager->flush();
+        $this->customerRepository->create($customer);
 
         return $addCustomerUserResponder(Response::HTTP_CREATED, $this->router->generate('customer_user_show', ['id' => $customerUser->getUid()->toString()]));
     }

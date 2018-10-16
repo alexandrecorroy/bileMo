@@ -37,18 +37,11 @@ final class DeleteProductAction implements DeleteProductActionInterface
     private $productRepository;
 
     /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
-    /**
      * {@inheritdoc}
      */
     public function __construct(
-        EntityManagerInterface $entityManager,
         ProductRepositoryInterface $productRepository
     ) {
-        $this->entityManager     = $entityManager;
         $this->productRepository = $productRepository;
     }
 
@@ -70,8 +63,8 @@ final class DeleteProductAction implements DeleteProductActionInterface
         }
 
         $cache->delete('find'.$product->getUid()->toString());
-        $this->entityManager->remove($product);
-        $this->entityManager->flush();
+        $cache->delete('find_all_products');
+        $this->productRepository->delete($product);
 
         return $deleteProductResponder($request);
     }

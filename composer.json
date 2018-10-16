@@ -1,5 +1,5 @@
 {
-    "name": "bilemo",
+    "name": "bilemo/api",
     "description": "API project",
     "type": "project",
     "license": "proprietary",
@@ -10,6 +10,7 @@
         "blackfire/php-sdk": "^1.17",
         "doctrine/doctrine-cache-bundle": "^1.3",
         "lexik/jwt-authentication-bundle": "^2.5",
+        "nelmio/api-doc-bundle": "^3.3",
         "ramsey/uuid-doctrine": "^1.4",
         "sensio/framework-extra-bundle": "^5.2",
         "symfony/console": "^4.1",

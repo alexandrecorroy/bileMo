@@ -19,7 +19,6 @@ use App\UI\Responder\CustomerUser\Interfaces\DeleteCustomerUserResponderInterfac
 use App\UI\Responder\CustomerUser\Interfaces\ForbiddenCustomerUserResponderInterface;
 use App\UI\Responder\CustomerUser\Interfaces\NotFoundCustomerUserResponderInterface;
 use Doctrine\Common\Cache\ApcuCache;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -37,10 +36,6 @@ final class DeleteCustomerUserAction implements DeleteCustomerUserActionInterfac
      */
     private $customerUserRepository;
 
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
 
     /**
      * @var TokenStorageInterface
@@ -51,11 +46,9 @@ final class DeleteCustomerUserAction implements DeleteCustomerUserActionInterfac
      * {@inheritdoc}
      */
     public function __construct(
-        EntityManagerInterface $entityManager,
         CustomerUserRepositoryInterface $customerUserRepository,
         TokenStorageInterface $tokenStorage
     ) {
-        $this->entityManager          = $entityManager;
         $this->customerUserRepository = $customerUserRepository;
         $this->tokenStorage           = $tokenStorage;
     }
@@ -85,9 +78,9 @@ final class DeleteCustomerUserAction implements DeleteCustomerUserActionInterfac
         }
 
         $cache->delete('find'.$customerUser->getUid()->toString());
-        $this->entityManager->merge($customerUser);
-        $this->entityManager->remove($customerUser);
-        $this->entityManager->flush();
+        $cache->delete('findAllCustomerUser'.$customerUser->getCustomer()->getUid()->toString());
+
+        $this->customerUserRepository->delete($customerUser);
 
         return $deleteCustomerUserResponder($request);
     }

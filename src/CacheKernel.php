@@ -14,10 +14,15 @@ declare(strict_types=1);
 namespace App;
 
 use Symfony\Bundle\FrameworkBundle\HttpCache\HttpCache;
-
 /**
- * Class CacheKernel.
+ * final Class CacheKernel.
  */
 final class CacheKernel extends HttpCache
 {
+    protected function getOptions()
+    {
+        return array(
+            'debug' => true
+        );
+    }
 }

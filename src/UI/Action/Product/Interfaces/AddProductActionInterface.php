@@ -15,7 +15,6 @@ namespace App\UI\Action\Product\Interfaces;
 
 use App\Repository\Interfaces\ProductRepositoryInterface;
 use App\UI\Responder\Product\Interfaces\AddProductResponderInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
@@ -31,14 +30,12 @@ interface AddProductActionInterface
     /**
      * AddProductActionInterface constructor.
      *
-     * @param EntityManagerInterface $entityManager
      * @param ProductRepositoryInterface $productRepository
      * @param SerializerInterface $serializer
      * @param ValidatorInterface $validator
      * @param RouterInterface $router
      */
     public function __construct(
-        EntityManagerInterface $entityManager,
         ProductRepositoryInterface $productRepository,
         SerializerInterface $serializer,
         ValidatorInterface $validator,

@@ -18,7 +18,6 @@ use App\Repository\Interfaces\ProductRepositoryInterface;
 use App\UI\Action\Product\AddProductAction;
 use App\UI\Action\Product\Interfaces\AddProductActionInterface;
 use App\UI\Responder\Product\Interfaces\AddProductResponderInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,11 +30,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 final class AddProductActionUnitTest extends TestCase
 {
-    /**
-     * @var EntityManagerInterface|null
-     */
-    private $entityManager = null;
-
     /**
      * @var ProductRepositoryInterface|null
      */
@@ -71,7 +65,6 @@ final class AddProductActionUnitTest extends TestCase
      */
     protected function setUp()
     {
-        $this->entityManager     = $this->createMock(EntityManagerInterface::class);
         $this->productRepository = $this->createMock(ProductRepositoryInterface::class);
         $this->serializer        = $this->createMock(SerializerInterface::class);
         $this->validator         = $this->createMock(ValidatorInterface::class);
@@ -88,7 +81,6 @@ final class AddProductActionUnitTest extends TestCase
     public function testAddProductAction()
     {
         $addProductAction = new AddProductAction(
-            $this->entityManager,
             $this->productRepository,
             $this->serializer,
             $this->validator,
@@ -109,7 +101,6 @@ final class AddProductActionUnitTest extends TestCase
         $this->validator->method('validate')->willReturn([]);
 
         $action = new AddProductAction(
-            $this->entityManager,
             $this->productRepository,
             $this->serializer,
             $this->validator,

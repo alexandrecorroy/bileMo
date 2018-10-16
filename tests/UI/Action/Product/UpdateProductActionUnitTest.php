@@ -20,7 +20,6 @@ use App\UI\Action\Product\Interfaces\UpdateProductActionInterface;
 use App\UI\Action\Product\UpdateProductAction;
 use App\UI\Responder\Product\Interfaces\NotFoundProductResponderInterface;
 use App\UI\Responder\Product\Interfaces\UpdateProductResponderInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,11 +30,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 final class UpdateProductActionUnitTest extends TestCase
 {
-    /**
-     * @var EntityManagerInterface|null
-     */
-    private $entityManager = null;
-
     /**
      * @var ProductRepositoryInterface|null
      */
@@ -66,7 +60,6 @@ final class UpdateProductActionUnitTest extends TestCase
      */
     protected function setUp()
     {
-        $this->entityManager                     = $this->createMock(EntityManagerInterface::class);
         $this->productRepository                 = $this->createMock(ProductRepositoryInterface::class);
         $this->validator                         = $this->createMock(ValidatorInterface::class);
         $this->responder                         = $this->createMock(UpdateProductResponderInterface::class);
@@ -81,7 +74,6 @@ final class UpdateProductActionUnitTest extends TestCase
     public function testAddProductAction()
     {
         $updateProductAction = new UpdateProductAction(
-            $this->entityManager,
             $this->productRepository,
             $this->validator
         );
@@ -102,7 +94,6 @@ final class UpdateProductActionUnitTest extends TestCase
         $this->validator->method('validate')->willReturn([]);
 
         $action = new UpdateProductAction(
-            $this->entityManager,
             $this->productRepository,
             $this->validator
         );

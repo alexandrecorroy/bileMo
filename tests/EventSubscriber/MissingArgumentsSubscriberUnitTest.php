@@ -13,16 +13,16 @@ declare(strict_types=1);
 
 namespace App\Tests\EventSubscriber;
 
-use App\EventSubscriber\Interfaces\ProductSubscriberInterface;
-use App\EventSubscriber\ProductSubscriber;
+use App\EventSubscriber\Interfaces\MissingArgumentsSubscriberInterface;
+use App\EventSubscriber\MissingArgumentsSubscriber;
 use App\Service\Interfaces\ReturnBlankParameterNameInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Class ProductSubscriberUnitTest.
+ * Class MissingArgumentsSubscriberUnitTest.
  */
-final class ProductSubscriberUnitTest extends TestCase
+final class MissingArgumentsSubscriberUnitTest extends TestCase
 {
     /**
      * @var ReturnBlankParameterNameInterface|null
@@ -42,10 +42,10 @@ final class ProductSubscriberUnitTest extends TestCase
      */
     public function testProductSubscriber()
     {
-        $productSubscriber = new ProductSubscriber($this->returnBlankParameterName);
+        $productSubscriber = new MissingArgumentsSubscriber($this->returnBlankParameterName);
 
         static::assertInstanceOf(EventSubscriberInterface::class, $productSubscriber);
-        static::assertInstanceOf(ProductSubscriberInterface::class, $productSubscriber);
+        static::assertInstanceOf(MissingArgumentsSubscriberInterface::class, $productSubscriber);
     }
 
 }

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace App\EventSubscriber;
 
-use App\EventSubscriber\Interfaces\ProductSubscriberInterface;
+use App\EventSubscriber\Interfaces\MissingArgumentsSubscriberInterface;
 use App\Service\Interfaces\ReturnBlankParameterNameInterface;
 use App\Service\ReturnBlankParameterName;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -24,9 +24,9 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Serializer\Exception\MissingConstructorArgumentsException;
 
 /**
- * final Class ProductSubscriber.
+ * final Class MissingArgumentsSubscriber.
  */
-final class ProductSubscriber implements EventSubscriberInterface, ProductSubscriberInterface
+final class MissingArgumentsSubscriber implements EventSubscriberInterface, MissingArgumentsSubscriberInterface
 {
     /**
      * @var ReturnBlankParameterName

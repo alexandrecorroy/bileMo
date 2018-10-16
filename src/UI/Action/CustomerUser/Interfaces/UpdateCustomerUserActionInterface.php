@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace App\UI\Action\CustomerUser\Interfaces;
 
 use App\Repository\Interfaces\CustomerUserRepositoryInterface;
+use App\Repository\Interfaces\ProductRepositoryInterface;
 use App\UI\Responder\CustomerUser\Interfaces\ForbiddenCustomerUserResponderInterface;
 use App\UI\Responder\CustomerUser\Interfaces\NotFoundCustomerUserResponderInterface;
 use App\UI\Responder\CustomerUser\Interfaces\UpdateCustomerUserResponderInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -31,16 +31,16 @@ interface UpdateCustomerUserActionInterface
     /**
      * UpdateCustomerUserActionInterface constructor.
      *
-     * @param EntityManagerInterface $entityManager
      * @param CustomerUserRepositoryInterface $customerUserRepository
      * @param ValidatorInterface $validator
      * @param TokenStorageInterface $tokenStorage
+     * @param ProductRepositoryInterface $productRepository
      */
     public function __construct(
-        EntityManagerInterface $entityManager,
         CustomerUserRepositoryInterface $customerUserRepository,
         ValidatorInterface $validator,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        ProductRepositoryInterface $productRepository
     );
 
     /**

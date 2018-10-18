@@ -68,9 +68,9 @@ final class GetProductAction implements GetProductActionInterface
      *@SWG\Parameter(
      *     name="id",
      *     in="path",
-     *     dataType="string",
-     *     description="uid of product",
-     *     required=true
+     *     type="string",
+     *     required=true,
+     *     description="uid of product"
      *)
      *@SWG\Response(
      *     response=401,

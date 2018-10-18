@@ -81,9 +81,9 @@ final class GetCustomerUserAction implements GetCustomerUserActionInterface
      *@SWG\Parameter(
      *     name="id",
      *     in="path",
-     *     dataType="string",
-     *     description="uid of customerUser",
-     *     required=true
+     *     required=true,
+     *     type="string",
+     *     description="uid of customerUser"
      *)
      *@SWG\Response(
      *     response=401,

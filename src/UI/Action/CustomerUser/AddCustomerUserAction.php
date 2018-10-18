@@ -120,8 +120,8 @@ final class AddCustomerUserAction implements AddCustomerUserActionInterface
      *@SWG\Parameter(
      *     name="body",
      *     in="body",
-     *     description="json order object",
      *     required=true,
+     *     description="json order object",
      *     format="application/json",
      *     @SWG\Schema(
      *         type="object",
@@ -130,13 +130,13 @@ final class AddCustomerUserAction implements AddCustomerUserActionInterface
      *         @SWG\Property(property="email", type="string", example="jones.bob@gmail.com"),
      *         @SWG\Property(property="address", type="string", example="1 Mayfair - London"),
      *         @SWG\Property(property="zip", type="string", example="232323"),
-     *         @SWG\Property(property="phone", type="string", example="34343243243", required="false"),
+     *         @SWG\Property(property="phone", type="string", example="34343243243"),
      *         @SWG\Property(
      *              property="products",
      *              type="array",
      *              @SWG\Items(
      *                      type="object",
-     *                      @SWG\Property(property="uid", type="string", example="656eebd8-38aa-4666-9f9b-24f3cb09ac38", required="false")
+     *                      @SWG\Property(property="uid", type="string", example="656eebd8-38aa-4666-9f9b-24f3cb09ac38")
      *              ))
      *
      *)

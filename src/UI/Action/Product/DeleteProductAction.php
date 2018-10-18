@@ -71,9 +71,9 @@ final class DeleteProductAction implements DeleteProductActionInterface
      *@SWG\Parameter(
      *     name="id",
      *     in="path",
-     *     dataType="string",
-     *     description="uid of product",
-     *     required=true
+     *     required=true,
+     *     type="string",
+     *     description="uid of product"
      *)
      *@SWG\Response(
      *     response=401,

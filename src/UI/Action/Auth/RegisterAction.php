@@ -95,16 +95,16 @@ final class RegisterAction implements RegisterActionInterface
      *@SWG\Parameter(
      *     name="body",
      *     in="body",
-     *     description="json order object",
      *     required=true,
+     *     description="json order object",
      *     format="application/json",
      *     @SWG\Schema(
      *         type="object",
-     *         @SWG\Property(property="society", type="string", example="SFR Society", required="true"),
-     *         @SWG\Property(property="email", type="string", example="sfr@sfr.fr", required="true"),
-     *         @SWG\Property(property="username", type="string", example="sfr", required="true"),
-     *         @SWG\Property(property="password", type="string", example="sfr", required="true"),
-     *         @SWG\Property(property="phone", type="string", example="0366995533", required="false")
+     *         @SWG\Property(property="society", type="string", example="SFR Society"),
+     *         @SWG\Property(property="email", type="string", example="sfr@sfr.fr"),
+     *         @SWG\Property(property="username", type="string", example="sfr"),
+     *         @SWG\Property(property="password", type="string", example="sfr"),
+     *         @SWG\Property(property="phone", type="string", example="0366995533")
      *)
      *)
      *@SWG\Response(

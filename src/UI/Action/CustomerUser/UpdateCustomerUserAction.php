@@ -104,31 +104,30 @@ final class UpdateCustomerUserAction implements UpdateCustomerUserActionInterfac
      *@SWG\Parameter(
      *     name="id",
      *     in="path",
-     *     dataType="string",
-     *     description="uid of customerUser",
-     *     required=true
+     *     required=true,
+     *     type="string",
+     *     description="uid of customerUser"
      *)
      *@SWG\Parameter(
      *     name="body",
      *     in="body",
-     *     description="json order object",
      *     required=true,
+     *     description="json order object",
      *     format="application/json",
      *     @SWG\Schema(
      *         type="object",
-     *         @SWG\Property(property="name", type="string", example="Jones", required="false"),
-     *         @SWG\Property(property="firstName", type="string", example="Bob", required="false"),
-     *         @SWG\Property(property="email", type="string", example="jones.bob@gmail.com", required="false"),
-     *         @SWG\Property(property="address", type="string", example="1 Mayfair - London", required="false"),
-     *         @SWG\Property(property="zip", type="string", example="232323", required="false"),
-     *         @SWG\Property(property="phone", type="string", example="34343243243", required="false"),
+     *         @SWG\Property(property="name", type="string", example="Jones"),
+     *         @SWG\Property(property="firstName", type="string", example="Bob"),
+     *         @SWG\Property(property="email", type="string", example="jones.bob@gmail.com"),
+     *         @SWG\Property(property="address", type="string", example="1 Mayfair - London"),
+     *         @SWG\Property(property="zip", type="string", example="232323"),
+     *         @SWG\Property(property="phone", type="string", example="34343243243"),
      *         @SWG\Property(
      *              property="products",
      *              type="array",
-     *              required="false",
      *              @SWG\Items(
      *                      type="object",
-     *                      @SWG\Property(property="uid", type="string", example="656eebd8-38aa-4666-9f9b-24f3cb09ac38", required="false")
+     *                      @SWG\Property(property="uid", type="string", example="656eebd8-38aa-4666-9f9b-24f3cb09ac38")
      *              ))
      *
      *)

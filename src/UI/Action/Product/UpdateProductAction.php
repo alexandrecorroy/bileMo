@@ -81,35 +81,34 @@ final class UpdateProductAction implements UpdateProductActionInterface
      *@SWG\Parameter(
      *     name="id",
      *     in="path",
-     *     dataType="string",
-     *     description="uid of product",
-     *     required=true
+     *     type="string",
+     *     required=true,
+     *     description="uid of product"
      *)
      *@SWG\Parameter(
      *     name="body",
      *     in="body",
-     *     description="json order object",
      *     required=true,
+     *     description="json order object",
      *     format="application/json",
      *     @SWG\Schema(
      *         type="object",
-     *         @SWG\Property(property="name", type="string", example="Galaxy S9", required="false"),
-     *         @SWG\Property(property="price", type="float", example="759.99", required="false"),
+     *         @SWG\Property(property="name", type="string", example="Galaxy S9"),
+     *         @SWG\Property(property="price", type="number", format="float", example="759.99"),
      *         @SWG\Property(
      *              property="productDetail",
      *              type="array",
-     *              required="true",
      *              @SWG\Items(
      *                      type="object",
-     *                      @SWG\Property(property="brand", type="string", example="Samsung", required="false"),
-     *                      @SWG\Property(property="color", type="string", example="red", required="false"),
-     *                      @SWG\Property(property="os", type="string", example="Android Oreo", required="false"),
-     *                      @SWG\Property(property="memory", type="int", example="128", required="false"),
-     *                      @SWG\Property(property="weight", type="float", example="154.8", required="false"),
-     *                      @SWG\Property(property="screenSize", type="float", example="5.9", required="false"),
-     *                      @SWG\Property(property="height", type="float", example="167.8", required="false"),
-     *                      @SWG\Property(property="width", type="float", example="88.4", required="false"),
-     *                      @SWG\Property(property="thickness", type="float", example="7.7", required="false")
+     *                      @SWG\Property(property="brand", type="string", example="Samsung",),
+     *                      @SWG\Property(property="color", type="string", example="red"),
+     *                      @SWG\Property(property="os", type="string", example="Android Oreo"),
+     *                      @SWG\Property(property="memory", type="integer", example="128"),
+     *                      @SWG\Property(property="weight", type="number", format="float", example="154.8"),
+     *                      @SWG\Property(property="screenSize",  type="number", format="float", example="5.9"),
+     *                      @SWG\Property(property="height",  type="number", format="float", example="167.8"),
+     *                      @SWG\Property(property="width",  type="number", format="float", example="88.4"),
+     *                      @SWG\Property(property="thickness",  type="number", format="float", example="7.7")
      *              ))
      *
      *)

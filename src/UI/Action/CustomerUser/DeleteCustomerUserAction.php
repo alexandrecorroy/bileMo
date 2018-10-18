@@ -83,9 +83,9 @@ final class DeleteCustomerUserAction implements DeleteCustomerUserActionInterfac
      *@SWG\Parameter(
      *     name="id",
      *     in="path",
-     *     dataType="string",
-     *     description="uid of customerUser",
-     *     required=true
+     *     required=true,
+     *     type="string",
+     *     description="uid of customerUser"
      *)
      *@SWG\Response(
      *     response=401,

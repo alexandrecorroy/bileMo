@@ -78,7 +78,7 @@ final class AddProductActionFunctionalTest extends DataFixtureTestCase
         $this->client = self::createAuthenticatedRoleAdmin();
         $this->client->request('POST', 'api/product', array(), array(), array(), $json);
 
-        static::assertEquals(Response::HTTP_PARTIAL_CONTENT, $this->client->getResponse()->getStatusCode());
+        static::assertEquals(Response::HTTP_BAD_REQUEST, $this->client->getResponse()->getStatusCode());
         static::assertTrue($this->client->getResponse()->headers->contains('content-type', 'application/json'));;
     }
 
@@ -124,7 +124,7 @@ final class AddProductActionFunctionalTest extends DataFixtureTestCase
         $this->client = self::createAuthenticatedRoleAdmin();
         $this->client->request('POST', 'api/product', array(), array(), array(), $json);
 
-        static::assertEquals(Response::HTTP_PARTIAL_CONTENT, $this->client->getResponse()->getStatusCode());
+        static::assertEquals(Response::HTTP_BAD_REQUEST, $this->client->getResponse()->getStatusCode());
         static::assertTrue($this->client->getResponse()->headers->contains('content-type', 'application/json'));;
     }
 

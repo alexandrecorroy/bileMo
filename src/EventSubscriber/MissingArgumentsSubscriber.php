@@ -64,11 +64,10 @@ final class MissingArgumentsSubscriber implements EventSubscriberInterface, Miss
             $param = $this->returnBlankParameterName->returnParameter($event->getException()->getMessage());
 
             $errorMessage = [
-                'Message:' => 'Partial Content',
-                'Detail'   => $param.' parameter is required'
+                'Error' => $param.' parameter is required'
             ];
 
-            $response = new JsonResponse($errorMessage, Response::HTTP_PARTIAL_CONTENT);
+            $response = new JsonResponse($errorMessage, Response::HTTP_BAD_REQUEST);
             $event->allowCustomResponseCode();
 
             $event->setResponse($response);

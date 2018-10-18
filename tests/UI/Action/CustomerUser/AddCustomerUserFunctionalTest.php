@@ -124,7 +124,7 @@ final class AddCustomerUserFunctionalTest extends DataFixtureTestCase
         $this->client = self::createAuthenticatedRoleUser();
         $this->client->request('POST', 'api/customerUser', array(), array(), array(), $json);
 
-        static::assertEquals(Response::HTTP_PARTIAL_CONTENT, $this->client->getResponse()->getStatusCode());
+        static::assertEquals(Response::HTTP_BAD_REQUEST, $this->client->getResponse()->getStatusCode());
         static::assertTrue($this->client->getResponse()->headers->contains('content-type', 'application/json'));;
     }
 

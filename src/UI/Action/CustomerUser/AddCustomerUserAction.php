@@ -20,6 +20,7 @@ use App\Repository\Interfaces\ProductRepositoryInterface;
 use App\UI\Action\CustomerUser\Interfaces\AddCustomerUserActionInterface;
 use App\UI\Responder\CustomerUser\Interfaces\AddCustomerUserResponderInterface;
 use Doctrine\Common\Cache\ApcuCache;
+use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -91,6 +92,63 @@ final class AddCustomerUserAction implements AddCustomerUserActionInterface
     }
 
     /**
+     *
+     * Add a new customerUser.
+     *
+     * You can add a new customerUser and his products.
+     *
+     * @SWG\Response(
+     *     response=201,
+     *     description="Returned when successful"
+     * )
+     * @SWG\Response(
+     *     response=303,
+     *     description="When resources already exist"
+     * )
+     * @SWG\Response(
+     *     response=416,
+     *     description="When Range not satisfiable"
+     * )
+     * @SWG\Parameter(
+     *     name="Authorization",
+     *     in="header",
+     *     required=true,
+     *     type="string",
+     *     default="Bearer TOKEN",
+     *     description="Authorization"
+     *)
+     *@SWG\Parameter(
+     *     name="body",
+     *     in="body",
+     *     description="json order object",
+     *     required=true,
+     *     format="application/json",
+     *     @SWG\Schema(
+     *         type="object",
+     *         @SWG\Property(property="name", type="string", example="Jones"),
+     *         @SWG\Property(property="firstName", type="string", example="Bob"),
+     *         @SWG\Property(property="email", type="string", example="jones.bob@gmail.com"),
+     *         @SWG\Property(property="address", type="string", example="1 Mayfair - London"),
+     *         @SWG\Property(property="zip", type="string", example="232323"),
+     *         @SWG\Property(property="phone", type="string", example="34343243243", required="false"),
+     *         @SWG\Property(
+     *              property="products",
+     *              type="array",
+     *              @SWG\Items(
+     *                      type="object",
+     *                      @SWG\Property(property="uid", type="string", example="656eebd8-38aa-4666-9f9b-24f3cb09ac38", required="false")
+     *              ))
+     *
+     *)
+     *)
+     *@SWG\Response(
+     *     response=401,
+     *     description="Expired JWT Token | JWT Token not found | Invalid JWT Token",
+     *)
+     * @SWG\Tag(
+     *     name="API"
+     *     )
+     *
      * {@inheritdoc}
      */
     public function __invoke(

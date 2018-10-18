@@ -19,6 +19,7 @@ use App\UI\Responder\CustomerUser\Interfaces\DeleteCustomerUserResponderInterfac
 use App\UI\Responder\CustomerUser\Interfaces\ForbiddenCustomerUserResponderInterface;
 use App\UI\Responder\CustomerUser\Interfaces\NotFoundCustomerUserResponderInterface;
 use Doctrine\Common\Cache\ApcuCache;
+use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -54,6 +55,45 @@ final class DeleteCustomerUserAction implements DeleteCustomerUserActionInterfac
     }
 
     /**
+     *
+     * Delete a customerUser.
+     *
+     * You can delete one of your customerUsers.
+     *
+     * @SWG\Response(
+     *     response=202,
+     *     description="Returned when successful"
+     * )
+     * @SWG\Response(
+     *     response=403,
+     *     description="Cannot delete this customerUser"
+     * )
+     * @SWG\Response(
+     *     response=404,
+     *     description="CustomerUser not found"
+     * )
+     * @SWG\Parameter(
+     *     name="Authorization",
+     *     in="header",
+     *     required=true,
+     *     type="string",
+     *     default="Bearer TOKEN",
+     *     description="Authorization"
+     *)
+     *@SWG\Parameter(
+     *     name="id",
+     *     in="path",
+     *     dataType="string",
+     *     description="uid of customerUser",
+     *     required=true
+     *)
+     *@SWG\Response(
+     *     response=401,
+     *     description="Expired JWT Token | JWT Token not found | Invalid JWT Token",
+     *)
+     * @SWG\Tag(
+     *     name="API"
+     *     )
      * {@inheritdoc}
      */
     public function __invoke(

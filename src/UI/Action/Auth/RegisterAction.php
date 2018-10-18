@@ -23,6 +23,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Swagger\Annotations as SWG;
 
 /**
  * final Class RegisterAction
@@ -66,6 +67,58 @@ final class RegisterAction implements RegisterActionInterface
     }
 
     /**
+     *
+     * Add a customer.
+     *
+     * Add a new customer to api.
+     *
+     * @SWG\Response(
+     *     response=201,
+     *     description="Returned when successful"
+     * )
+     * @SWG\Response(
+     *     response=303,
+     *     description="When resources already exist"
+     * )
+     * @SWG\Response(
+     *     response=416,
+     *     description="When Range not satisfiable"
+     * )
+     * @SWG\Parameter(
+     *     name="Authorization",
+     *     in="header",
+     *     required=true,
+     *     type="string",
+     *     default="Bearer TOKEN",
+     *     description="Authorization"
+     *)
+     *@SWG\Parameter(
+     *     name="body",
+     *     in="body",
+     *     description="json order object",
+     *     required=true,
+     *     format="application/json",
+     *     @SWG\Schema(
+     *         type="object",
+     *         @SWG\Property(property="society", type="string", example="SFR Society", required="true"),
+     *         @SWG\Property(property="email", type="string", example="sfr@sfr.fr", required="true"),
+     *         @SWG\Property(property="username", type="string", example="sfr", required="true"),
+     *         @SWG\Property(property="password", type="string", example="sfr", required="true"),
+     *         @SWG\Property(property="phone", type="string", example="0366995533", required="false")
+     *)
+     *)
+     *@SWG\Response(
+     *     response=401,
+     *     description="Expired JWT Token | JWT Token not found | Invalid JWT Token",
+     *)
+     *@SWG\Response(
+     *     response=403,
+     *     description="Not Authorized",
+     *)
+     * @SWG\Tag(
+     *     name="Administration"
+     *     )
+     *
      * {@inheritdoc}
      */
     public function __invoke(

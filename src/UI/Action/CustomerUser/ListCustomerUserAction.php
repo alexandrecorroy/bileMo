@@ -19,6 +19,7 @@ use App\UI\Responder\CustomerUser\Interfaces\ListCustomerUserResponderInterface;
 use App\UI\Responder\CustomerUser\Interfaces\NotFoundCustomerUserResponderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Swagger\Annotations as SWG;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -52,6 +53,35 @@ final class ListCustomerUserAction implements ListCustomerUserActionInterface
     }
 
     /**
+     *
+     * List your customerUsers.
+     *
+     * You can view all your customerUsers.
+     *
+     * @SWG\Response(
+     *     response=200,
+     *     description="Returned when successful"
+     * )
+     * @SWG\Response(
+     *     response=404,
+     *     description="Not customerUsers found, you must add customerUser first"
+     * )
+     * @SWG\Parameter(
+     *     name="Authorization",
+     *     in="header",
+     *     required=true,
+     *     type="string",
+     *     default="Bearer TOKEN",
+     *     description="Authorization"
+     *)
+     *@SWG\Response(
+     *     response=401,
+     *     description="Expired JWT Token | JWT Token not found | Invalid JWT Token",
+     *)
+     * @SWG\Tag(
+     *     name="API"
+     *     )
+     *
      * {@inheritdoc}
      */
     public function __invoke(

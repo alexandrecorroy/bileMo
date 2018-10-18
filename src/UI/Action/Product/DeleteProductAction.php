@@ -22,6 +22,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Swagger\Annotations as SWG;
 
 /**
  * final Class DeleteProductAction.
@@ -46,6 +47,46 @@ final class DeleteProductAction implements DeleteProductActionInterface
     }
 
     /**
+     *
+     * Delete a product.
+     *
+     * You can Delete a product and his detail.
+     *
+     * @SWG\Response(
+     *     response=202,
+     *     description="Returned when successful"
+     * )
+     * @SWG\Response(
+     *     response=404,
+     *     description="product not found"
+     * )
+     * @SWG\Parameter(
+     *     name="Authorization",
+     *     in="header",
+     *     required=true,
+     *     type="string",
+     *     default="Bearer TOKEN",
+     *     description="Authorization"
+     *)
+     *@SWG\Parameter(
+     *     name="id",
+     *     in="path",
+     *     dataType="string",
+     *     description="uid of product",
+     *     required=true
+     *)
+     *@SWG\Response(
+     *     response=401,
+     *     description="Expired JWT Token | JWT Token not found | Invalid JWT Token",
+     *)
+     *@SWG\Response(
+     *     response=403,
+     *     description="Not Authorized",
+     *)
+     * @SWG\Tag(
+     *     name="Administration"
+     *     )
+     *
      * {@inheritdoc}
      */
     public function __invoke(

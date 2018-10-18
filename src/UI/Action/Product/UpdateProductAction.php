@@ -22,6 +22,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Swagger\Annotations as SWG;
 
 /**
  * final Class UpdateProductAction.
@@ -52,6 +53,79 @@ final class UpdateProductAction implements UpdateProductActionInterface
     }
 
     /**
+     * Update a product.
+     *
+     * You can update a product and his detail.
+     * In Patch method all you will send will be overwritted ! Nothing else.
+     *
+     * @SWG\Response(
+     *     response=202,
+     *     description="Returned when successful"
+     * )
+     * @SWG\Response(
+     *     response=400,
+     *     description="Malformed content"
+     * )
+     * @SWG\Response(
+     *     response=404,
+     *     description="product not found"
+     * )
+     * @SWG\Parameter(
+     *     name="Authorization",
+     *     in="header",
+     *     required=true,
+     *     type="string",
+     *     default="Bearer TOKEN",
+     *     description="Authorization"
+     *)
+     *@SWG\Parameter(
+     *     name="id",
+     *     in="path",
+     *     dataType="string",
+     *     description="uid of product",
+     *     required=true
+     *)
+     *@SWG\Parameter(
+     *     name="body",
+     *     in="body",
+     *     description="json order object",
+     *     required=true,
+     *     format="application/json",
+     *     @SWG\Schema(
+     *         type="object",
+     *         @SWG\Property(property="name", type="string", example="Galaxy S9", required="false"),
+     *         @SWG\Property(property="price", type="float", example="759.99", required="false"),
+     *         @SWG\Property(
+     *              property="productDetail",
+     *              type="array",
+     *              required="true",
+     *              @SWG\Items(
+     *                      type="object",
+     *                      @SWG\Property(property="brand", type="string", example="Samsung", required="false"),
+     *                      @SWG\Property(property="color", type="string", example="red", required="false"),
+     *                      @SWG\Property(property="os", type="string", example="Android Oreo", required="false"),
+     *                      @SWG\Property(property="memory", type="int", example="128", required="false"),
+     *                      @SWG\Property(property="weight", type="float", example="154.8", required="false"),
+     *                      @SWG\Property(property="screenSize", type="float", example="5.9", required="false"),
+     *                      @SWG\Property(property="height", type="float", example="167.8", required="false"),
+     *                      @SWG\Property(property="width", type="float", example="88.4", required="false"),
+     *                      @SWG\Property(property="thickness", type="float", example="7.7", required="false")
+     *              ))
+     *
+     *)
+     *)
+     *@SWG\Response(
+     *     response=401,
+     *     description="Expired JWT Token | JWT Token not found | Invalid JWT Token",
+     *)
+     *@SWG\Response(
+     *     response=403,
+     *     description="Not Authorized",
+     *)
+     * @SWG\Tag(
+     *     name="Administration"
+     *     )
+     *
      *{@inheritdoc}
      */
     public function __invoke(

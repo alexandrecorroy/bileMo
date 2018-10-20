@@ -15,6 +15,7 @@ namespace App\Entity;
 
 use App\Entity\Interfaces\ProductDetailInterface;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -135,7 +136,7 @@ class ProductDetail implements ProductDetailInterface, \JsonSerializable
      * @param $height
      * @param $width
      * @param $thickness
-     * @param null $uid
+     *
      * @throws \Exception
      */
     public function __construct(
@@ -147,29 +148,24 @@ class ProductDetail implements ProductDetailInterface, \JsonSerializable
         $screenSize,
         $height,
         $width,
-        $thickness,
-        $uid = null
+        $thickness
     ) {
-        if(!is_null($uid))
-            $this->uid = $uid;
-        else
-            $this->uid = Uuid::uuid4();
-
-        $this->brand = $brand;
-        $this->color = $color;
-        $this->os = $os;
-        $this->memory = $memory;
-        $this->weight = $weight;
+        $this->uid        = Uuid::uuid4();
+        $this->brand      = $brand;
+        $this->color      = $color;
+        $this->os         = $os;
+        $this->memory     = $memory;
+        $this->weight     = $weight;
         $this->screenSize = $screenSize;
-        $this->height = $height;
-        $this->width = $width;
-        $this->thickness = $thickness;
+        $this->height     = $height;
+        $this->width      = $width;
+        $this->thickness  = $thickness;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getUid()
+    public function getUid(): UuidInterface
     {
         return $this->uid;
     }
@@ -177,7 +173,7 @@ class ProductDetail implements ProductDetailInterface, \JsonSerializable
     /**
      * {@inheritdoc}
      */
-    public function getBrand(): ?string
+    public function getBrand(): string
     {
         return $this->brand;
     }
@@ -185,7 +181,7 @@ class ProductDetail implements ProductDetailInterface, \JsonSerializable
     /**
      * {@inheritdoc}
      */
-    public function getColor(): ?string
+    public function getColor(): string
     {
         return $this->color;
     }
@@ -193,7 +189,7 @@ class ProductDetail implements ProductDetailInterface, \JsonSerializable
     /**
      * {@inheritdoc}
      */
-    public function getOs(): ?string
+    public function getOs(): string
     {
         return $this->os;
     }
@@ -201,7 +197,7 @@ class ProductDetail implements ProductDetailInterface, \JsonSerializable
     /**
      * {@inheritdoc}
      */
-    public function getMemory(): ?int
+    public function getMemory(): int
     {
         return $this->memory;
     }
@@ -209,7 +205,7 @@ class ProductDetail implements ProductDetailInterface, \JsonSerializable
     /**
      * {@inheritdoc}
      */
-    public function getWeight()
+    public function getWeight(): float
     {
         return $this->weight;
     }
@@ -217,7 +213,7 @@ class ProductDetail implements ProductDetailInterface, \JsonSerializable
     /**
      * {@inheritdoc}
      */
-    public function getScreenSize()
+    public function getScreenSize(): float
     {
         return $this->screenSize;
     }
@@ -225,7 +221,7 @@ class ProductDetail implements ProductDetailInterface, \JsonSerializable
     /**
      * {@inheritdoc}
      */
-    public function getHeight()
+    public function getHeight(): float
     {
         return $this->height;
     }
@@ -233,7 +229,7 @@ class ProductDetail implements ProductDetailInterface, \JsonSerializable
     /**
      * {@inheritdoc}
      */
-    public function getWidth()
+    public function getWidth(): float
     {
         return $this->width;
     }
@@ -241,7 +237,7 @@ class ProductDetail implements ProductDetailInterface, \JsonSerializable
     /**
      * {@inheritdoc}
      */
-    public function getThickness()
+    public function getThickness(): float
     {
         return $this->thickness;
     }
@@ -249,7 +245,7 @@ class ProductDetail implements ProductDetailInterface, \JsonSerializable
     /**
      * {@inheritdoc}
      */
-    public function updateProductDetail(array $productDetail = null)
+    public function updateProductDetail(array $productDetail = null): void
     {
         if($productDetail)
         {
@@ -259,21 +255,23 @@ class ProductDetail implements ProductDetailInterface, \JsonSerializable
                 }
             }
         }
-
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function jsonSerialize()
     {
         return [
-            'brand'   => $this->getBrand(),
-            'color'  => $this->getColor(),
-            'os' => $this->getOs(),
-            'memory' => $this->getMemory(),
-            'weight' => $this->getWeight(),
+            'brand'      => $this->getBrand(),
+            'color'      => $this->getColor(),
+            'os'         => $this->getOs(),
+            'memory'     => $this->getMemory(),
+            'weight'     => $this->getWeight(),
             'screenSize' => $this->getScreenSize(),
-            'height' => $this->getHeight(),
-            'width' => $this->getWidth(),
-            'thickness' => $this->getThickness()
+            'height'     => $this->getHeight(),
+            'width'      => $this->getWidth(),
+            'thickness'  => $this->getThickness()
         ];
     }
 }

@@ -13,38 +13,51 @@ declare(strict_types = 1);
 
 namespace App\Entity\Interfaces;
 
+use App\Entity\CustomerUser;
+use Ramsey\Uuid\UuidInterface;
+
 /**
  * Interface CustomerInterface
  */
 interface CustomerInterface
 {
     /**
-     * @return int
+     * @return UuidInterface
      */
-    public function getUid();
+    public function getUid(): UuidInterface;
 
     /**
      * @return string
      */
-    public function getSociety(): ?string;
+    public function getSociety(): string;
 
     /**
      * @return string
      */
-    public function getEmail(): ?string;
+    public function getEmail(): string;
 
     /**
      * @return string
      */
-    public function getUsername(): ?string;
+    public function getUsername(): string;
 
     /**
      * @return string
      */
-    public function getPassword(): ?string;
+    public function getPassword(): string;
 
     /**
      * @return null|string
      */
     public function getPhone(): ?string;
+
+    /**
+     * @param CustomerUser $customerUser
+     */
+    public function addCustomerUser(CustomerUser $customerUser): void;
+
+    /**
+     * @param $password
+     */
+    public function updatePassword($password): void;
 }

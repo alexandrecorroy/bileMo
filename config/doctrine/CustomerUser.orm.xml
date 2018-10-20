@@ -10,7 +10,7 @@
         <field name="address" length="128" />
         <field name="zip" length="6" />
         <field name="phone" length="12" nullable="true" />
-        <many-to-many field="products" inversed-by="customerUser" target-entity="App\Entity\Product">
+        <many-to-many field="products" target-entity="App\Entity\Product">
             <join-table name="bilemo_users_products">
                 <join-columns>
                     <join-column name="user_id" referenced-column-name="uid" nullable="false" />

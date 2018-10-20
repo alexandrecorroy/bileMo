@@ -27,7 +27,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 /**
  * final Class UpdateProductAction.
  *
- * @Route("/product/{id}", name="product_update", methods={"PATCH"})
+ * @Route("api/product/{id}", name="product_update", methods={"PATCH"})
  */
 final class UpdateProductAction implements UpdateProductActionInterface
 {
@@ -90,7 +90,7 @@ final class UpdateProductAction implements UpdateProductActionInterface
             return $updateProductResponder($request, $errors);
         }
 
-        $cache->delete('find'.$product->getUid());
+        $cache->delete('find'.$product->getUid()->toString());
         $this->entityManager->flush();
 
         return $updateProductResponder($request);

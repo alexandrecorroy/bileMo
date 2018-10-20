@@ -14,102 +14,123 @@ declare(strict_types=1);
 namespace App\Tests\UI\Action\Product;
 
 use App\Entity\Product;
-use App\Entity\ProductDetail;
 use App\Tests\DataFixtures\DataFixtureTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class AddProductActionFunctionalTest extends DataFixtureTestCase
+/**
+ * final Class AddProductActionFunctionalTest.
+ */
+final class AddProductActionFunctionalTest extends DataFixtureTestCase
 {
-
+    /**
+     * test add new product
+     */
     public function testAddProduct()
     {
         $array = [
-            'name' => 'Phone',
-            'price' => 255.90,
+            'name'          => 'Phone',
+            'price'         => 255.90,
             'productDetail' => [
-                'brand' => 'brand',
-                'color' => 'orange',
-                'os' => 'Android 10',
-                'memory' => 64,
-                'weight' => 166.4,
+                'brand'      => 'brand',
+                'color'      => 'orange',
+                'os'         => 'Android 10',
+                'memory'     => 64,
+                'weight'     => 166.4,
                 'screenSize' => 5.5,
-                'height' => 155.7,
-                'width' => 55.8,
-                'thickness' => 8.8
+                'height'     => 155.7,
+                'width'      => 55.8,
+                'thickness'  => 8.8
             ]
         ];
 
         $json = json_encode($array);
 
-        $this->client->request('POST', '/product', array(), array(), array(), $json);
+        $this->client = self::createAuthenticatedRoleAdmin();
+        $this->client->request('POST', 'api/product', array(), array(), array(), $json);
 
         static::assertEquals(Response::HTTP_CREATED, $this->client->getResponse()->getStatusCode());
         static::assertTrue($this->client->getResponse()->headers->contains('content-type', 'application/json'));;
+        static::assertTrue($this->client->getResponse()->headers->has('Location'));;
     }
 
+    /**
+     * test add product without one parameter
+     */
     public function testAddProductWithoutOneParameter()
     {
         $array = [
-            'name' => 'Phone',
-            'price' => 255.90,
+            'name'          => 'Phone',
+            'price'         => 255.90,
             'productDetail' => [
-                'brand' => 'brand',
-                'color' => 'orange',
-                'os' => 'Android 10',
-                'memory' => 64,
-                'weight' => 166.4,
-                'height' => 155.7,
-                'width' => 55.8,
+                'brand'     => 'brand',
+                'color'     => 'orange',
+                'os'        => 'Android 10',
+                'memory'    => 64,
+                'weight'    => 166.4,
+                'height'    => 155.7,
+                'width'     => 55.8,
                 'thickness' => 8.8
             ]
         ];
 
         $json = json_encode($array);
 
-        $this->client->request('POST', '/product', array(), array(), array(), $json);
+        $this->client = self::createAuthenticatedRoleAdmin();
+        $this->client->request('POST', 'api/product', array(), array(), array(), $json);
 
         static::assertEquals(Response::HTTP_PARTIAL_CONTENT, $this->client->getResponse()->getStatusCode());
         static::assertTrue($this->client->getResponse()->headers->contains('content-type', 'application/json'));;
     }
 
+    /**
+     * test add product with parameter bad type
+     */
     public function testAddProductWithBadType()
     {
         $array = [
-            'name' => 'Phone',
-            'price' => 255.90,
+            'name'          => 'Phone',
+            'price'         => 255.90,
             'productDetail' => [
-                'brand' => 'brand',
-                'color' => 'orange',
-                'os' => 'Android 10',
-                'memory' => 64,
-                'weight' => "166.4",
+                'brand'      => 'brand',
+                'color'      => 'orange',
+                'os'         => 'Android 10',
+                'memory'     => 64,
+                'weight'     => "166.4",
                 'screenSize' => 5.5,
-                'height' => 155.7,
-                'width' => 55.8,
-                'thickness' => 8.8
+                'height'     => 155.7,
+                'width'      => 55.8,
+                'thickness'  => 8.8
             ]
         ];
 
         $json = json_encode($array);
 
-        $this->client->request('POST', '/product', array(), array(), array(), $json);
+        $this->client = self::createAuthenticatedRoleAdmin();
+        $this->client->request('POST', 'api/product', array(), array(), array(), $json);
 
         static::assertEquals(Response::HTTP_REQUESTED_RANGE_NOT_SATISFIABLE, $this->client->getResponse()->getStatusCode());
         static::assertTrue($this->client->getResponse()->headers->contains('content-type', 'application/json'));;
     }
 
+    /**
+     * test add product null
+     */
     public function testAddProductNull()
     {
         $array = [];
 
         $json = json_encode($array);
 
-        $this->client->request('POST', '/product', array(), array(), array(), $json);
+        $this->client = self::createAuthenticatedRoleAdmin();
+        $this->client->request('POST', 'api/product', array(), array(), array(), $json);
 
         static::assertEquals(Response::HTTP_PARTIAL_CONTENT, $this->client->getResponse()->getStatusCode());
         static::assertTrue($this->client->getResponse()->headers->contains('content-type', 'application/json'));;
     }
 
+    /**
+     * test product already exist
+     */
     public function testAddProductAlreadyExist()
     {
         $products = $this->entityManager->getRepository(Product::class)->findAllProducts();
@@ -117,27 +138,27 @@ class AddProductActionFunctionalTest extends DataFixtureTestCase
         $product = $products[0];
         $productDetail = $product->getProductDetail();
         $array = [
-            'name' => $product->getName(),
-            'price' => $product->getPrice(),
+            'name'          => $product->getName(),
+            'price'         => $product->getPrice(),
             'productDetail' => [
-                'brand' => $productDetail->getBrand(),
-                'color' => $productDetail->getColor(),
-                'os' => $productDetail->getOs(),
-                'memory' => $productDetail->getMemory(),
-                'weight' => $productDetail->getWeight(),
+                'brand'      => $productDetail->getBrand(),
+                'color'      => $productDetail->getColor(),
+                'os'         => $productDetail->getOs(),
+                'memory'     => $productDetail->getMemory(),
+                'weight'     => $productDetail->getWeight(),
                 'screenSize' => $productDetail->getScreenSize(),
-                'height' => $productDetail->getHeight(),
-                'width' => $productDetail->getWidth(),
-                'thickness' => $productDetail->getThickness()
+                'height'     => $productDetail->getHeight(),
+                'width'      => $productDetail->getWidth(),
+                'thickness'  => $productDetail->getThickness()
             ]
         ];
 
         $json = json_encode($array);
 
-        $this->client->request('POST', '/product', array(), array(), array(), $json);
+        $this->client = self::createAuthenticatedRoleAdmin();
+        $this->client->request('POST', 'api/product', array(), array(), array(), $json);
 
         static::assertEquals(Response::HTTP_SEE_OTHER, $this->client->getResponse()->getStatusCode());
         static::assertTrue($this->client->getResponse()->headers->contains('content-type', 'application/json'));;
     }
-
 }

@@ -15,7 +15,8 @@ namespace App\Entity\Interfaces;
 
 use App\Entity\Customer;
 use App\Entity\Product;
-use Doctrine\Common\Collections\Collection;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Interface CustomerUserInterface
@@ -24,50 +25,43 @@ interface CustomerUserInterface
 {
     /**
      * @param Product $product
-     * @return null
      */
-    public function addProduct(Product $product);
+    public function addProduct(Product $product): void;
 
     /**
-     * @param Product $product
-     * @return null
+     * @return array
      */
-    public function removeProduct(Product $product);
+    public function getProducts(): array;
 
     /**
-     * @return Collection
+     * @return UuidInterface
      */
-    public function getProducts();
-
-    /**
-     * @return int
-     */
-    public function getUid();
+    public function getUid(): UuidInterface;
 
     /**
      * @return string
      */
-    public function getName(): ?string;
+    public function getName(): string;
 
     /**
      * @return string
      */
-    public function getFirstName(): ?string;
+    public function getFirstName(): string;
 
     /**
      * @return string
      */
-    public function getEmail(): ?string;
+    public function getEmail(): string;
 
     /**
      * @return string
      */
-    public function getAddress(): ?string;
+    public function getAddress(): string;
 
     /**
      * @return string
      */
-    public function getZip(): ?string;
+    public function getZip(): string;
 
     /**
      * @return null|string
@@ -77,5 +71,30 @@ interface CustomerUserInterface
     /**
      * @return Customer
      */
-    public function getCustomer();
+    public function getCustomer(): Customer;
+
+    /**
+     * @param array $customerUser
+     */
+    public function updateCustomer(array $customerUser): void;
+
+    /**
+     * @param Customer $customer
+     */
+    public function setCustomer(Customer $customer): void;
+
+    /**
+     * @return array
+     */
+    public function getLinks(): array;
+
+    /**
+     * @param array $links
+     */
+    public function addLinks(array $links): void;
+
+    /**
+     * delete all products of customerUSer
+     */
+    public function deleteProducts(): void;
 }

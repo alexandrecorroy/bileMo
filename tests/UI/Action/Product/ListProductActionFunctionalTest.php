@@ -32,8 +32,8 @@ final class ListProductActionFunctionalTest extends DataFixtureTestCase
      */
     public function testResponse()
     {
-        $this->client->request('GET', '/products');
-
+        $this->client = self::createAuthenticatedRoleUser();
+        $this->client->request('GET', 'api/products');
         static::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         static::assertTrue($this->client->getResponse()->headers->contains('content-type', 'application/json'));
 

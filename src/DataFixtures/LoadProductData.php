@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace App\DataFixtures;
 
-
 use App\Entity\Product;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;

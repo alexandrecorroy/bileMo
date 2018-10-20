@@ -4,7 +4,6 @@ namespace App\Repository;
 
 use App\Entity\Interfaces\ProductInterface;
 use App\Entity\Product;
-use App\Entity\ProductDetail;
 use App\Repository\Interfaces\ProductRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Cache\ApcuCache;
@@ -23,8 +22,10 @@ final class ProductRepository extends ServiceEntityRepository implements Product
     /**
      * {@inheritdoc}
      */
-    public function __construct(RegistryInterface $registry, ApcuCache $cache)
-    {
+    public function __construct(
+        RegistryInterface $registry,
+        ApcuCache $cache
+    ) {
         parent::__construct($registry, Product::class);
         $this->cache = $cache;
     }
@@ -39,7 +40,6 @@ final class ProductRepository extends ServiceEntityRepository implements Product
         }
         else {
             $query = $this->createQueryBuilder('p')
-                ->innerJoin(ProductDetail::class, 'pd')
                 ->andWhere('p.uid = :val')
                 ->setParameter('val', $value)
                 ->getQuery()

@@ -13,48 +13,93 @@ declare(strict_types = 1);
 
 namespace App\Entity;
 
-use App\Entity\Interfaces\CustomerInterface;
 use App\Entity\Interfaces\CustomerUserInterface;
 use App\Entity\Interfaces\ProductInterface;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class CustomerUser.
  */
-class CustomerUser implements CustomerUserInterface
+class CustomerUser implements CustomerUserInterface, \JsonSerializable
 {
     /**
-     * @var \Ramsey\Uuid\UuidInterface
+     * @var UuidInterface
      */
     private $uid;
 
     /**
      * @var string
+     *
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 56,
+     *      minMessage = "CustomerUser name must be at least {{ limit }} characters long",
+     *      maxMessage = "CustomerUser name cannot be longer than {{ limit }} characters"
+     * )
      */
     private $name;
 
     /**
      * @var string
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 56,
+     *      minMessage = "FirstName must be at least {{ limit }} characters long",
+     *      maxMessage = "FirstName cannot be longer than {{ limit }} characters"
+     * )
      */
     private $firstName;
 
     /**
      * @var string
+     * @Assert\Email(
+     *     message="Please enter a valid email."
+     * )
+     * @Assert\Length(
+     *      min = 5,
+     *      max = 255,
+     *      minMessage = "Email must be at least {{ limit }} characters long",
+     *      maxMessage = "Email cannot be longer than {{ limit }} characters"
+     * )
      */
     private $email;
 
     /**
      * @var string
+     *
+     * @Assert\Length(
+     *      min = 10,
+     *      max = 128,
+     *      minMessage = "Address must be at least {{ limit }} characters long",
+     *      maxMessage = "Address cannot be longer than {{ limit }} characters"
+     * )
      */
     private $address;
 
     /**
      * @var string
+     *
+     * @Assert\Length(
+     *      min = 3,
+     *      max = 6,
+     *      minMessage = "Zip code must be at least {{ limit }} characters long",
+     *      maxMessage = "Zip code name cannot be longer than {{ limit }} characters"
+     * )
      */
     private $zip;
 
     /**
      * @var null|string
+     *
+     * @Assert\Length(
+     *      min = 8,
+     *      max = 12,
+     *      minMessage = "Phone number must be at least {{ limit }} characters long",
+     *      maxMessage = "Phone number name cannot be longer than {{ limit }} characters"
+     * )
+     *
      */
     private $phone;
 
@@ -68,43 +113,47 @@ class CustomerUser implements CustomerUserInterface
      */
     private $customer;
 
+    /**
+     * @var array
+     */
+    private $links = [];
+
 
     /**
      * CustomerUser constructor.
      *
-     * @param string $name
-     * @param string $firstName
-     * @param string $email
-     * @param string $address
-     * @param string $zip
-     * @param CustomerInterface $customer
-     * @param string|null $phone
+     * @param $name
+     * @param $firstName
+     * @param $email
+     * @param $address
+     * @param $zip
+     * @param null $phone
+     *
+     * @throws \Exception
      */
     public function __construct(
-        string $name,
-        string $firstName,
-        string $email,
-        string $address,
-        string $zip,
-        CustomerInterface $customer,
-        string $phone = null
+        $name,
+        $firstName,
+        $email,
+        $address,
+        $zip,
+        $phone = null
     ) {
-        $this->uid = Uuid::uuid4();
-        $this->name = $name;
+        $this->uid       = Uuid::uuid4();
+        $this->name      = $name;
         $this->firstName = $firstName;
-        $this->email = $email;
-        $this->address = $address;
-        $this->zip = $zip;
-        $this->phone = $phone;
-        $this->customer = $customer;
+        $this->email     = $email;
+        $this->address   = $address;
+        $this->zip       = $zip;
+        $this->phone     = $phone;
 
-        $this->products = [];
+        $this->products  = [];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addProduct(Product $product)
+    public function addProduct(Product $product): void
     {
         $this->products[] = $product;
     }
@@ -112,29 +161,20 @@ class CustomerUser implements CustomerUserInterface
     /**
      * {@inheritdoc}
      */
-    public function removeProduct(Product $product)
+    public function getProducts(): array
     {
-        $productUid = $product->getUid();
+        $list = [];
         foreach ($this->products as $product)
         {
-            if($product->getUid() === $productUid)
-                unset($product);
-                break;
+            $list[] = $product;
         }
+        return $list;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getProducts()
-    {
-        return $this->products;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getUid()
+    public function getUid(): UuidInterface
     {
         return $this->uid;
     }
@@ -142,7 +182,7 @@ class CustomerUser implements CustomerUserInterface
     /**
      * {@inheritdoc}
      */
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -150,7 +190,7 @@ class CustomerUser implements CustomerUserInterface
     /**
      * {@inheritdoc}
      */
-    public function getFirstName(): ?string
+    public function getFirstName(): string
     {
         return $this->firstName;
     }
@@ -158,7 +198,7 @@ class CustomerUser implements CustomerUserInterface
     /**
      * {@inheritdoc}
      */
-    public function getEmail(): ?string
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -166,7 +206,7 @@ class CustomerUser implements CustomerUserInterface
     /**
      * {@inheritdoc}
      */
-    public function getAddress(): ?string
+    public function getAddress(): string
     {
         return $this->address;
     }
@@ -174,7 +214,7 @@ class CustomerUser implements CustomerUserInterface
     /**
      * {@inheritdoc}
      */
-    public function getZip(): ?string
+    public function getZip(): string
     {
         return $this->zip;
     }
@@ -190,8 +230,73 @@ class CustomerUser implements CustomerUserInterface
     /**
      * {@inheritdoc}
      */
-    public function getCustomer()
+    public function getCustomer(): Customer
     {
         return $this->customer;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setCustomer(Customer $customer): void
+    {
+        $this->customer = $customer;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLinks(): array
+    {
+        return $this->links;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addLinks(array $links): void
+    {
+        $this->links[] = $links;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function updateCustomer(array $customerUser): void
+    {
+        foreach ($customerUser as $key => $value) {
+            if (property_exists(self::class, $key)) {
+                $this->$key = $value;
+            }
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function deleteProducts(): void
+    {
+        $this->products = [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function jsonSerialize(): array
+    {
+        return [
+            'uid'       => $this->uid,
+            'name'      => $this->name,
+            'firstName' => $this->firstName,
+            'email'     => $this->email,
+            'address'   => $this->address,
+            'zip'       => $this->zip,
+            'phone'     => $this->phone,
+            'products'  => $this->getProducts(),
+            '_links'    => $this->getLinks(),
+            '_embedded' => [
+                'customer' => $this->customer
+            ]
+        ];
     }
 }

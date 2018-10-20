@@ -16,6 +16,12 @@
         <env name="SHELL_VERBOSITY" value="-1" />
         <env name="DATABASE_URL_TEST" value="sqlite:///%kernel.project_dir%/var/data.db" />
         <!-- define your env variables for the test env here -->
+
+        <!-- ###+ lexik/jwt-authentication-bundle ### -->
+        <env name="JWT_SECRET_KEY" value="%kernel.project_dir%/config/jwt/private.pem"/>
+        <env name="JWT_PUBLIC_KEY" value="%kernel.project_dir%/config/jwt/public.pem"/>
+        <env name="JWT_PASSPHRASE" value="1d34bbacf48ee0d93f6e60ecf8fe70dd"/>
+        <!-- ###- lexik/jwt-authentication-bundle ### -->
     </php>
 
     <testsuites>

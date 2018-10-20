@@ -31,8 +31,6 @@ final class GetProductResponder implements GetProductResponderInterface
         Request $request,
         ProductInterface $product
     ): Response {
-
         return new JsonResponse($product);
-
     }
 }

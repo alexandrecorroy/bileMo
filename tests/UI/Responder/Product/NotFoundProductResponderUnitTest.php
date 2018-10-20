@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace App\Tests\UI\Responder\Product;
 
-
 use App\UI\Responder\Product\Interfaces\NotFoundProductResponderInterface;
 use App\UI\Responder\Product\NotFoundProductResponder;
 use PHPUnit\Framework\TestCase;

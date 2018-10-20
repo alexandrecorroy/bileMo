@@ -21,10 +21,11 @@ use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Doctrine\ORM\EntityManager;
 
-
+/**
+ * Class DataFixtureTestCase.
+ */
 class DataFixtureTestCase extends WebTestCase
 {
-
     /** @var  Application $application */
     protected static $application = null;
 
@@ -47,8 +48,8 @@ class DataFixtureTestCase extends WebTestCase
         self::runCommand('doctrine:schema:create');
         self::runCommand('doctrine:fixtures:load --append --no-interaction');
 
-        $this->client = static::createClient();
-        self::$container = $this->client->getContainer();
+        $this->client        = static::createClient();
+        self::$container     = $this->client->getContainer();
         $this->entityManager = self::$container->get('doctrine.orm.entity_manager');
 
         parent::setUp();
@@ -56,6 +57,13 @@ class DataFixtureTestCase extends WebTestCase
         $cache->deleteAll();
     }
 
+    /**
+     * @param $command
+     *
+     * @return int
+     *
+     * @throws \Exception
+     */
     protected static function runCommand($command)
     {
         $command = sprintf('%s --quiet', $command);
@@ -63,6 +71,9 @@ class DataFixtureTestCase extends WebTestCase
         return self::getApplication()->run(new StringInput($command));
     }
 
+    /**
+     * @return Application
+     */
     protected static function getApplication()
     {
         if (null === self::$application) {
@@ -86,5 +97,89 @@ class DataFixtureTestCase extends WebTestCase
 
         $this->entityManager->close();
         $this->entityManager = null; // avoid memory leaks
+    }
+
+    /**
+     * @return Client
+     */
+    protected function createAuthenticatedRoleUser()
+    {
+        $credentials = [
+            'username' => 'sfr',
+            'password' => 'sfr'
+        ];
+
+        $client = static::createClient();
+        $client->request(
+            'POST',
+            '/api/login_check',
+            array(),
+            array(),
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($credentials)
+        );
+
+        $data = json_decode($client->getResponse()->getContent(), true);
+
+        $client = static::createClient();
+        $client->setServerParameter('HTTP_Authorization', sprintf('Bearer %s', $data['token']));
+
+        return $client;
+    }
+
+    /**
+     * @return Client
+     */
+    protected function createAuthenticatedRoleAdmin()
+    {
+        $credentials = [
+            'username' => 'admin',
+            'password' => 'admin'
+        ];
+
+        $client = static::createClient();
+        $client->request(
+            'POST',
+            '/api/login_check',
+            array(),
+            array(),
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($credentials)
+        );
+
+        $data = json_decode($client->getResponse()->getContent(), true);
+
+        $client = static::createClient();
+        $client->setServerParameter('HTTP_Authorization', sprintf('Bearer %s', $data['token']));
+
+        return $client;
+    }
+
+    /**
+     * @return Client
+     */
+    protected function createAuthenticatedRoleAnotherUser()
+    {
+        $credentials = [
+            'username' => 'free',
+            'password' => 'free'
+        ];
+
+        $client = static::createClient();
+        $client->request(
+            'POST',
+            '/api/login_check',
+            array(),
+            array(),
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($credentials)
+        );
+
+        $data = json_decode($client->getResponse()->getContent(), true);
+
+        $client = static::createClient();
+        $client->setServerParameter('HTTP_Authorization', sprintf('Bearer %s', $data['token']));
+
+        return $client;
     }
 }

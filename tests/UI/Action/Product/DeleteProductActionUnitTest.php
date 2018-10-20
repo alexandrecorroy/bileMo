@@ -59,13 +59,12 @@ final class DeleteProductActionUnitTest extends TestCase
      */
     protected function setUp()
     {
-        $this->productRepository = $this->createMock(ProductRepositoryInterface::class);
-        $this->entityManager = $this->createMock(EntityManagerInterface::class);
-        $this->responder = $this->createMock(DeleteProductResponderInterface::class);
+        $this->productRepository        = $this->createMock(ProductRepositoryInterface::class);
+        $this->entityManager            = $this->createMock(EntityManagerInterface::class);
+        $this->responder                = $this->createMock(DeleteProductResponderInterface::class);
         $this->notFoundProductResponder = $this->createMock(NotFoundProductResponderInterface::class);
-
-        $request = Request::create('/', 'DELETE');
-        $this->request = $request->duplicate(null, null, ['id' => 1]);
+        $request                        = Request::create('/', 'DELETE');
+        $this->request                  = $request->duplicate(null, null, ['id' => 1]);
 
     }
 
@@ -74,7 +73,10 @@ final class DeleteProductActionUnitTest extends TestCase
      */
     public function testDeleteProductAction()
     {
-        $deleteProductAction = new DeleteProductAction($this->entityManager, $this->productRepository);
+        $deleteProductAction = new DeleteProductAction(
+            $this->entityManager,
+            $this->productRepository
+        );
 
         static::assertInstanceOf(DeleteProductActionInterface::class, $deleteProductAction);
     }
@@ -88,7 +90,10 @@ final class DeleteProductActionUnitTest extends TestCase
 
         $this->productRepository->method('findOneByUuidField')->willReturn($productMock);
 
-        $action = new DeleteProductAction($this->entityManager, $this->productRepository);
+        $action = new DeleteProductAction(
+            $this->entityManager,
+            $this->productRepository
+        );
 
         static::assertInstanceOf(Response::class, $action($this->request, $this->responder, $this->notFoundProductResponder));
     }

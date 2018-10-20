@@ -21,13 +21,14 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * final Class AddProductAction.
  *
- * @Route("/product", name="product_add", methods={"POST"})
+ * @Route("api/product", name="product_add", methods={"POST"})
  */
 final class AddProductAction implements AddProductActionInterface
 {
@@ -52,18 +53,25 @@ final class AddProductAction implements AddProductActionInterface
     private $validator;
 
     /**
+     * @var RouterInterface
+     */
+    private $router;
+
+    /**
      * {@inheritdoc}
      */
     public function __construct(
         EntityManagerInterface $entityManager,
         ProductRepositoryInterface $productRepository,
         SerializerInterface $serializer,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        RouterInterface $router
     ) {
         $this->entityManager     = $entityManager;
         $this->productRepository = $productRepository;
         $this->serializer        = $serializer;
         $this->validator         = $validator;
+        $this->router            = $router;
     }
 
     /**
@@ -81,16 +89,16 @@ final class AddProductAction implements AddProductActionInterface
         $errors = $this->validator->validate($product);
 
         if (\count($errors) > 0) {
-            return $addProductResponder($request, $errors);
+            return $addProductResponder(null, $errors);
         }
 
         if ($this->productRepository->findOtherProduct($product)) {
-            return $addProductResponder($request, Response::HTTP_SEE_OTHER);
+            return $addProductResponder(null, Response::HTTP_SEE_OTHER);
         }
 
         $this->entityManager->persist($product);
         $this->entityManager->flush();
 
-        return $addProductResponder($request);
+        return $addProductResponder($this->router->generate('product_show', ['id' => $product->getUid()->toString()]));
     }
 }

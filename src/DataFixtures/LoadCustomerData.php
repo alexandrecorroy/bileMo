@@ -16,12 +16,27 @@ namespace App\DataFixtures;
 use App\Entity\Customer;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * final Class LoadCustomerData.
  */
 final class LoadCustomerData extends Fixture
 {
+    /**
+     * @var UserPasswordEncoderInterface
+     */
+    private $encoder;
+
+    /**
+     * LoadCustomerData constructor.
+     *
+     * @param UserPasswordEncoderInterface $encoder
+     */
+    public function __construct(UserPasswordEncoderInterface $encoder)
+    {
+        $this->encoder = $encoder;
+    }
 
     /**
      * {@inheritdoc}
@@ -36,7 +51,24 @@ final class LoadCustomerData extends Fixture
             '0184563355'
         );
 
+        $encoded = $this->encoder->encodePassword($customer, $customer->getPassword());
+
+        $customer->updatePassword($encoded);
+
         $manager->persist($customer);
+
+        $customer2 = new Customer(
+            'Free',
+            'contact@free.fr',
+            'free',
+            'free',
+            '0125886699'
+        );
+
+        $encoded = $this->encoder->encodePassword($customer2, $customer2->getPassword());
+        $customer2->updatePassword($encoded);
+        $manager->persist($customer2);
+
         $manager->flush();
 
         $this->addReference('sfr', $customer);

@@ -59,21 +59,20 @@ final class UpdateProductActionUnitTest extends TestCase
     /**
      * @var NotFoundProductResponderInterface|null
      */
-    private  $notFoundProductResponderIntergace = null;
+    private  $notFoundProductResponderInterface = null;
 
     /**
      * {@inheritdoc}
      */
     protected function setUp()
     {
-        $this->entityManager = $this->createMock(EntityManagerInterface::class);
-        $this->productRepository = $this->createMock(ProductRepositoryInterface::class);
-        $this->validator = $this->createMock(ValidatorInterface::class);
-        $this->responder = $this->createMock(UpdateProductResponderInterface::class);
-        $this->notFoundProductResponderIntergace = $this->createMock(NotFoundProductResponderInterface::class);
-
-        $request = Request::create('/', 'PATCH');
-        $this->request = $request->duplicate(null, null, ['id' => 1]);
+        $this->entityManager                     = $this->createMock(EntityManagerInterface::class);
+        $this->productRepository                 = $this->createMock(ProductRepositoryInterface::class);
+        $this->validator                         = $this->createMock(ValidatorInterface::class);
+        $this->responder                         = $this->createMock(UpdateProductResponderInterface::class);
+        $this->notFoundProductResponderInterface = $this->createMock(NotFoundProductResponderInterface::class);
+        $request                                 = Request::create('/', 'PATCH');
+        $this->request                           = $request->duplicate(null, null, ['id' => 1]);
     }
 
     /**
@@ -81,7 +80,11 @@ final class UpdateProductActionUnitTest extends TestCase
      */
     public function testAddProductAction()
     {
-        $updateProductAction = new UpdateProductAction($this->entityManager, $this->productRepository, $this->validator);
+        $updateProductAction = new UpdateProductAction(
+            $this->entityManager,
+            $this->productRepository,
+            $this->validator
+        );
 
         static::assertInstanceOf(UpdateProductActionInterface::class, $updateProductAction);
     }
@@ -98,8 +101,12 @@ final class UpdateProductActionUnitTest extends TestCase
         $this->productRepository->method('findOneByUuidField')->willReturn($productMock);
         $this->validator->method('validate')->willReturn([]);
 
-        $action = new UpdateProductAction($this->entityManager, $this->productRepository, $this->validator);
+        $action = new UpdateProductAction(
+            $this->entityManager,
+            $this->productRepository,
+            $this->validator
+        );
 
-        static::assertInstanceOf(Response::class, $action($this->request, $this->responder, $this->notFoundProductResponderIntergace));
+        static::assertInstanceOf(Response::class, $action($this->request, $this->responder, $this->notFoundProductResponderInterface));
     }
 }

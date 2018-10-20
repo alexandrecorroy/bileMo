@@ -1,0 +1,50 @@
+version: 2
+jobs:
+  build:
+    docker:
+    - image: hermsi/alpine-fpm-php:7.2.8
+
+    steps:
+    - checkout
+
+    - run: pecl install && docker-php-ext-enable apcu
+    - run: apk add --no-cache zlib-dev
+    - run: apk add --no-cache autoconf
+    - run: apk --update add gcc make g++ zlib-dev
+    - run: docker-php-ext-install mysqli
+    - run: docker-php-ext-install zip
+    - run: pecl install xdebug && docker-php-ext-enable xdebug
+
+    - run:
+        name: Install Composer
+        command: |
+          php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+          php -r "if (hash_file('SHA384', 'composer-setup.php') === trim(file_get_contents('https://composer.github.io/installer.sig'))) { echo 'Installer verified'; } else { echo 'Installer invalid'; unlink('composer-setup.php'); } echo PHP_EOL;"
+          php composer-setup.php
+          php -r "unlink('composer-setup.php');"
+    - run:
+        name: Display PHP information
+        command: |
+          php -v
+          php composer.phar --version
+    - run:
+        name: Install project dependencies
+        command: php composer.phar install
+    - run:
+        name: install jwt ssh keys
+        command: |
+            mkdir config/jwt
+            openssl genrsa -out config/jwt/private.pem 4096
+            openssl rsa -pubout -in config/jwt/private.pem -out config/jwt/public.pem
+            php bin/console lexik:jwt:check-config
+    - run:
+        name: dump autoload
+        command: php composer.phar dump-autoload -o
+    # run tests with phpunit
+    - run: |
+        mkdir /coverage-result
+        chmod +x /coverage-result
+        chmod +x bin/phpunit
+        bin/phpunit --coverage-html /coverage-result
+    - store_artifacts:
+        path: /coverage-result

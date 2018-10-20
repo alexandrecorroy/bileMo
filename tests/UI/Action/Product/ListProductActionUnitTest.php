@@ -54,10 +54,10 @@ final class ListProductActionUnitTest extends TestCase
      */
     protected function setUp()
     {
-        $this->productRepository = $this->createMock(ProductRepositoryInterface::class);
-        $request = Request::create('/', 'GET');
-        $this->request = $request->duplicate(null, null, ['id' => 1]);
-        $this->responder = $this->createMock(ListProductResponderInterface::class);
+        $this->productRepository                 = $this->createMock(ProductRepositoryInterface::class);
+        $request                                 = Request::create('/', 'GET');
+        $this->request                           = $request->duplicate(null, null, ['id' => 1]);
+        $this->responder                         = $this->createMock(ListProductResponderInterface::class);
         $this->notFoundProductResponderInterface = $this->createMock(NotFoundProductResponderInterface::class);
     }
 

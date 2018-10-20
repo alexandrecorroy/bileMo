@@ -15,7 +15,6 @@ namespace App\UI\Responder\Product;
 
 use App\UI\Responder\Product\Interfaces\AddProductResponderInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -26,7 +25,7 @@ final class AddProductResponder implements AddProductResponderInterface
     /**
      * {@inheritdoc}
      */
-    public function __invoke(Request $request, $errors = null): Response
+    public function __invoke($uri = null, $errors = null): Response
     {
         if (!\is_null($errors)) {
             if ($errors === Response::HTTP_SEE_OTHER) {
@@ -40,7 +39,9 @@ final class AddProductResponder implements AddProductResponderInterface
                 return new JsonResponse($errorList, Response::HTTP_REQUESTED_RANGE_NOT_SATISFIABLE);
             }
         } else {
-            return new JsonResponse('Product Added !', Response::HTTP_CREATED);
+            $response = new JsonResponse('Product Added !', Response::HTTP_CREATED);
+            $response->headers->set('Location', $uri);
+            return $response;
         }
     }
 }

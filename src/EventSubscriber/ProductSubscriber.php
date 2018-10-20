@@ -18,7 +18,6 @@ use App\Service\Interfaces\ReturnBlankParameterNameInterface;
 use App\Service\ReturnBlankParameterName;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -66,7 +65,7 @@ final class ProductSubscriber implements EventSubscriberInterface, ProductSubscr
 
             $errorMessage = [
                 'Message:' => 'Partial Content',
-                'Detail' => $param.' parameter is required'
+                'Detail'   => $param.' parameter is required'
             ];
 
             $response = new JsonResponse($errorMessage, Response::HTTP_PARTIAL_CONTENT);

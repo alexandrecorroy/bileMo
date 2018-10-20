@@ -17,7 +17,6 @@ use App\Repository\Interfaces\ProductRepositoryInterface;
 use App\UI\Action\Product\Interfaces\DeleteProductActionInterface;
 use App\UI\Responder\Product\Interfaces\DeleteProductResponderInterface;
 use App\UI\Responder\Product\Interfaces\NotFoundProductResponderInterface;
-use App\UI\Responder\Product\NotFoundProductResponder;
 use Doctrine\Common\Cache\ApcuCache;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,7 +26,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * final Class DeleteProductAction.
  *
- * @Route("/product/{id}", name="product_delete", methods={"DELETE"})
+ * @Route("api/product/{id}", name="product_delete", methods={"DELETE"})
  */
 final class DeleteProductAction implements DeleteProductActionInterface
 {
@@ -45,9 +44,11 @@ final class DeleteProductAction implements DeleteProductActionInterface
     /**
      * {@inheritdoc}
      */
-    public function __construct(EntityManagerInterface $entityManager, ProductRepositoryInterface $productRepository)
-    {
-        $this->entityManager = $entityManager;
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        ProductRepositoryInterface $productRepository
+    ) {
+        $this->entityManager     = $entityManager;
         $this->productRepository = $productRepository;
     }
 
@@ -68,7 +69,7 @@ final class DeleteProductAction implements DeleteProductActionInterface
             return $notFoundProductResponder();
         }
 
-        $cache->delete('find'.$product->getUid());
+        $cache->delete('find'.$product->getUid()->toString());
         $this->entityManager->remove($product);
         $this->entityManager->flush();
 

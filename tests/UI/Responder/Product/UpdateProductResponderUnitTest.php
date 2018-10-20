@@ -56,6 +56,4 @@ final class UpdateProductResponderUnitTest extends TestCase
 
         static::assertInstanceOf(Response::class, $responder($this->request));
     }
-
-
 }

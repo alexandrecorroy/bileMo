@@ -24,7 +24,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * final Class GetProductAction.
  *
- * @Route("/product/{id}", name="product_show", methods={"GET"})
+ * @Route("api/product/{id}", name="product_show", methods={"GET"})
  */
 final class GetProductAction implements GetProductActionInterface
 {

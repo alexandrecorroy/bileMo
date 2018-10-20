@@ -37,3 +37,7 @@ services:
     App\Repository\:
         resource: '../src/Repository'
         arguments: ['', '@doctrine.result_cache_provider']
+
+    App\DoctrineListener\AddLinksDoctrineListener:
+        tags:
+        - { name: doctrine.event_listener, event: postLoad }

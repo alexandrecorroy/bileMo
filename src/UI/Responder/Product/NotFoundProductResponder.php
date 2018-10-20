@@ -19,7 +19,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class NotFoundProductResponder implements NotFoundProductResponderInterface
 {
-
     /**
      * {@inheritdoc}
      */
@@ -27,5 +26,4 @@ final class NotFoundProductResponder implements NotFoundProductResponderInterfac
     {
         return new JsonResponse('Product(s) not found', Response::HTTP_NOT_FOUND);
     }
-
 }

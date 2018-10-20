@@ -7,7 +7,7 @@
         <field name="name" length="56"/>
         <field name="price" type="float" precision="6" scale="2" />
         <one-to-one field="productDetail" target-entity="App\Entity\ProductDetail" fetch="EAGER">
-            <join-column name="product_id" referenced-column-name="uid" />
+            <join-column name="product_id" referenced-column-name="uid"/>
             <cascade>
                 <cascade-all/>
             </cascade>

@@ -15,8 +15,8 @@ namespace App\Entity;
 
 use App\Entity\Interfaces\ProductDetailInterface;
 use App\Entity\Interfaces\ProductInterface;
-use phpDocumentor\Reflection\DocBlock\Tags\Throws;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -58,6 +58,9 @@ class Product implements ProductInterface, \JsonSerializable
      */
     private $productDetail;
 
+    /**
+     * @var array
+     */
     private $links = [];
 
     /**
@@ -66,29 +69,31 @@ class Product implements ProductInterface, \JsonSerializable
      * @param $name
      * @param $price
      * @param ProductDetail $productDetail
-     * @param null $uid
+     *
+     * @throws \Exception
      */
     public function __construct(
         $name,
         $price,
-        ProductDetail $productDetail,
-        $uid = null
+        ProductDetail $productDetail
     ) {
-        if(!is_null($uid))
-            $this->uid = $uid;
-        else
-            $this->uid = Uuid::uuid4();
-
-        $this->name = $name;
-        $this->price = $price;
+        $this->uid           = Uuid::uuid4();
+        $this->name          = $name;
+        $this->price         = $price;
         $this->productDetail = $productDetail;
     }
 
-    public function addLinks(array $links)
+    /**
+     * {@inheritdoc}
+     */
+    public function addLinks(array $links): void
     {
         $this->links[] = $links;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getLinks(): array
     {
         return $this->links;
@@ -97,7 +102,7 @@ class Product implements ProductInterface, \JsonSerializable
     /**
      * {@inheritdoc}
      */
-    public function getUid()
+    public function getUid(): UuidInterface
     {
         return $this->uid;
     }
@@ -105,7 +110,7 @@ class Product implements ProductInterface, \JsonSerializable
     /**
      * {@inheritdoc}
      */
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -113,23 +118,23 @@ class Product implements ProductInterface, \JsonSerializable
     /**
      * {@inheritdoc}
      */
-    public function getPrice()
+    public function getPrice(): float
     {
         return $this->price;
     }
 
     /**
-     * @return array|mixed
+     * {@inheritdoc}
      */
     public function jsonSerialize()
     {
         return [
 
-            'uid'   => $this->uid,
-            'name'  => $this->name,
-            'price' => $this->price,
+            'uid'           => $this->uid,
+            'name'          => $this->name,
+            'price'         => $this->price,
             'productDetail' => $this->productDetail,
-            '_links' => $this->links
+            '_links'        => $this->getLinks()
 
         ];
     }
@@ -145,7 +150,7 @@ class Product implements ProductInterface, \JsonSerializable
     /**
      * @param array $product
      */
-    public function updateProduct(array $product)
+    public function updateProduct(array $product): void
     {
         foreach ($product as $key => $value) {
             if (property_exists(self::class, $key) && $key!='productDetail') {

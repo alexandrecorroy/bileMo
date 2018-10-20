@@ -31,8 +31,15 @@ final class GetCustomerUserResponder implements GetCustomerUserResponderInterfac
         Request $request,
         CustomerUserInterface $customerUser
     ): Response {
+        $response = new JsonResponse($customerUser);
+        $response->setPublic();
+        $response->setEtag(md5($response->getContent()));
 
-        return new JsonResponse($customerUser);
+        if($response->isNotModified($request))
+        {
+            return $response;
+        }
 
+        return $response;
     }
 }

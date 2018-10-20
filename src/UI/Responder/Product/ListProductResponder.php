@@ -36,7 +36,7 @@ final class ListProductResponder implements ListProductResponderInterface
 
         if($response->isNotModified($request))
         {
-            $response->setNotModified();
+            return $response;
         }
 
         return $response;

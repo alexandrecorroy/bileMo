@@ -30,6 +30,15 @@ final class ListCustomerUserResponder implements ListCustomerUserResponderInterf
         Request $request,
         array $customerUsers
     ): Response {
-        return new JsonResponse($customerUsers);
+        $response = new JsonResponse($customerUsers);
+        $response->setPublic();
+        $response->setEtag(md5($response->getContent()));
+
+        if($response->isNotModified($request))
+        {
+            return $response;
+        }
+
+        return $response;
     }
 }

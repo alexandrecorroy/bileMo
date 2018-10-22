@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace App\UI\Responder\CustomerUser\Interfaces;
 
-
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -21,5 +20,8 @@ use Symfony\Component\HttpFoundation\Response;
  */
 interface ForbiddenCustomerUserResponderInterface
 {
+    /**
+     * @return Response
+     */
     public function __invoke(): Response;
 }

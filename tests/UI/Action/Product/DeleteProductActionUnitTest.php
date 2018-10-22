@@ -19,7 +19,6 @@ use App\UI\Action\Product\DeleteProductAction;
 use App\UI\Action\Product\Interfaces\DeleteProductActionInterface;
 use App\UI\Responder\Product\Interfaces\DeleteProductResponderInterface;
 use App\UI\Responder\Product\Interfaces\NotFoundProductResponderInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,11 +28,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 final class DeleteProductActionUnitTest extends TestCase
 {
-    /**
-     * @var EntityManagerInterface|null
-     */
-    private $entityManager = null;
-
     /**
      * @var ProductRepositoryInterface|null
      */
@@ -60,7 +54,6 @@ final class DeleteProductActionUnitTest extends TestCase
     protected function setUp()
     {
         $this->productRepository        = $this->createMock(ProductRepositoryInterface::class);
-        $this->entityManager            = $this->createMock(EntityManagerInterface::class);
         $this->responder                = $this->createMock(DeleteProductResponderInterface::class);
         $this->notFoundProductResponder = $this->createMock(NotFoundProductResponderInterface::class);
         $request                        = Request::create('/', 'DELETE');
@@ -74,7 +67,6 @@ final class DeleteProductActionUnitTest extends TestCase
     public function testDeleteProductAction()
     {
         $deleteProductAction = new DeleteProductAction(
-            $this->entityManager,
             $this->productRepository
         );
 
@@ -91,7 +83,6 @@ final class DeleteProductActionUnitTest extends TestCase
         $this->productRepository->method('findOneByUuidField')->willReturn($productMock);
 
         $action = new DeleteProductAction(
-            $this->entityManager,
             $this->productRepository
         );
 

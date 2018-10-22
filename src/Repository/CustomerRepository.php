@@ -14,18 +14,28 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 final class CustomerRepository extends ServiceEntityRepository implements CustomerRepositoryInterface
 {
     /**
-     * @var ApcuCache
+     * {@inheritdoc}
      */
-    private $cache;
+    public function __construct(
+        RegistryInterface $registry
+    ) {
+        parent::__construct($registry, Customer::class);
+    }
 
     /**
      * {@inheritdoc}
      */
-    public function __construct(
-        RegistryInterface $registry,
-        ApcuCache $cache
-    ) {
-        parent::__construct($registry, Customer::class);
-        $this->cache = $cache;
+    public function create($entity): void
+    {
+        $this->_em->persist($entity);
+        $this::save();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function save(): void
+    {
+        $this->_em->flush();
     }
 }

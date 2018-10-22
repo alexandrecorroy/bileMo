@@ -51,5 +51,20 @@ interface CustomerUserRepositoryInterface
      * @param CustomerUserInterface $customerUser
      * @return CustomerUserInterface|null
      */
-    public function findOtherCustomerUser(CustomerUserInterface $customerUser): ?CustomerUserInterface ;
+    public function findOtherCustomerUser(CustomerUserInterface $customerUser): ?CustomerUserInterface;
+
+    /**
+     * @param $entity
+     */
+    public function create($entity): void;
+
+    /**
+     * @param $entity
+     */
+    public function delete($entity): void;
+
+    /**
+     * save to bdd
+     */
+    public function save(): void;
 }

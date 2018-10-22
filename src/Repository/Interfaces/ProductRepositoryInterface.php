@@ -50,5 +50,20 @@ interface ProductRepositoryInterface
      *
      * @return ProductInterface|null
      */
-    public function findOtherProduct(ProductInterface $product): ?ProductInterface ;
+    public function findOtherProduct(ProductInterface $product): ?ProductInterface;
+
+    /**
+     * @param $entity
+     */
+    public function create($entity): void;
+
+    /**
+     * @param $entity
+     */
+    public function delete($entity): void;
+
+    /**
+     * save to bdd
+     */
+    public function save(): void;
 }

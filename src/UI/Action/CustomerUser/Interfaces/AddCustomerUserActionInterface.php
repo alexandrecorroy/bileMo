@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace App\UI\Action\CustomerUser\Interfaces;
 
+use App\Repository\Interfaces\CustomerRepositoryInterface;
 use App\Repository\Interfaces\CustomerUserRepositoryInterface;
+use App\Repository\Interfaces\ProductRepositoryInterface;
 use App\UI\Responder\CustomerUser\Interfaces\AddCustomerUserResponderInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
@@ -32,7 +33,8 @@ interface AddCustomerUserActionInterface
     /**
      * AddCustomerUserActionInterface constructor.
      *
-     * @param EntityManagerInterface $entityManager
+     * @param ProductRepositoryInterface $productRepository
+     * @param CustomerRepositoryInterface $customerRepository
      * @param CustomerUserRepositoryInterface $customerUserRepository
      * @param SerializerInterface $serializer
      * @param ValidatorInterface $validator
@@ -40,7 +42,8 @@ interface AddCustomerUserActionInterface
      * @param RouterInterface $router
      */
     public function __construct(
-        EntityManagerInterface $entityManager,
+        ProductRepositoryInterface $productRepository,
+        CustomerRepositoryInterface $customerRepository,
         CustomerUserRepositoryInterface $customerUserRepository,
         SerializerInterface $serializer,
         ValidatorInterface $validator,

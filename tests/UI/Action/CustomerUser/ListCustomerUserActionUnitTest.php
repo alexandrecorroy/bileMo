@@ -19,7 +19,6 @@ use App\UI\Action\CustomerUser\Interfaces\ListCustomerUserActionInterface;
 use App\UI\Action\CustomerUser\ListCustomerUserAction;
 use App\UI\Responder\CustomerUser\Interfaces\ListCustomerUserResponderInterface;
 use App\UI\Responder\CustomerUser\Interfaces\NotFoundCustomerUserResponderInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,11 +34,6 @@ final class ListCustomerUserActionUnitTest extends TestCase
      * @var CustomerUserRepositoryInterface|null
      */
     private $repository = null;
-
-    /**
-     * @var EntityManagerInterface|null
-     */
-    private $entityManager = null;
 
     /**
      * @var TokenStorageInterface|null
@@ -66,9 +60,8 @@ final class ListCustomerUserActionUnitTest extends TestCase
      */
     public function setUp()
     {
-        $this->repository        = $this->createMock(CustomerUserRepositoryInterface::class);
-        $this->entityManager     = $this->createMock(EntityManagerInterface::class);
         $this->tokenStorage      = $this->createMock(TokenStorageInterface::class);
+        $this->repository        = $this->createMock(CustomerUserRepositoryInterface::class);
         $this->responder         = $this->createMock(ListCustomerUserResponderInterface::class);
         $this->notFoundResponder = $this->createMock(NotFoundCustomerUserResponderInterface::class);
         $request                 = Request::create('/', 'GET');
@@ -82,7 +75,6 @@ final class ListCustomerUserActionUnitTest extends TestCase
     {
         $listCustomerUserAction = new ListCustomerUserAction(
             $this->repository,
-            $this->entityManager,
             $this->tokenStorage
         );
 
@@ -102,7 +94,6 @@ final class ListCustomerUserActionUnitTest extends TestCase
 
         $action = new ListCustomerUserAction(
             $this->repository,
-            $this->entityManager,
             $this->tokenStorage
         );
 

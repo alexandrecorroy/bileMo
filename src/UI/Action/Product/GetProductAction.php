@@ -20,6 +20,7 @@ use App\UI\Responder\Product\Interfaces\NotFoundProductResponderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Swagger\Annotations as SWG;
 
 /**
  * final Class GetProductAction.
@@ -43,6 +44,42 @@ final class GetProductAction implements GetProductActionInterface
     }
 
     /**
+     *
+     * get a product.
+     *
+     * get product and his detail.
+     *
+     * @SWG\Response(
+     *     response=200,
+     *     description="Returned when successful"
+     * )
+     * @SWG\Response(
+     *     response=404,
+     *     description="product not found"
+     * )
+     * @SWG\Parameter(
+     *     name="Authorization",
+     *     in="header",
+     *     required=true,
+     *     type="string",
+     *     default="Bearer TOKEN",
+     *     description="Authorization"
+     *)
+     *@SWG\Parameter(
+     *     name="id",
+     *     in="path",
+     *     type="string",
+     *     required=true,
+     *     description="uid of product"
+     *)
+     *@SWG\Response(
+     *     response=401,
+     *     description="Expired JWT Token | JWT Token not found | Invalid JWT Token",
+     *)
+     * @SWG\Tag(
+     *     name="API"
+     *     )
+     *
      * {@inheritdoc}
      */
     public function __invoke(

@@ -16,7 +16,7 @@
                     <join-column name="user_id" referenced-column-name="uid" nullable="false" />
                 </join-columns>
                 <inverse-join-columns>
-                    <join-column name="product_id" referenced-column-name="uid" nullable="false" />
+                    <join-column name="product_id" referenced-column-name="uid" nullable="false" on-delete="CASCADE"/>
                 </inverse-join-columns>
             </join-table>
         </many-to-many>

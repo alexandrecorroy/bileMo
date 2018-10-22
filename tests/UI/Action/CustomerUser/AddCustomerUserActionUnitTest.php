@@ -15,11 +15,12 @@ namespace App\Tests\UI\Action\CustomerUser;
 
 use App\Entity\Customer;
 use App\Entity\CustomerUser;
+use App\Repository\Interfaces\CustomerRepositoryInterface;
 use App\Repository\Interfaces\CustomerUserRepositoryInterface;
+use App\Repository\Interfaces\ProductRepositoryInterface;
 use App\UI\Action\CustomerUser\AddCustomerUserAction;
 use App\UI\Action\CustomerUser\Interfaces\AddCustomerUserActionInterface;
 use App\UI\Responder\CustomerUser\Interfaces\AddCustomerUserResponderInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,9 +36,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 final class AddCustomerUserActionUnitTest extends TestCase
 {
     /**
-     * @var EntityManagerInterface|null
+     * @var ProductRepositoryInterface|null
      */
-    private $entityManager = null;
+    private $productRepository = null;
 
     /**
      * @var CustomerUserRepositoryInterface|null
@@ -75,17 +76,23 @@ final class AddCustomerUserActionUnitTest extends TestCase
     private $router = null;
 
     /**
+     * @var CustomerRepositoryInterface|null
+     */
+    private $customerRepository = null;
+
+    /**
      * {@inheritdoc}
      */
     public function setUp()
     {
-        $this->entityManager          = $this->createMock(EntityManagerInterface::class);
+        $this->productRepository      = $this->createMock(ProductRepositoryInterface::class);
         $this->customerUserRepository = $this->createMock(CustomerUserRepositoryInterface::class);
         $this->serializer             = $this->createMock(SerializerInterface::class);
         $this->validator              = $this->createMock(ValidatorInterface::class);
         $this->tokenStorage           = $this->createMock(TokenStorageInterface::class);
         $this->responder              = $this->createMock(AddCustomerUserResponderInterface::class);
         $this->router                 = $this->createMock(RouterInterface::class);
+        $this->customerRepository     = $this->createMock(CustomerRepositoryInterface::class);
         $request                      = Request::create('/', 'POST');
         $this->request                = $request->duplicate(null, null);
     }
@@ -96,7 +103,8 @@ final class AddCustomerUserActionUnitTest extends TestCase
     public function testAddCustomerUserAction()
     {
         $addCustomerUserAction = new AddCustomerUserAction(
-            $this->entityManager,
+            $this->productRepository,
+            $this->customerRepository,
             $this->customerUserRepository,
             $this->serializer,
             $this->validator,
@@ -123,7 +131,8 @@ final class AddCustomerUserActionUnitTest extends TestCase
         $this->tokenStorage->method('getToken')->willReturn($tokenInterfaceMock);
 
         $action = new AddCustomerUserAction(
-            $this->entityManager,
+            $this->productRepository,
+            $this->customerRepository,
             $this->customerUserRepository,
             $this->serializer,
             $this->validator,

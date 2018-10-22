@@ -14,12 +14,13 @@ declare(strict_types=1);
 namespace App\UI\Action\CustomerUser;
 
 use App\Entity\CustomerUser;
-use App\Entity\Product;
+use App\Repository\Interfaces\CustomerRepositoryInterface;
 use App\Repository\Interfaces\CustomerUserRepositoryInterface;
+use App\Repository\Interfaces\ProductRepositoryInterface;
 use App\UI\Action\CustomerUser\Interfaces\AddCustomerUserActionInterface;
 use App\UI\Responder\CustomerUser\Interfaces\AddCustomerUserResponderInterface;
 use Doctrine\Common\Cache\ApcuCache;
-use Doctrine\ORM\EntityManagerInterface;
+use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -34,16 +35,20 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 final class AddCustomerUserAction implements AddCustomerUserActionInterface
 {
-
     /**
-     * @var EntityManagerInterface
+     * @var ProductRepositoryInterface
      */
-    private $entityManager;
+    private $productRepository;
 
     /**
      * @var CustomerUserRepositoryInterface
      */
     private $customerUserRepository;
+
+    /**
+     * @var CustomerRepositoryInterface
+     */
+    private $customerRepository;
 
     /**
      * @var SerializerInterface
@@ -69,14 +74,16 @@ final class AddCustomerUserAction implements AddCustomerUserActionInterface
      * {@inheritdoc}
      */
     public function __construct(
-        EntityManagerInterface $entityManager,
+        ProductRepositoryInterface $productRepository,
+        CustomerRepositoryInterface $customerRepository,
         CustomerUserRepositoryInterface $customerUserRepository,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
         TokenStorageInterface $tokenStorage,
         RouterInterface $router
     ) {
-        $this->entityManager          = $entityManager;
+        $this->productRepository      = $productRepository;
+        $this->customerRepository     = $customerRepository;
         $this->customerUserRepository = $customerUserRepository;
         $this->serializer             = $serializer;
         $this->validator              = $validator;
@@ -85,6 +92,63 @@ final class AddCustomerUserAction implements AddCustomerUserActionInterface
     }
 
     /**
+     *
+     * Add a new customerUser.
+     *
+     * You can add a new customerUser and his products.
+     *
+     * @SWG\Response(
+     *     response=201,
+     *     description="Returned when successful"
+     * )
+     * @SWG\Response(
+     *     response=303,
+     *     description="When resources already exist"
+     * )
+     * @SWG\Response(
+     *     response=416,
+     *     description="When Range not satisfiable"
+     * )
+     * @SWG\Parameter(
+     *     name="Authorization",
+     *     in="header",
+     *     required=true,
+     *     type="string",
+     *     default="Bearer TOKEN",
+     *     description="Authorization"
+     *)
+     *@SWG\Parameter(
+     *     name="body",
+     *     in="body",
+     *     required=true,
+     *     description="json order object",
+     *     format="application/json",
+     *     @SWG\Schema(
+     *         type="object",
+     *         @SWG\Property(property="name", type="string", example="Jones"),
+     *         @SWG\Property(property="firstName", type="string", example="Bob"),
+     *         @SWG\Property(property="email", type="string", example="jones.bob@gmail.com"),
+     *         @SWG\Property(property="address", type="string", example="1 Mayfair - London"),
+     *         @SWG\Property(property="zip", type="string", example="232323"),
+     *         @SWG\Property(property="phone", type="string", example="34343243243"),
+     *         @SWG\Property(
+     *              property="products",
+     *              type="array",
+     *              @SWG\Items(
+     *                      type="object",
+     *                      @SWG\Property(property="uid", type="string", example="656eebd8-38aa-4666-9f9b-24f3cb09ac38")
+     *              ))
+     *
+     *)
+     *)
+     *@SWG\Response(
+     *     response=401,
+     *     description="Expired JWT Token | JWT Token not found | Invalid JWT Token",
+     *)
+     * @SWG\Tag(
+     *     name="API"
+     *     )
+     *
      * {@inheritdoc}
      */
     public function __invoke(
@@ -114,7 +178,7 @@ final class AddCustomerUserAction implements AddCustomerUserActionInterface
         {
             foreach ($products as $product)
             {
-                $product = $this->entityManager->getRepository(Product::class)->findOneByUuidField($product['uid']);
+                $product = $this->productRepository->findOneByUuidField($product['uid']);
                 if(!\is_null($product))
                 {
                     $customerUser->addProduct($product);
@@ -123,9 +187,8 @@ final class AddCustomerUserAction implements AddCustomerUserActionInterface
         }
 
         $customer->addCustomerUser($customerUser);
-        $this->entityManager->persist($customer);
         $cache->delete('findAllCustomerUser'.$customer->getUid()->toString());
-        $this->entityManager->flush();
+        $this->customerRepository->create($customer);
 
         return $addCustomerUserResponder(Response::HTTP_CREATED, $this->router->generate('customer_user_show', ['id' => $customerUser->getUid()->toString()]));
     }

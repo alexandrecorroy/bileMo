@@ -22,5 +22,10 @@ use Symfony\Component\HttpFoundation\Response;
  */
 interface ApiActionInterface
 {
+    /**
+     * @param ApiResponderInterface $loginResponder
+     *
+     * @return Response
+     */
     public function __invoke(ApiResponderInterface $loginResponder): Response;
 }

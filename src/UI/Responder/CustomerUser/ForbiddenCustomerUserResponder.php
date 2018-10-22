@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace App\UI\Responder\CustomerUser;
 
-
 use App\UI\Responder\CustomerUser\Interfaces\ForbiddenCustomerUserResponderInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
-class ForbiddenCustomerUserResponder implements ForbiddenCustomerUserResponderInterface
+/**
+ * final Class ForbiddenCustomerUserResponder.
+ */
+final class ForbiddenCustomerUserResponder implements ForbiddenCustomerUserResponderInterface
 {
     /**
      * {@inheritdoc}

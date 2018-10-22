@@ -1,0 +1,6 @@
+security:
+  encoders:
+    App\Entity\Customer:
+      algorithm: sha512
+    App\Entity\Admin:
+      algorithm: sha512

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace App\EventSubscriber;
 
-use App\EventSubscriber\Interfaces\ProductSubscriberInterface;
+use App\EventSubscriber\Interfaces\MissingArgumentsSubscriberInterface;
 use App\Service\Interfaces\ReturnBlankParameterNameInterface;
 use App\Service\ReturnBlankParameterName;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -24,9 +24,9 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Serializer\Exception\MissingConstructorArgumentsException;
 
 /**
- * final Class ProductSubscriber.
+ * final Class MissingArgumentsSubscriber.
  */
-final class ProductSubscriber implements EventSubscriberInterface, ProductSubscriberInterface
+final class MissingArgumentsSubscriber implements EventSubscriberInterface, MissingArgumentsSubscriberInterface
 {
     /**
      * @var ReturnBlankParameterName
@@ -64,11 +64,10 @@ final class ProductSubscriber implements EventSubscriberInterface, ProductSubscr
             $param = $this->returnBlankParameterName->returnParameter($event->getException()->getMessage());
 
             $errorMessage = [
-                'Message:' => 'Partial Content',
-                'Detail'   => $param.' parameter is required'
+                'Error' => $param.' parameter is required'
             ];
 
-            $response = new JsonResponse($errorMessage, Response::HTTP_PARTIAL_CONTENT);
+            $response = new JsonResponse($errorMessage, Response::HTTP_BAD_REQUEST);
             $event->allowCustomResponseCode();
 
             $event->setResponse($response);

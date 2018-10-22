@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace App\Test\UI\Action\Auth;
 
 use App\Entity\Customer;
+use App\Repository\Interfaces\CustomerRepositoryInterface;
 use App\UI\Action\Auth\Interfaces\RegisterActionInterface;
 use App\UI\Action\Auth\RegisterAction;
 use App\UI\Responder\Auth\Interfaces\RegisterResponderInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -46,9 +46,9 @@ final class RegisterActionUnitTest extends TestCase
     private $validator = null;
 
     /**
-     * @var EntityManagerInterface|null
+     * @var CustomerRepositoryInterface|null
      */
-    private $entityManager = null;
+    private $customerRepository = null;
 
     /**
      * {@inheritdoc}
@@ -58,7 +58,7 @@ final class RegisterActionUnitTest extends TestCase
         $this->serializer    = $this->createMock(SerializerInterface::class);
         $this->encoder       = $this->createMock(UserPasswordEncoderInterface::class);
         $this->validator     = $this->createMock(ValidatorInterface::class);
-        $this->entityManager = $this->createMock(EntityManagerInterface::class);
+        $this->customerRepository = $this->createMock(CustomerRepositoryInterface::class);
     }
 
     /**
@@ -70,7 +70,7 @@ final class RegisterActionUnitTest extends TestCase
             $this->serializer,
             $this->encoder,
             $this->validator,
-            $this->entityManager
+            $this->customerRepository
         );
 
         static::assertInstanceOf(RegisterActionInterface::class, $class);
@@ -93,7 +93,7 @@ final class RegisterActionUnitTest extends TestCase
             $this->serializer,
             $this->encoder,
             $this->validator,
-            $this->entityManager
+            $this->customerRepository
         );
 
         static::assertInstanceOf(Response::class, $class($request, $responder));

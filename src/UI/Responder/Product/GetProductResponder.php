@@ -31,6 +31,15 @@ final class GetProductResponder implements GetProductResponderInterface
         Request $request,
         ProductInterface $product
     ): Response {
-        return new JsonResponse($product);
+        $response = new JsonResponse($product);
+        $response->setPublic();
+        $response->setEtag(md5($response->getContent()));
+
+        if($response->isNotModified($request))
+        {
+            return $response;
+        }
+
+        return $response;
     }
 }

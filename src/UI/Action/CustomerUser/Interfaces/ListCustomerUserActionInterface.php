@@ -16,7 +16,6 @@ namespace App\UI\Action\CustomerUser\Interfaces;
 use App\Repository\Interfaces\CustomerUserRepositoryInterface;
 use App\UI\Responder\CustomerUser\Interfaces\ListCustomerUserResponderInterface;
 use App\UI\Responder\CustomerUser\Interfaces\NotFoundCustomerUserResponderInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -30,12 +29,10 @@ interface ListCustomerUserActionInterface
      * ListCustomerUserActionInterface constructor.
      *
      * @param CustomerUserRepositoryInterface $customerUserRepository
-     * @param EntityManagerInterface $entityManager
      * @param TokenStorageInterface $tokenStorage
      */
     public function __construct(
         CustomerUserRepositoryInterface $customerUserRepository,
-        EntityManagerInterface $entityManager,
         TokenStorageInterface $tokenStorage
     );
 

@@ -14,10 +14,30 @@ declare(strict_types=1);
 namespace App;
 
 use Symfony\Bundle\FrameworkBundle\HttpCache\HttpCache;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Class CacheKernel.
+ * final Class CacheKernel.
  */
 final class CacheKernel extends HttpCache
 {
+    /**
+     * {@inheritdoc}
+     */
+    protected function invalidate(Request $request, $catch = false)
+    {
+        if ('PURGE' !== $request->getMethod()) {
+            return parent::invalidate($request, $catch);
+        }
+
+        $response = new Response();
+        if ($this->getStore()->purge($request->getUri())) {
+            $response->setStatusCode(Response::HTTP_OK, 'Purged');
+        } else {
+            $response->setStatusCode(Response::HTTP_NOT_FOUND, 'Not found');
+        }
+
+        return $response;
+    }
 }

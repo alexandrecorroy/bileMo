@@ -55,7 +55,7 @@ class RegisterActionFunctionalTest extends DataFixtureTestCase
 
         $this->client->request('POST', '/api/register', array(), array(), array(), json_encode($customer));
 
-        static::assertEquals(Response::HTTP_PARTIAL_CONTENT, $this->client->getResponse()->getStatusCode());
+        static::assertEquals(Response::HTTP_BAD_REQUEST, $this->client->getResponse()->getStatusCode());
         static::assertTrue($this->client->getResponse()->headers->contains('content-type', 'application/json'));
     }
 

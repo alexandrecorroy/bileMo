@@ -21,7 +21,12 @@ use Symfony\Component\HttpFoundation\Response;
  */
 interface ListCustomerUserResponderInterface
 {
-
+    /**
+     * @param Request $request
+     * @param array $customerUsers
+     *
+     * @return Response
+     */
     public function __invoke(
         Request $request,
         array $customerUsers

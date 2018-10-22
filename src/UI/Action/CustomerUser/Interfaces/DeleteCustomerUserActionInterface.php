@@ -17,7 +17,6 @@ use App\Repository\Interfaces\CustomerUserRepositoryInterface;
 use App\UI\Responder\CustomerUser\Interfaces\DeleteCustomerUserResponderInterface;
 use App\UI\Responder\CustomerUser\Interfaces\ForbiddenCustomerUserResponderInterface;
 use App\UI\Responder\CustomerUser\Interfaces\NotFoundCustomerUserResponderInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -31,12 +30,10 @@ interface DeleteCustomerUserActionInterface
     /**
      * DeleteCustomerUserActionInterface constructor.
      *
-     * @param EntityManagerInterface $entityManager
      * @param CustomerUserRepositoryInterface $customerUserRepository
      * @param TokenStorageInterface $tokenStorage
      */
     public function __construct(
-        EntityManagerInterface $entityManager,
         CustomerUserRepositoryInterface $customerUserRepository,
         TokenStorageInterface $tokenStorage
     );

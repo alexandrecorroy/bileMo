@@ -17,6 +17,9 @@ use App\UI\Responder\Product\Interfaces\NotFoundProductResponderInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Class NotFoundProductResponder.
+ */
 final class NotFoundProductResponder implements NotFoundProductResponderInterface
 {
     /**

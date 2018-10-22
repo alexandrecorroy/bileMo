@@ -20,5 +20,8 @@ use Symfony\Component\HttpFoundation\Response;
  */
 interface ForbiddenCustomerUserResponderInterface
 {
+    /**
+     * @return Response
+     */
     public function __invoke(): Response;
 }

@@ -21,5 +21,10 @@ use Symfony\Component\HttpFoundation\Response;
  */
 interface DeleteCustomerUserResponderInterface
 {
+    /**
+     * @param Request $request
+     *
+     * @return Response
+     */
     public function __invoke(Request $request): Response;
 }

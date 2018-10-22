@@ -22,6 +22,9 @@ use Symfony\Component\HttpFoundation\Response;
  */
 final class CacheKernel extends HttpCache
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function invalidate(Request $request, $catch = false)
     {
         if ('PURGE' !== $request->getMethod()) {

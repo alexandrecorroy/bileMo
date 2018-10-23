@@ -91,6 +91,7 @@ final class CustomerUserRepository extends ServiceEntityRepository implements Cu
      */
     public function create($entity): void
     {
+        $this->_em->merge($entity);
         $this->_em->persist($entity);
         $this::save();
     }
@@ -100,7 +101,6 @@ final class CustomerUserRepository extends ServiceEntityRepository implements Cu
      */
     public function delete($entity): void
     {
-        $this->_em->merge($entity);
         $this->_em->remove($entity);
         $this::save();
     }

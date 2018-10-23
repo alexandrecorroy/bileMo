@@ -10,13 +10,13 @@
         <field name="address" length="128" />
         <field name="zip" length="6" />
         <field name="phone" length="12" nullable="true" />
-        <many-to-many field="products" target-entity="App\Entity\Product">
+        <many-to-many field="products" target-entity="App\Entity\Product" orphan-removal="true">
             <join-table name="bilemo_users_products">
                 <join-columns>
                     <join-column name="user_id" referenced-column-name="uid" nullable="false" />
                 </join-columns>
                 <inverse-join-columns>
-                    <join-column name="product_id" referenced-column-name="uid" nullable="false" on-delete="CASCADE"/>
+                    <join-column name="product_id" referenced-column-name="uid" nullable="false"/>
                 </inverse-join-columns>
             </join-table>
         </many-to-many>

@@ -120,7 +120,9 @@ docker-compose up -d --build
 ```
 
 You can then access the application on http://localhost:8080
+
 PHPMyAdmin on http://localhost:8081
+
 Nelmio : http://localhost:8080/api/doc
 
 ## Tests

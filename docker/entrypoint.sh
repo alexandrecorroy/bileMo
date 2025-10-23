@@ -50,3 +50,4 @@ php -d error_reporting=E_ALL\&~E_WARNING bin/console doctrine:fixtures:load --no
 
 echo "Lancement de PHP-FPM..."
 exec php-fpm
+

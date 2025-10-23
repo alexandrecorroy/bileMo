@@ -1,5 +1,7 @@
 # Bilemo
 
+![Aperçu du site](docs/api.png)
+
 It's a Symfony 4 project. An api REST which centralizes the information of telephone operators and their customers.
 
 ## Getting Started
@@ -108,6 +110,18 @@ To test admin features, go to ^/api/login_check in POST Method with body :
 	"password": "admin"
 }
 ```
+
+## Docker
+
+Run the docker-compose.yml file in your local machine to run the application in a docker container (don't forget to update the .env file)
+
+```
+docker-compose up -d --build
+```
+
+You can then access the application on http://localhost:8080
+PHPMyAdmin on http://localhost:8081
+Nelmio : http://localhost:8080/api/doc
 
 ## Tests
 

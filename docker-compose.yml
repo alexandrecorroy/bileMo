@@ -1,0 +1,75 @@
+services:
+  app:
+    build: .
+    container_name: bilemo_api
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+      - /var/www/html/vendor
+    environment:
+      APP_ENV: dev
+      APP_DEBUG: 1
+      DATABASE_URL: mysql://bilemo:bilemo@db:3306/bilemo
+      JWT_SECRET_KEY: /var/www/html/config/jwt/private.pem
+      JWT_PUBLIC_KEY: /var/www/html/config/jwt/public.pem
+      JWT_PASSPHRASE: your_secret_passphrase
+    depends_on:
+      - db
+    networks:
+      - bilemo_net
+    ports:
+      - "9000:9000"
+
+  web:
+    image: nginx:stable-alpine
+    container_name: bilemo_nginx
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www/html
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - app
+    networks:
+      - bilemo_net
+
+  db:
+    image: mysql:5.7
+    container_name: bilemo_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: bilemo
+      MYSQL_DATABASE: bilemo
+      MYSQL_USER: bilemo
+      MYSQL_PASSWORD: bilemo
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - bilemo_net
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: bilemo_phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_USER: bilemo
+      PMA_PASSWORD: bilemo
+      UPLOAD_LIMIT: 100M
+    ports:
+      - "8081:80"
+    depends_on:
+      - db
+    networks:
+      - bilemo_net
+
+networks:
+  bilemo_net:
+
+volumes:
+  db_data:

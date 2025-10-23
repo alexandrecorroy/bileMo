@@ -7,7 +7,7 @@ use App\Entity\Product;
 use App\Repository\Interfaces\ProductRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Cache\ApcuCache;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * final Class ProductRepository.
@@ -22,10 +22,7 @@ final class ProductRepository extends ServiceEntityRepository implements Product
     /**
      * {@inheritdoc}
      */
-    public function __construct(
-        RegistryInterface $registry,
-        ApcuCache $cache
-    ) {
+    function __construct(ManagerRegistry $registry, ApcuCache $cache) {
         parent::__construct($registry, Product::class);
         $this->cache = $cache;
     }

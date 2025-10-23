@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace App\Repository\Interfaces;
 
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * Interface CustomerRepositoryInterface.
@@ -26,7 +26,7 @@ interface CustomerRepositoryInterface
      * @param RegistryInterface $registry
      */
     public function __construct(
-        RegistryInterface $registry
+        ManagerRegistry $registry
     );
 
     /**

@@ -16,7 +16,7 @@ namespace App\Repository\Interfaces;
 use App\Entity\Customer;
 use App\Entity\Interfaces\CustomerUserInterface;
 use Doctrine\Common\Cache\ApcuCache;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * Interface CustomerUserRepositoryInterface.
@@ -30,7 +30,7 @@ interface CustomerUserRepositoryInterface
      * @param ApcuCache $cache
      */
     public function __construct(
-        RegistryInterface $registry,
+        ManagerRegistry $registry,
         ApcuCache $cache
     );
 

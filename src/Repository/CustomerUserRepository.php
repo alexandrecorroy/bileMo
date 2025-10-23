@@ -8,7 +8,7 @@ use App\Entity\Interfaces\CustomerUserInterface;
 use App\Repository\Interfaces\CustomerUserRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Cache\ApcuCache;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * final Class CustomerUserRepository.
@@ -23,10 +23,7 @@ final class CustomerUserRepository extends ServiceEntityRepository implements Cu
     /**
      * {@inheritdoc}
      */
-    public function __construct(
-        RegistryInterface $registry,
-        ApcuCache $cache
-    ) {
+    public function __construct(ManagerRegistry $registry, ApcuCache $cache) {
         parent::__construct($registry, CustomerUser::class);
         $this->cache = $cache;
     }

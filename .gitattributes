@@ -1,0 +1,5 @@
+# Normaliser les fins de ligne à LF
+* text=auto eol=lf
+
+# Forcer les scripts shell à rester en LF
+*.sh text eol=lf

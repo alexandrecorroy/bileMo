@@ -13,6 +13,8 @@ else
   echo "Clés JWT déjà présentes"
 fi
 
+chown -R www-data:www-data config/jwt && chmod 640 config/jwt/*.pem
+
 echo "Installation des assets Symfony..."
 php bin/console assets:install --no-interaction || true
 
